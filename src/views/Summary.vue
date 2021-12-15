@@ -16,7 +16,7 @@
     <div>
       <h3 class="pt-10 pb-2">Teacher</h3>
       <SummaryContactInfo
-        :full-name="teacher.teacherFullName"
+        :full-name="teacher.fullName"
         :address="teacher.address"
         :city="teacher.city"
         :province="teacher.province"

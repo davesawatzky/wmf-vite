@@ -1,11 +1,23 @@
 <template>
   <div>
-    <router-link to="/soloinfo">Solo Performer</router-link>
-    <router-link to="/groupinfo">Group Performer</router-link>
-    <router-link to="/school">School Groups</router-link>
+      <BaseRouteButton type="button" to="/contactinfo" class="btn btn-blue"
+    >Solo Performer</BaseRouteButton
+  >
+      <BaseRouteButton type="button" to="/contactinfo" class="btn btn-blue"
+    >Group Performer</BaseRouteButton
+  >
+      <BaseRouteButton type="button" to="/school" class="btn btn-blue"
+    >School Groups</BaseRouteButton
+  >
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useStore } from '@/store/mainStore';
+
+const store=useStore()
+
+
+</script>
 
 <style></style>
