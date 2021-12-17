@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('main', {
+export const useRegistration = defineStore('registration', {
   state: () => ({
     registrationType: 'solo', //Solo, Group, or School
-    registrationID: 24,
+    ID: 24,
   }),
   getters: {},
   actions: {},

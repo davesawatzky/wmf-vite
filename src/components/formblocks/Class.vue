@@ -48,7 +48,7 @@
 <script lang="ts" setup>
   import { useClasses } from '@/store/userClasses'
   import { storeToRefs } from 'pinia'
-  import { useStore } from '@/store/mainStore'
+  import { useStore } from '@/store/registration'
 
   const classes = useClasses()
   const numberOfSelections = [2, 3]

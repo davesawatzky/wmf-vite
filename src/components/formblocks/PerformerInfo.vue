@@ -94,7 +94,7 @@
 <script lang="ts" setup>
   import { usePerformers } from '@/store/userPerformer'
   import { storeToRefs } from 'pinia'
-  import { useStore } from '@/store/mainStore'
+  import { useStore } from '@/store/registration'
   import { provinces, textAreaLabel } from '@/composables/formData'
   import BaseTextarea from '../base/BaseTextarea.vue'
 

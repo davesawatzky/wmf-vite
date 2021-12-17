@@ -4,7 +4,7 @@ export const usePerformers = defineStore('performers', {
   state: () => ({
     performer: [
       {
-        performerID: 12,
+        id: 12,
         lastName: 'Sawatzky',
         firstName: 'David',
         address: '37 Waterford Bay',
@@ -21,7 +21,7 @@ export const usePerformers = defineStore('performers', {
     ],
   }),
   getters: {
-    fullName() {
+    fullName(): String {
       return this.performer[0].firstName + ' ' + this.performer[0].lastName
     },
   },

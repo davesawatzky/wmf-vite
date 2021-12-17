@@ -37,7 +37,7 @@
   import { useClasses } from '@/store/userClasses'
   import { usePerformers } from '@/store/userPerformer'
   import { useTeacher } from '@/store/userTeacher'
-  import { useStore } from '@/store/mainStore'
+  import { useStore } from '@/store/registration'
 
   const classes = useClasses()
   const performers = usePerformers()
