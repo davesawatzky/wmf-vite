@@ -1,17 +1,17 @@
-export const provinces: string[] = [
-  'BC',
-  'AB',
-  'SK',
-  'MB',
-  'ON',
-  'QC',
-  'NB',
-  'NS',
-  'PEI',
-  'NL',
-  'YT',
-  'NWT',
-  'NVT',
+export const provinces = [
+  { id: '1', name: 'BC' },
+  { id: '2', name: 'AB' },
+  { id: '3', name: 'SK' },
+  { id: '4', name: 'MB' },
+  { id: '5', name: 'ON' },
+  { id: '6', name: 'QC' },
+  { id: '7', name: 'NB' },
+  { id: '8', name: 'NS' },
+  { id: '9', name: 'PEI' },
+  { id: '10', name: 'NL' },
+  { id: '11', name: 'YT' },
+  { id: '12', name: 'NWT' },
+  { id: '13', name: 'NVT' },
 ]
 
 export const textAreaLabel =

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useSchool = defineStore('school', {
   state: () => ({
+    registrationID: 0,
     id: 46,
     name: 'Vincent Massey Collegiate',
     division: 'Pembina Trails School Division',

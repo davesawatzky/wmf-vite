@@ -37,13 +37,13 @@
   import { useClasses } from '@/store/userClasses'
   import { usePerformers } from '@/store/userPerformer'
   import { useTeacher } from '@/store/userTeacher'
-  import { useStore } from '@/store/registration'
+  import { useRegistration } from '@/store/userRegistration'
 
   const classes = useClasses()
   const performers = usePerformers()
 
   const teacher = useTeacher()
-  const main = useStore()
+  const registration = useRegistration()
 </script>
 
 <style scoped></style>

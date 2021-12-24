@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const usePerformers = defineStore('performers', {
   state: () => ({
+    registrationID: 0,
     performer: [
       {
         id: 12,
@@ -13,10 +14,10 @@ export const usePerformers = defineStore('performers', {
         postalCode: 'R3T 1H6',
         phone: '(204) 599-3521',
         email: 'dave.sawatzky@gmail.com',
+        age: 23,
         instrument: 'piano',
         level: '8',
-        age: 23,
-        otherClasses: ['2434, 4567, 9876'],
+        otherClasses: '',
       },
     ],
   }),

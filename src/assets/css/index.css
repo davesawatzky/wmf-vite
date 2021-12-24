@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 .btn {
-  @apply rounded-lg h-10 w-28 text-center shadow-lg hover:ring-2;
+  @apply rounded-lg h-14 w-32 m-2 text-center align-middle shadow-lg hover:ring-2;
 }
 .btn-blue {
   @apply bg-blue-700 text-white hover:ring-blue-800 shadow-blue-400;

@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import ParticipantInfo from './PerformerInfo.vue'
+  import ParticipantInfo from './ContactInfo.vue'
 
   export default defineComponent({
     components: {

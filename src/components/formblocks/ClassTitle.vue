@@ -3,7 +3,7 @@
   <div class="grid grid-rows-3 grid-cols-12 gap-x-3 gap-y-8 pt-4 items-end">
     <div class="col-span-7">
       <BaseInput
-        v-model="classes.classes[0].selections[0].title"
+        v-model="selections.selection[0].title"
         label="Title (including opus number if applicable)"
         type="text"
         error="This input has an error"
@@ -11,7 +11,7 @@
     </div>
     <div class="col-span-5">
       <BaseInput
-        v-model="classes.classes[0].selections[0].composer"
+        v-model="selections.selection[0].composer"
         label="Composer"
         type="text"
         error="This input has an error"
@@ -19,7 +19,7 @@
     </div>
     <div class="col-span-5">
       <BaseInput
-        v-model="classes.classes[0].selections[0].titleOfLargerWork"
+        v-model="selections.selection[0].largerWork"
         label="Title of Larger Work"
         type="text"
         error="This input has an error"
@@ -27,7 +27,7 @@
     </div>
     <div class="col-span-4">
       <BaseInput
-        v-model="classes.classes[0].selections[0].movement"
+        v-model="selections.selection[0].movement"
         label="Movement (if applicable)"
         type="text"
         error="This input has an error"
@@ -35,24 +35,8 @@
     </div>
     <div class="col-span-3">
       <BaseInput
-        v-model="classes.classes[0].selections[0].duration"
+        v-model="selections.selection[0].duration"
         label="Duration"
-        type="text"
-        error="This input has an error"
-      />
-    </div>
-    <div class="col-span-2">
-      <BaseInput
-        v-model="classes.classes[0].selections[0].level"
-        label="Grade/Level"
-        type="text"
-        error="This input has an error"
-      />
-    </div>
-    <div class="col-span-2">
-      <BaseInput
-        v-model="classes.classes[0].selections[0].instrument"
-        label="Instrument"
         type="text"
         error="This input has an error"
       />
@@ -62,13 +46,10 @@
 
 <script setup lang="ts">
   import { useClasses } from '@/store/userClasses'
-  const props = defineProps({
-    selectionNumber: {
-      type: Number,
-      default: 0,
-    },
-  })
+  import { useSelections } from '@/store/userSelections'
+
   const classes = useClasses()
+  const selections = useSelections()
 </script>
 
 <style scoped></style>

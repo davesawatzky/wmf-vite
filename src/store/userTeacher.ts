@@ -2,7 +2,9 @@ import { defineStore } from 'pinia'
 
 export const useTeacher = defineStore('teacher', {
   state: () => ({
+    registrationID: 0,
     id: 35,
+    prefix: '',
     lastName: 'Regier Sawatzky',
     firstName: 'Tracey',
     address: '804 Wicklow Rd.',

@@ -2,17 +2,18 @@ import { defineStore } from 'pinia'
 
 export const useGroup = defineStore('groups', {
   state: () => ({
+    registrationID: 0,
     group: [
       {
         id: 0,
-        option: '', //Vocal, Instrumental
         name: '',
-        numberOfPerformers: 0,
+        type: '', //Vocal, Instrumental
+        numPerformers: 0,
         age: 0,
-        Instruments: '',
-        studentsInOtherClasses: '',
-        numberOfChaperones: 0,
-        numberInWheelchairs: 0,
+        instruments: '',
+        perfInOtherClasses: '',
+        numOfChaperones: 0,
+        numWheelchairs: 0,
         earliestTime: '',
         latestTime: '',
         unavailable: [

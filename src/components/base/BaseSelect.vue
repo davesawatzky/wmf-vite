@@ -12,33 +12,31 @@
     >
       <option
         v-for="option in options"
-        :key="option"
-        :value="option"
-        :selected="option === modelValue"
+        :key="option.id"
+        :value="option.name"
+        :selected="option.name === modelValue"
       >
-        {{ option }}
+        {{ option.name }}
       </option>
     </select>
   </div>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    props: {
-      label: {
-        type: String,
-        default: '',
-      },
-      modelValue: {
-        type: [String, Number],
-        default: '',
-      },
-      options: {
-        type: Array,
-        required: true,
-      },
+<script lang="ts" setup>
+  const props = defineProps({
+    label: {
+      type: String,
+      default: '',
     },
-    emits: ['update:modelValue'],
+    modelValue: {
+      type: [String, Number],
+      default: '',
+    },
+    options: {
+      type: Array,
+      required: true,
+    },
   })
+
+  const emits = defineEmits(['update:modelValue'])
 </script>
