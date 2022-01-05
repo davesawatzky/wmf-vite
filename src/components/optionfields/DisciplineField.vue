@@ -1,7 +1,7 @@
 <template>
   <div>
     <BaseSelect
-      v-model="classes.classes[0].discipline"
+      v-model="classes.festClasses[0].discipline"
       class=""
       label="Discipline Area"
       :options="disciplines"

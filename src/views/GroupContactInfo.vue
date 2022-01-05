@@ -1,15 +1,23 @@
 <template>
-  <div>
-    <!--
+  <!--
 	***
 	*** Group Information
+	*** Uses the Contact Info Component and other
+	*** Base components
 	***
 	-->
+  <div>
     <div class="pb-8">
       <h2 class="pb-4">Group Information</h2>
+
+      <!--
+				*** Group Name
+				*** Regular groups only have one
+				*** registration.  ie. group[0]
+			 -->
       <div>
         <BaseInput
-          v-model="groups.group[0].name"
+          v-model="group[0].name"
           label="Group Name"
           type="text"
           error="Please enter a group name"
@@ -17,7 +25,7 @@
       </div>
       <div>
         <BaseInput
-          v-model="groups.group[0].numPerformers"
+          v-model="group[0].numPerformers"
           label="Number of Performers"
           type="text"
           error="Please enter the number of performers in the group"
@@ -25,7 +33,7 @@
       </div>
       <div>
         <BaseInput
-          v-model="groups.group[0].numOfChaperones"
+          v-model="group[0].numOfChaperones"
           label="Number of Chaperones"
           type="text"
           error="Please enter the number of chaperones"
@@ -33,7 +41,7 @@
       </div>
       <div>
         <BaseInput
-          v-model="groups.group[0].numWheelchairs"
+          v-model="group[0].numWheelchairs"
           label="Number of Wheelchairs"
           type="text"
           error="Please enter a group name"
@@ -43,12 +51,21 @@
         <legend>Group Type</legend>
         <div>
           <BaseRadioGroup
-            v-model="groups.group[0].type"
+            v-model="group[0].type"
             name="groupType"
             :options="typeOptions"
           />
         </div>
       </fieldset>
+      <!--
+	***
+	*** Solo Teacher Contact Information
+	***
+	-->
+      <div class="pb-8">
+        <h3 class="pb-4">Teacher Information</h3>
+        <ContactInfo v-model="teacher" teacher />
+      </div>
 
       <!--
 	***
@@ -56,36 +73,58 @@
 	***  performer in the group
 	***
 	-->
-
       <h3>Performer Information</h3>
-      <div v-for="(person, index) in performers.performer" :key="person.id">
-        {{ index }} - {{ groups.group[0].numPerformers }}
+      <div v-for="(person, index) in performer" :key="person.id">
+        {{ index }} - {{ performer.length }}
         <div class="pb-8">
           <h4 class="pb-4">Performer #{{ index + 1 }}</h4>
-          <ContactInfo v-model="performers.performer[index]" />
+
+          <!-- Contact Info Component -->
+          <ContactInfo v-model="performer[index]" />
         </div>
+
+        <!-- Listing of other registered classes -->
         <div>
-          <BaseTextarea :label="textAreaLabel" />
+          <BaseTextarea
+            :label="textAreaLabel"
+            v-model="performer[index].otherClasses"
+          />
         </div>
+
+        <!-- Instrument -->
         <BaseInput
-          v-model="performers.performer[index].instrument"
+          v-model="performer[index].instrument"
           type="text"
           label="Instrument"
           error="Please enter an instrument"
         />
+
+        <!-- Instrument Level -->
         <BaseInput
-          v-model="performers.performer[index].level"
+          v-model="performer[index].level"
           type="text"
           label="Level"
           error="Please indicate instrument level"
         />
         <div class="pt-4">
-          <BaseButton class="btn btn-blue" @click="addPerformer"
+          <!-- Add Performer Button -->
+          <BaseButton
+            v-if="index + 1 === performer.length ? true : false"
+            class="btn btn-blue"
+            @click="addPerformer"
             >Add Performer
           </BaseButton>
-          <BaseButton v-if="moreThanOne" class="btn btn-red"
+
+          <!-- Remove Performer Button -->
+          <BaseButton
+            v-if="performer.length > 1 ? true : false"
+            id="index"
+            class="btn btn-red"
+            @click="removePerformer(index)"
             >Remove Performer</BaseButton
-          ><br /><br />
+          >
+          <br /><br />
+          {{ performer }}
           <svg viewBox="0 0 800 2">
             <line x1="0" x2="800" stroke="black" />
           </svg>
@@ -93,15 +132,6 @@
       </div>
     </div>
 
-    <!--
-	***
-	*** Solo Teacher Contact Information
-	***
-	-->
-    <div class="pb-8">
-      <h2 class="pb-4">Teacher Information</h2>
-      <ContactInfo v-model="teacher" teacher />
-    </div>
     <!--
 	***
 	*** Previous and Next Buttons on the page
@@ -118,14 +148,29 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia'
+  import { ref, reactive, computed, watch } from 'vue'
   import { useTeacher } from '@/store/userTeacher'
   import { useGroup } from '@/store/userGroup'
   import { usePerformers } from '@/store/userPerformer'
   import { useRegistration } from '@/store/userRegistration'
   import { textAreaLabel } from '@/composables/formData'
-  import ContactInfo from '@/components/formblocks/ContactInfo.vue'
-  import BaseInput from '@/components/base/BaseInput.vue'
-  import BaseRadioGroup from '@/components/base/BaseRadioGroup.vue'
+
+  const registration = useRegistration()
+
+  const groups = useGroup()
+  const { group } = storeToRefs(groups)
+
+  const performers = usePerformers()
+  const { performer } = storeToRefs(performers)
+  function addPerformer() {
+    performers.addPerformer()
+  }
+  function removePerformer(id: number) {
+    performers.removePerformer(id)
+  }
+
+  const teacher = useTeacher()
 
   const typeOptions = [
     {
@@ -145,15 +190,6 @@
       value: 'mixed',
     },
   ]
-  const groups = useGroup()
-  const teacher = useTeacher()
-  const performers = usePerformers()
-  const registration = useRegistration()
-
-  function addPerformer() {
-    //*****Done Here   */
-    performers.performer.push
-  }
 </script>
 
 <style scoped></style>

@@ -1,4 +1,10 @@
 <template>
+  <!--
+	**
+	**  Contact Information Component
+	**  Used for Solo and Group registrations
+	**
+-->
   <div class="grid grid-rows-3 grid-cols-12 gap-x-3 gap-y-3 items-end">
     <div class="col-span-5">
       <BaseInput
@@ -83,8 +89,6 @@
   const registration = useRegistration()
   const currentYear = new Date().getFullYear()
 
-  const emits = defineEmits(['update:modelValue'])
-
   const props = defineProps({
     modelValue: {
       type: Object,
@@ -95,11 +99,16 @@
       required: false,
     },
   })
-
+  /**
+   * Sets the model value from all the props.
+   * Allows the 'BaseInput' components to set
+   * the model value in props.
+   */
   const contact = computed({
     get: () => props.modelValue,
     set: (value) => emits('update:modelValue', value),
   })
+  const emits = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped></style>

@@ -25,6 +25,31 @@ export const usePerformers = defineStore('performers', {
     fullName(): String {
       return this.performer[0].firstName + ' ' + this.performer[0].lastName
     },
+    numberOfPerformers(): Number {
+      return this.performer.length
+    },
   },
-  actions: {},
+  actions: {
+    addPerformer() {
+      const newId = this.performer[this.performer.length - 1].id + 1
+      this.performer.push({
+        id: newId,
+        lastName: '',
+        firstName: '',
+        address: '',
+        city: '',
+        province: 'MB',
+        postalCode: '',
+        phone: '',
+        email: '',
+        age: 0,
+        instrument: '',
+        level: '',
+        otherClasses: '',
+      })
+    },
+    removePerformer(id: number) {
+      this.performer.splice(id, 1)
+    },
+  },
 })

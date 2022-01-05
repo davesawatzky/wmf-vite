@@ -3,18 +3,34 @@ import { defineStore } from 'pinia'
 export const useClasses = defineStore('classes', {
   state: () => ({
     registrationID: 0,
-    classes: [
+    festClasses: [
       {
-        id: 0,
+        id: 1,
         number: '',
         discipline: '',
         subdiscipline: '',
         level: '',
         category: '',
-        numSelections: 0,
+        numSelections: 1,
       },
     ],
   }),
   getters: {},
-  actions: {},
+  actions: {
+    addClass() {
+      const newId = this.festClasses[this.festClasses.length - 1].id + 1
+      this.festClasses.push({
+        id: newId,
+        number: '',
+        discipline: '',
+        subdiscipline: '',
+        level: '',
+        category: '',
+        numSelections: 1,
+      })
+    },
+    removeClass(id: number) {
+      this.festClasses.splice(id, 1)
+    },
+  },
 })
