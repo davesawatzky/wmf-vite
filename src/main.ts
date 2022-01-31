@@ -11,7 +11,7 @@ import { createPinia } from 'pinia'
 import './assets/css/index.css'
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:8081/graphql',
+  uri: 'http://localhost:8080/graphql',
 })
 
 const cache = new InMemoryCache()
