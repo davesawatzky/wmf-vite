@@ -6,6 +6,11 @@ module.exports = {
       url: 'http://localhost:8080/graphql',
     },
     // Files processed by the extension
-    includes: ['src/**/*.vue', 'src/**/*.js'],
+    includes: [
+      'src/**/*.vue',
+      'src/**/*.js',
+      'src/**/*.gql',
+      'src/**/*.graphql',
+    ],
   },
 }
