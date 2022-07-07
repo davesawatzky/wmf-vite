@@ -1,22 +1,15 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 const path = require('path')
-import Pages from 'vite-plugin-pages'
-import Layouts from 'vite-plugin-vue-layouts'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import graphql from '@rollup/plugin-graphql'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    Pages({
-      dirs: 'src/views',
-    }),
-    Layouts({
-      defaultLayout: 'defaultLayout',
-    }),
-
+    graphql(),
     Components({
       // relative paths to the directory to search for components.
       dirs: ['src/components'],

@@ -10,27 +10,24 @@
   <p v-if="description">{{ description }}</p>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    props: {
-      label: {
-        type: String,
-        default: '',
-      },
-      description: {
-        type: String,
-        default: '',
-      },
-      modelValue: {
-        type: [String, Number],
-        default: '',
-      },
-      value: {
-        type: [String, Number],
-        required: true,
-      },
+<script setup lang="ts">
+  defineProps({
+    label: {
+      type: String,
+      default: '',
     },
-    emits: ['update:modelValue'],
+    description: {
+      type: String,
+      default: '',
+    },
+    modelValue: {
+      type: [String, Number],
+      default: '',
+    },
+    value: {
+      type: [String, Number],
+      required: true,
+    },
   })
+  defineEmits(['update:modelValue'])
 </script>

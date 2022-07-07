@@ -1,0 +1,26 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:vue/vue3-recommended", "prettier"],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": {
+      "ts": "@typescript-eslint/parser"
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "vue/multi-word-component-names": [
+      "error",
+      {
+        "ignores": ["Registrations", "School", "Summary", "index"]
+      }
+    ]
+    // "vue/valid-define-props": "warn"
+    // override/add rules settings here, such as:
+    // 'vue/no-unused-vars': 'error'
+  },
+  "plugins": ["vue", "@typescript-eslint"]
+  // "globals": { "defineProps": "readonly", "defineEmits": "readonly" }
+}

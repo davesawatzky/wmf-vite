@@ -1,6 +1,6 @@
 <template>
   <router-link v-slot="{ navigate }" custom>
-    <button v-bind="$attrs" @click="navigate">
+    <button v-bind="$attrs" type="button" @click="navigate">
       <slot />
     </button>
   </router-link>

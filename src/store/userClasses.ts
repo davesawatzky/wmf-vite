@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 
-export const useClasses = defineStore('classes', {
+export const useClasses = defineStore('selectedClasses', {
   state: () => ({
     registrationID: 0,
-    festClasses: [
+    selectedClasses: [
       {
         id: 1,
         number: '',
@@ -18,8 +18,8 @@ export const useClasses = defineStore('classes', {
   getters: {},
   actions: {
     addClass() {
-      const newId = this.festClasses[this.festClasses.length - 1].id + 1
-      this.festClasses.push({
+      const newId = this.selectedClasses[this.selectedClasses.length - 1].id + 1
+      this.selectedClasses.push({
         id: newId,
         number: '',
         discipline: '',
@@ -30,7 +30,9 @@ export const useClasses = defineStore('classes', {
       })
     },
     removeClass(id: number) {
-      this.festClasses.splice(id, 1)
+      this.selectedClasses.splice(id, 1)
     },
+    loadClasses() {},
+    saveClasses() {},
   },
 })

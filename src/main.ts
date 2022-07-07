@@ -1,8 +1,10 @@
 import { createApp, provide, h } from 'vue'
 import {
   ApolloClient,
-  createHttpLink,
+  HttpLink,
   InMemoryCache,
+  ApolloLink,
+  concat,
 } from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import App from './App.vue'
@@ -10,15 +12,24 @@ import routes from './router'
 import { createPinia } from 'pinia'
 import './assets/css/index.css'
 
-const httpLink = createHttpLink({
-  uri: 'http://localhost:8080/graphql',
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/graphql',
 })
 
-const cache = new InMemoryCache()
+const authLink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('diatonicToken')
+  operation.setContext({
+    headers: {
+      authorization: token ? `${token}` : null,
+    },
+  })
+  return forward(operation)
+})
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
-  cache,
+  link: concat(authLink, httpLink),
+  cache: new InMemoryCache(),
+  connectToDevTools: true,
 })
 
 const app = createApp({

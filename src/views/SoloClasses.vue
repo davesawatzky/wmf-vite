@@ -1,33 +1,24 @@
 <template>
-  <!--
-***
-*** Solo Class Information Page
-***
-*** -->
+  <!-- Solo Class Information Page -->
   <div class="pb-8">
     <h2 class="pb-4">Solo Class Information</h2>
-    <!--
-			***
-			*** List of Registered Classes
-			***
-		 -->
-    <div v-for="(festClass, index) in festClasses" :key="festClass.id">
-      {{ index }} - {{ festClasses.length }}
+
+    <!-- List of Registered Classes by the Performer-->
+    <div
+      v-for="(selectedClass, index) in selectedClasses"
+      :key="selectedClass.id"
+    >
       <div class="pb-8">
         <h3 class="pb-4">Class {{ index + 1 }}</h3>
-        <!-- 
-					*** Loads the Class component where
-					*** performers get to select their
-					*** classes.
-					***
-					*** pushes the festClasses prop
-				 -->
-        <Class v-model="festClasses[index]" />
+
+        <!-- Loads the Class component where performers get to select their classes.
+				 Pushes the selectedClasses prop -->
+        <Class v-model="selectedClasses[index]" />
       </div>
       <div class="pt-4">
         <!-- Add Class Button -->
         <BaseButton
-          v-if="index + 1 === festClasses.length ? true : false"
+          v-if="index + 1 === selectedClasses.length ? true : false"
           class="btn btn-blue"
           @click="addClass"
           >Add Class
@@ -35,7 +26,7 @@
 
         <!-- Remove Performer Button -->
         <BaseButton
-          v-if="festClasses.length > 1 ? true : false"
+          v-if="selectedClasses.length > 1 ? true : false"
           id="index"
           class="btn btn-red"
           @click="removeClass(index)"
@@ -50,15 +41,11 @@
     </div>
   </div>
 
-  <!-- 
-		***
-		*** Route Buttons
-		***
-	 -->
-  <BaseRouteButton type="button" to="/solocontactinfo" class="btn btn-blue"
+  <!-- Route Buttons -->
+  <BaseRouteButton type="button" to="SoloContactInfo" class="btn btn-blue"
     >Previous</BaseRouteButton
   >
-  <BaseRouteButton type="button" to="/summary" class="btn btn-blue"
+  <BaseRouteButton type="button" to="Summary" class="btn btn-blue"
     >Next</BaseRouteButton
   >
 </template>
@@ -67,8 +54,24 @@
   import { useClasses } from '@/store/userClasses'
   import { storeToRefs } from 'pinia'
 
+  defineProps({
+    performerType: {
+      type: String,
+      default: 'Solo',
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+    edit: {
+      type: String,
+      default: 'false',
+    },
+  })
+
+  // Performer class selections
   const classes = useClasses()
-  const { festClasses } = storeToRefs(classes)
+  const { selectedClasses } = storeToRefs(classes)
   function addClass() {
     classes.addClass()
   }

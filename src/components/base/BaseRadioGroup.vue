@@ -13,34 +13,38 @@
       :value="option.value"
       :model-value="modelValue"
       :name="name"
-      @update:model-value="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event.target.value)"
     />
   </component>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    props: {
-      options: {
-        type: Array,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      modelValue: {
-        type: [String, Number],
-        required: true,
-      },
-      vertical: {
-        type: Boolean,
-        default: false,
-      },
+<script setup lang="ts">
+  interface OptionsType {
+    value: string | number
+    label: string
+    description: string
+  }
+
+  defineProps({
+    options: {
+      type: Array as PropType<Array<OptionsType>>,
+      required: true,
     },
-    emits: ['update:modelValue'],
+    name: {
+      type: String,
+      required: true,
+    },
+    modelValue: {
+      type: [String, Number],
+      required: true,
+    },
+    vertical: {
+      type: Boolean,
+      default: false,
+    },
   })
+
+  defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>

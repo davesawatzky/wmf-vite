@@ -5,9 +5,9 @@
       v-bind="$attrs"
       :id="uuid"
       :value="modelValue"
-      :aria-describedby="error ? `${uuid}-error` : null"
-      :aria-invalid="error ? true : null"
-      @input="$emit('update:modelValue', $event.target.value)"
+      :aria-describedby="error ? `${uuid}-error` : ''"
+      :aria-invalid="error ? true : false"
+      @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
     ></textarea>
   </div>
   <p
@@ -20,31 +20,23 @@
   </p>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script setup lang="ts">
   import UniqueID from '@/composables/UniqueID'
 
-  export default defineComponent({
-    props: {
-      label: {
-        type: String,
-        default: '',
-      },
-      modelValue: {
-        type: String,
-        default: '',
-      },
-      error: {
-        type: String,
-        default: '',
-      },
+  defineProps({
+    label: {
+      type: String,
+      default: '',
     },
-    emits: ['update:modelValue'],
-    setup() {
-      const uuid = UniqueID().getID()
-      return {
-        uuid,
-      }
+    modelValue: {
+      type: String,
+      default: '',
+    },
+    error: {
+      type: String,
+      default: '',
     },
   })
+  defineEmits(['update:modelValue'])
+  const uuid = UniqueID().getID()
 </script>

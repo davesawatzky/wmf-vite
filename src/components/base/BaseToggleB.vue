@@ -7,7 +7,7 @@
         type="checkbox"
         :checked="modelValue"
         class="sr-only"
-        @change="$emit('update:modelValue', $event.target.checked)"
+        @change="$emit('update:modelValue', $event.target)"
       />
       <!-- line -->
       <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
@@ -23,30 +23,23 @@
   </label>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  props: {
+<script setup lang="ts">
+  defineProps({
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     modelValue: {
       type: Boolean,
-      default: false
-    }
-  },
-  emits: ['update:modelValue'],
-  setup() {
-    return {}
-  }
-})
+      default: false,
+    },
+  })
+  defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
-/* Toggle B */
-input:checked ~ .dot {
-  transform: translateX(100%);
-}
+  /* Toggle B */
+  input:checked ~ .dot {
+    transform: translateX(100%);
+  }
 </style>

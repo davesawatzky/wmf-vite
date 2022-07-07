@@ -82,11 +82,11 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
-  import { useRegistration } from '@/store/userRegistration'
+  import { ref, computed } from 'vue'
+  // import { useRegistration } from '@/store/userRegistration'
   import { provinces } from '@/composables/formData'
 
-  const registration = useRegistration()
+  // const registration = useRegistration()
   const currentYear = new Date().getFullYear()
 
   const props = defineProps({
@@ -99,6 +99,7 @@
       required: false,
     },
   })
+
   /**
    * Sets the model value from all the props.
    * Allows the 'BaseInput' components to set

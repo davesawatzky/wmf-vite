@@ -1,0 +1,10 @@
+query Registrations {
+  registrations {
+    id
+    createdAt
+    label
+    performerType
+    submittedAt
+    payedAmt
+  }
+}

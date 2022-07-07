@@ -1,0 +1,10 @@
+query ClassSearch($classSearchArgs: ClassSearchArgs!) {
+  classSearch(classSearchArgs: $classSearchArgs) {
+    id
+    classNumber
+    maxSelection
+    minSelection
+    requiredSelection
+    SGSlabel
+  }
+}

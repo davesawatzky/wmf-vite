@@ -1,0 +1,27 @@
+query SoloContactInfo($registrationId: ID!) {
+  registration(id: $registrationId) {
+    performers {
+      firstName
+      lastName
+      address
+      city
+      province
+      postalCode
+      phone
+      email
+      age
+      level
+    }
+    teacher {
+      prefix
+      firstName
+      lastName
+      address
+      city
+      province
+      postalCode
+      phone
+      email
+    }
+  }
+}

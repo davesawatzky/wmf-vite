@@ -3,7 +3,7 @@ module.exports = {
     service: {
       name: 'wmf-registration',
       // URL to the GraphQL API
-      url: 'http://localhost:8080/graphql',
+      url: 'http://localhost:4000/graphql',
     },
     // Files processed by the extension
     includes: [

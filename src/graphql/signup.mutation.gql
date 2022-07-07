@@ -1,0 +1,8 @@
+mutation SignUp($credentials: CredentialsInput!) {
+  signup(credentials: $credentials) {
+    userErrors {
+      message
+    }
+    token
+  }
+}

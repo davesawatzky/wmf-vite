@@ -16,7 +16,7 @@
 
   const classes = useClasses()
   const { result, loading, error } = useQuery(gql`
-    query {
+    query Discipline {
       disciplines {
         id
         name

@@ -1,6 +1,7 @@
-query Subdisciplines {
-  subdisciplines {
+query SubDisciplines($disciplineId: ID) {
+  subdisciplines(disciplineID: $disciplineId) {
     id
     name
+    description
   }
 }

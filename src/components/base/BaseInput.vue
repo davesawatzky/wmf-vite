@@ -4,16 +4,17 @@
     :id="uuid"
     v-bind="$attrs"
     :value="modelValue"
-    :aria-describedby="error ? `${uuid}-error` : null"
-    :aria-invalid="error ? true : null"
-    @input="$emit('update:modelValue', $event.target.value)"
+    :aria-describedby="error ? `${uuid}-error` : ''"
+    :aria-invalid="error ? true : false"
+    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
   />
 </template>
 
 <script setup lang="ts">
   import UniqueID from '@/composables/UniqueID'
+  const uuid = UniqueID().getID()
 
-  const props = defineProps({
+  defineProps({
     label: {
       type: String,
       default: '',
@@ -27,6 +28,5 @@
       default: '',
     },
   })
-  const emits = defineEmits(['update:modelValue'])
-  const uuid = UniqueID().getID()
+  defineEmits(['update:modelValue'])
 </script>
