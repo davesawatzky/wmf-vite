@@ -55,6 +55,10 @@
     @apply rounded border-gray-300 text-blue-600 focus:ring-blue-500;
   }
 
+  .off {
+    @apply disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none;
+  }
+
   label {
     @apply pl-3 font-medium text-gray-700 border-none;
   }

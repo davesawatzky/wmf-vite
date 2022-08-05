@@ -3,5 +3,8 @@ query SubDisciplines($disciplineId: ID) {
     id
     name
     description
+    classes {
+      SGSlabel
+    }
   }
 }

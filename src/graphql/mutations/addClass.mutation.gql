@@ -1,0 +1,22 @@
+mutation AddClass(
+  $registrationID: ID!
+  $registeredClass: RegisteredClassInput!
+) {
+  registeredClassCreate(
+    registrationID: $registrationID
+    registeredClass: $registeredClass
+  ) {
+    registeredClass {
+      id
+      category
+      classNumber
+      discipline
+      level
+      numberOfSelections
+      subdiscipline
+    }
+    userErrors {
+      message
+    }
+  }
+}

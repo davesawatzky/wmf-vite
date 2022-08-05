@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h1>School Info</h1>
-  </div>
+	<div>
+		<h1>School Info</h1>
+	</div>
 </template>
 
-<script lang="ts" setup></script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped></style>

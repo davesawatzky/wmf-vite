@@ -1,0 +1,18 @@
+mutation AddSelection($selection: SelectionInput!, $registeredClassId: ID!) {
+  selectionCreate(
+    registeredClassID: $registeredClassId
+    selection: $selection
+  ) {
+    selection {
+      id
+      title
+      composer
+      largerWork
+      movement
+      duration
+    }
+    userErrors {
+      message
+    }
+  }
+}

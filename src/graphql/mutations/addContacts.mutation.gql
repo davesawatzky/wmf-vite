@@ -1,0 +1,47 @@
+mutation AddContacts(
+	$registrationId: ID!
+	$performer: PerformerInput!
+	$teacherCreateRegistrationId2: ID!
+	$teacher: TeacherInput!
+) {
+	performerCreate(registrationID: $registrationId, performer: $performer) {
+		performer {
+			id
+			firstName
+			lastName
+			address
+			age
+			email
+			phone
+			instrument
+			level
+			city
+			province
+			postalCode
+			otherClasses
+		}
+		userErrors {
+			message
+		}
+	}
+	teacherCreate(
+		registrationID: $teacherCreateRegistrationId2
+		teacher: $teacher
+	) {
+		teacher {
+			id
+			prefix
+			firstName
+			lastName
+			address
+			city
+			province
+			postalCode
+			email
+			phone
+		}
+		userErrors {
+			message
+		}
+	}
+}
