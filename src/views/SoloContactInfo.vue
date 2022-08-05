@@ -71,7 +71,7 @@
 			// Patches the performer and teacher store with existing data from database
 			if (queryOptions.value.enabled && appStore.editExisting) {
 				performerStore.$patch({ registrationId: appStore.registrationId })
-				performerStore.addToStore()
+				performerStore.addToStore(null)
 				performerStore.$patch((state: any) => {
 					state.performer[0] = { ...result.data.registration.performers[0] }
 				})
