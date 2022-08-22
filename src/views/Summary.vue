@@ -17,12 +17,12 @@
 			<h3 class="pt-10 pb-2">Teacher</h3>
 			<SummaryContactInfo
 				:full-name="teacher.fullName"
-				:address="teacher.address"
-				:city="teacher.city"
-				:province="teacher.province"
-				:postal-code="teacher.postalCode"
-				:phone="teacher.phone"
-				:email="teacher.email"
+				:address="teacher.teacherInfo.address"
+				:city="teacher.teacherInfo.city"
+				:province="teacher.teacherInfo.province"
+				:postal-code="teacher.teacherInfo.postalCode"
+				:phone="teacher.teacherInfo.phone"
+				:email="teacher.teacherInfo.email"
 			/>
 		</div>
 		<h3 class="pt-10 pb-2">Class Summary</h3>

@@ -1,12 +1,16 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<div v-if="appStore.performerType === 'SOLO'">
-		<router-link :to="'SoloContactInfo'">Contact Information</router-link>
-		<router-link :to="'SoloClasses'">Classes</router-link>
+		<router-link class="btn btn-blue" :to="'SoloContactInfo'"
+			>Contact Information</router-link
+		>
+		<router-link class="btn btn-blue" :to="'SoloClasses'">Classes</router-link>
 	</div>
 	<div v-else-if="appStore.performerType === 'GROUP'">
-		<router-link :to="'GroupContactInfo'">Contact Information</router-link>
-		<router-link :to="'GroupClasses'">Classes</router-link>
+		<router-link class="btn btn-blue" :to="'GroupContactInfo'"
+			>Contact Information</router-link
+		>
+		<router-link class="btn btn-blue" :to="'GroupClasses'">Classes</router-link>
 	</div>
 	<div v-else-if="appStore.performerType === 'SCHOOL'">
 		<!-- <router-link :to="'SchoolContactInfo'">Contact Information</router-link> -->

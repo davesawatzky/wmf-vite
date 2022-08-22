@@ -2,9 +2,24 @@
 	<!-- Solo Performer Contact Information	-->
 	<div class="pb-8">
 		<h2 class="pb-4">Solo Performer Information</h2>
-		<div v-if="isLoading">Loading...</div>
+		<div v-if="loading" class="lds-overlay">
+			<div class="lds-spinner">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
 		<div v-else-if="isError">Error: {{ isError.message }}</div>
-		<form @submit.prevent>
+		<form v-else @submit.prevent>
 			<div>
 				<div v-if="performerStore.performer[0]">
 					<ContactInfo v-model="performerStore.performer[0]" />
@@ -27,7 +42,11 @@
 
 <script lang="ts" setup>
 	import { textAreaLabel } from '@/composables/formData'
-	import { useMutation, useQuery } from '@vue/apollo-composable'
+	import {
+		useMutation,
+		useQuery,
+		useQueryLoading,
+	} from '@vue/apollo-composable'
 	import { ref, computed } from 'vue'
 	import SOLO_CONTACT_INFO_QUERY from '../graphql/queries/soloContactInfo.query.gql'
 	import ADD_CONTACT_INFO_MUTATION from '@/graphql/mutations/addContacts.mutation.gql'
@@ -38,54 +57,49 @@
 	const appStore = useAppStore()
 	const performerStore = usePerformers()
 	const teacherStore = useTeacher()
+	const loading = useQueryLoading()
 
-	let isLoading = ref(false)
 	let isError = ref()
 	const isResult = ref(false)
 
 	const queryVariables = ref({
 		registrationId: appStore.registrationId,
 	})
-	const queryOptions = ref({
-		enabled: true,
-	})
 
 	/**
-	 *
 	 * Query existing contact information for performer
-	 * and teacher.
-	 *
+	 * and teacher on first load.
 	 */
-	//Query to load existing data
-	if (appStore.editExisting) {
-		const { loading, error, onResult } = useQuery(
+	if (
+		appStore.editExisting &&
+		(!appStore.performerContactLoaded || !appStore.teacherContactLoaded)
+	) {
+		const { error, onResult } = useQuery(
 			SOLO_CONTACT_INFO_QUERY,
-			queryVariables,
-			queryOptions
+			queryVariables
 		)
-		isLoading = computed(() => loading.value)
 		isError = computed(() => error.value)
 		onResult((result) => {
 			isResult.value = true
-
 			// Patches the performer and teacher store with existing data from database
-			if (queryOptions.value.enabled && appStore.editExisting) {
+			if (appStore.editExisting) {
 				performerStore.$patch({ registrationId: appStore.registrationId })
 				performerStore.addToStore(null)
 				performerStore.$patch((state: any) => {
 					state.performer[0] = { ...result.data.registration.performers[0] }
 				})
-				appStore.$patch({ performerContactExists: true })
+				//Set the existing performer flag to true when found in the database
+				appStore.$patch({ performerContactLoaded: true })
 
 				teacherStore.$patch({ registrationId: appStore.registrationId })
 				teacherStore.$patch((state: any) => {
 					state.teacherInfo = { ...result.data.registration.teacher }
 				})
-				appStore.$patch({ teacherContactExists: true })
+				// sets the existing teacher flag to true when found in the database
+				appStore.$patch({ teacherContactLoaded: true })
 			}
 		})
 	}
-
 	/**
 	 * Mutation code to add new performer and teacher
 	 * to database
@@ -97,67 +111,52 @@
 		}))
 
 	/**
-	 *
-	 * If this is a new registration form
-	 *
+	 * If this is a new solo registration form
 	 */
-	if (!appStore.editExisting) {
-		performerStore.$state
-		teacherStore.$state
-		addContacts()
+	if (
+		!appStore.editExisting &&
+		!appStore.performerContactLoaded &&
+		!appStore.teacherContactLoaded
+	) {
+		performerStore.$reset
+		teacherStore.$reset
+		createEmptyContacts()
 	}
 
 	/**
-	 *
-	 * Add a new performer to State and db
-	 *
+	 * Add an empty performer and teacher to State and db
 	 */
-	function addContacts() {
-		// disable querying for performers, since there shouldn't be any there
-		queryOptions.value.enabled = false
-
-		//set the the registrationId flag in the performer store
+	function createEmptyContacts() {
+		//set the registrationId in the performer and teacher store
 		performerStore.$patch({ registrationId: appStore.registrationId })
 		teacherStore.$patch({ registrationId: appStore.registrationId })
-
 		// create empty store states
 		performerStore.addToStore(null)
 		teacherStore.addToStore(null)
-
-		// Add Winnipeg and MB as defaults to the store
-		performerStore.$patch((state: any) => {
-			state.performer[0].city = 'Winnipeg'
-			state.performer[0].province = 'MB'
-		})
-		teacherStore.$patch((state: any) => {
-			state.teacherInfo.city = 'Winnipeg'
-			state.teacherInfo.province = 'MB'
-		})
-
 		// Create the first performer entry in the db for this registration
 		mutationVariables.value = {
-			registrationId: appStore.registrationId,
+			registrationId: performerStore.registrationId,
 			performer: {
-				city: 'Winnipeg',
-				province: 'MB',
+				city: performerStore.performer[0].city,
+				province: performerStore.performer[0].province,
 			},
-			teacherCreateRegistrationId2: appStore.registrationId,
+			teacherCreateRegistrationId2: teacherStore.registrationId,
 			teacher: {
-				city: 'Winnipeg',
-				province: 'MB',
+				city: teacherStore.teacherInfo.city,
+				province: teacherStore.teacherInfo.province,
 			},
 		}
 		contactsMutate(mutationVariables)
-		onDoneContactsMutation((result) => {
-			performerStore.$patch((state: any) => {
-				state.performer[0] = { ...result.data.performerCreate.performer }
-			})
-			teacherStore.$patch((state: any) => {
-				state.teacherInfo = { ...result.data.teacherCreate.teacher }
-			})
+		onDoneContactsMutation(() => {
+			// performerStore.$patch((state: any) => {
+			// 	state.performer[0] = { ...result.data.performerCreate.performer }
+			// })
+			// teacherStore.$patch((state: any) => {
+			// 	state.teacherInfo = { ...result.data.teacherCreate.teacher }
+			// })
 			appStore.$patch({
-				performerContactExists: true,
-				teacherContactExists: true,
+				performerContactLoaded: true,
+				teacherContactLoaded: true,
 			})
 		})
 	}

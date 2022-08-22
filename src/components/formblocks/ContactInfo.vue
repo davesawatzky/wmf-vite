@@ -97,7 +97,7 @@
 			required: false,
 		},
 	})
-
+	const emits = defineEmits(['update:modelValue'])
 	/**
 	 * Sets the model value from all the props.
 	 * Allows the 'BaseInput' components to set
@@ -107,7 +107,6 @@
 		get: () => props.modelValue,
 		set: (value) => emits('update:modelValue', value),
 	})
-	const emits = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped></style>

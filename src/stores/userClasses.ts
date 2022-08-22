@@ -4,157 +4,233 @@ import ADD_CLASS_MUTATION from '@/graphql/mutations/addClass.mutation.gql'
 import ADD_WORK_MUTATION from '@/graphql/mutations/addWork.mutation.gql'
 
 interface RegisteredClass {
-  id: number
-  classNumber: string
-  discipline: string
-  subdiscipline: string
-  level: string
-  category: string
-  numberOfSelections: number
+	id: string
+	classNumber: string
+	discipline: string
+	disciplineId: string
+	subdiscipline: string
+	subdisciplineId: string
+	level: string
+	levelId: string
+	category: string
+	categoryId: string
+	numberOfSelections: number
+	selections: [Selections]
 }
-interface Works {
-  id: number
-  title: string
-  largerWork: string
-  movement: string
-  composer: string
-  duration: string
+interface Selections {
+	id: string
+	title: string
+	largerWork: string
+	movement: string
+	composer: string
+	duration: string
 }
 
 export const useClasses = defineStore('registeredClasses', {
-  state: () => ({
-    registrationID: 0,
-    registeredClasses: [
-      {
-        id: 0,
-        classNumber: '',
-        discipline: '',
-        subdiscipline: '',
-        level: '',
-        category: '',
-        numberOfSelections: 0,
-        works: [
-          {
-            id: 0,
-            title: '',
-            largerWork: '',
-            movement: '',
-            composer: '',
-            duration: '',
-          },
-        ],
-      },
-    ],
-  }),
-  getters: {},
-  actions: {
-    /**
-     * Adds a class to the current registered Class list
-     */
-    addClass(registrationID: string, classNumber: string) {
-      console.log(registrationID, classNumber)
+	state: () => ({
+		registrationId: '',
+		registeredClasses: [
+			{
+				id: '',
+				classNumber: '',
+				discipline: '',
+				disciplineId: '',
+				subdiscipline: '',
+				subdisciplineId: '',
+				level: '',
+				levelId: '',
+				category: '',
+				categoryId: '',
+				numberOfSelections: 0,
+				selections: [
+					{
+						id: '',
+						title: '',
+						largerWork: '',
+						movement: '',
+						composer: '',
+						duration: '',
+					},
+				],
+			},
+		] as RegisteredClass[],
+	}),
+	getters: {},
+	actions: {
+		/**
+		 * Add empty class variables to store. Used when loading
+		 * existing classes
+		 */
+		addClassToStore() {
+			this.registeredClasses.push(<RegisteredClass>{
+				id: '',
+				classNumber: '',
+				discipline: '',
+				disciplineId: '',
+				subdiscipline: '',
+				subdisciplineId: '',
+				level: '',
+				levelId: '',
+				category: '',
+				categoryId: '',
+				numberOfSelections: 0,
+				selections: [
+					{
+						id: '',
+						title: '',
+						largerWork: '',
+						movement: '',
+						composer: '',
+						duration: '',
+					},
+				] as Selections[],
+			})
+		},
+		/**
+		 * Add empty works variables to specific class in store. Used
+		 * when loading existing works to existing classes
+		 *
+		 * @param index Index of specific class in array
+		 */
+		addSelectionToStore(index: number) {
+			if ('selections' in this.registeredClasses[index]) {
+				this.registeredClasses[index].selections.push(<Selections>{
+					id: '',
+					title: '',
+					largerWork: '',
+					movement: '',
+					composer: '',
+					duration: '',
+				})
+			}
+		},
 
-      const {
-        mutate: mutationAddClasses,
-        loading,
-        error,
-        onDone,
-      } = useMutation(ADD_CLASS_MUTATION, () => ({
-        fetchPolicy: 'no-cache',
-        variables: {
-          registrationID,
-          registeredClass: {
-            classNumber, // Only need to include this to create database record
-          },
-        },
-      }))
-      mutationAddClasses({ registrationID, registeredClass: { classNumber } })
-      onDone((result) => {
-        this.registeredClasses.push({
-          id: result.data.registeredClassCreate.registeredClass.id,
-          // This needs to be returned from the database through the mutation
-          classNumber: '',
-          discipline: '',
-          subdiscipline: '',
-          level: '',
-          category: '',
-          numberOfSelections: 0,
-          works: [],
-        })
-      })
+		/**
+		 * Creates a new class to the current registered Class list and saves
+		 * it to the database
+		 *
+		 * @param registrationID The Id of the current registration
+		 * @param classNumber The current class number
+		 */
+		createClass(registrationID: string, classNumber: string) {
+			console.log(registrationID, classNumber)
 
-      // await this.addWork(0)
-    },
+			const { mutate: mutationAddClasses, onDone } = useMutation(
+				ADD_CLASS_MUTATION,
+				() => ({
+					fetchPolicy: 'no-cache',
+					variables: {
+						registrationID,
+						registeredClass: {
+							classNumber, // Only need to include this to create database record
+						},
+					},
+				})
+			)
 
-    /**
-     * Removes a specific class from the current registration
-     * @param classIndex The array index of the specific class
-     */
-    removeClass(classIndex: number) {
-      this.registeredClasses.splice(classIndex, 1)
-    },
-    loadClasses() {},
+			mutationAddClasses({ registrationID, registeredClass: { classNumber } })
+			onDone((result) => {
+				this.registeredClasses.push({
+					// This needs to be returned from the database through the mutation
+					// so that we have the right id number.
+					id: result.data.registeredClassCreate.registeredClass.id,
+					classNumber: '',
+					discipline: '',
+					disciplineId: '',
+					subdiscipline: '',
+					subdisciplineId: '',
+					level: '',
+					levelId: '',
+					category: '',
+					categoryId: '',
+					numberOfSelections: 1,
+					selections: [
+						{
+							id: '',
+							title: '',
+							largerWork: '',
+							movement: '',
+							composer: '',
+							duration: '',
+						},
+					],
+				})
+			})
 
-    /**
-     * Saves All class information for a registration
-     *
-     * @param registrationID The registration ID
-     * @param registeredClass The new Class information
-     * @param works The works of the new class
-     */
-    saveClasses(registrationID: number) {
-      const {
-        mutate: mutationSaveClasses,
-        loading,
-        error,
-        onDone,
-      } = useMutation(ADD_CLASS_MUTATION, () => ({
-        fetchPolicy: 'no-cache',
-        variables: {
-          registrationID,
-          registeredClass: {
-            classNumber: this.registeredClasses.classNumber,
-          },
-        },
-      }))
-    },
+			// await this.addWork(0)
+		},
 
-    /**
-     * Add a music work to a class
-     * @param registrationClassID The ID index of the specific registered class
-     */
-    addWork(registrationClassID: number) {
-      const {
-        mutate: mutationAddWork,
-        loading,
-        error,
-        onDone,
-      } = useMutation(ADD_WORK_MUTATION, () => ({
-        fetchPolicy: 'no-cache',
-        variables: {
-          registrationClassID,
-          work: {
-            title: '', // Only need to include this to create the database record
-          },
-        },
-      }))
-      this.registeredClasses[registrationClassID].works.push({
-        id: 0, // Needs to be returned from the database
-        title: '',
-        largerWork: '',
-        movement: '',
-        composer: '',
-        duration: '',
-      })
-    },
+		/**
+		 * Removes a specific class from the database in the current registration
+		 *
+		 * @param index The array index of the specific registered class
+		 */
+		removeClass(index: number) {
+			this.registeredClasses.splice(index, 1)
+		},
 
-    /**
-     * Removes a musical work from a specific class
-     * @param classIndex The array index of the specific class
-     * @param workIndex The array index of the specific work
-     */
-    removeWork(classIndex: number, Index: number) {
-      this.registeredClasses[classIndex].works.splice(workIndex, 1)
-    },
-  },
+		/**
+		 * Loads existing classes.
+		 */
+		loadClasses() {},
+
+		/**
+		 * Saves All class information for a registration
+		 *
+		 * @param registrationID The registration ID
+		 * @param registeredClass The new Class information
+		 * @param works The works of the new class
+		 */
+		saveClasses(registrationID: number) {
+			const { mutate: mutationSaveClasses, onDone } = useMutation(
+				ADD_CLASS_MUTATION,
+				() => ({
+					variables: {
+						registrationID,
+						registeredClass: {
+							...this.registeredClasses,
+						},
+					},
+				})
+			)
+		},
+
+		/**
+		 * Add a music work to a class
+		 * @param registrationClassID The ID index of the specific registered class
+		 */
+		addSelection(registrationClassID: number) {
+			const {
+				mutate: mutationAddWork,
+				loading,
+				error,
+				onDone,
+			} = useMutation(ADD_WORK_MUTATION, () => ({
+				fetchPolicy: 'no-cache',
+				variables: {
+					registrationClassID,
+					selections: {
+						title: '', // Only need to include this to create the database record
+					},
+				},
+			}))
+			this.registeredClasses[registrationClassID].selections.push(<Selections>{
+				id: '', // Needs to be returned from the database
+				title: '',
+				largerWork: '',
+				movement: '',
+				composer: '',
+				duration: '',
+			})
+		},
+
+		/**
+		 * Removes a musical work from a specific class
+		 * @param classIndex The array index of the specific class
+		 * @param selectionIndex The array index of the specific work
+		 */
+		removeSelection(classIndex: number, selectionIndex: number) {
+			this.registeredClasses[classIndex].selections.splice(selectionIndex, 1)
+		},
+	},
 })

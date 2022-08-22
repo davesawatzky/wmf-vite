@@ -1,5 +1,20 @@
 <template>
-	<div v-if="loading">Loading...</div>
+	<div v-if="loading" class="lds-overlay">
+		<div class="lds-spinner">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 	<div v-else-if="error">Error: {{ error.message }}</div>
 
 	<div v-else>
@@ -56,7 +71,11 @@
 <script lang="ts" setup>
 	import { computed } from 'vue'
 	import { useRegistration } from '@/stores/userRegistration'
-	import { useQuery, useMutation } from '@vue/apollo-composable'
+	import {
+		useQuery,
+		useMutation,
+		useQueryLoading,
+	} from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/registrations.query.gql'
 	import ADD_REGISTRATION_MUTATION from '@/graphql/mutations/addRegistration.mutation.gql'
 	import { useRouter } from 'vue-router'
@@ -66,12 +85,13 @@
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
 	const router = useRouter()
+	const loading = useQueryLoading()
 
 	/**
 	 * Query for existing registrations from user
 	 * All registrations assigned to registrations array
 	 */
-	const { result, loading, error } = useQuery(REGISTRATION_QUERY)
+	const { result, error } = useQuery(REGISTRATION_QUERY)
 	const registrations = computed(() => result.value?.registrations ?? [])
 
 	/**

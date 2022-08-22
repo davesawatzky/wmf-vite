@@ -28,17 +28,17 @@ export const usePerformers = defineStore('performers', {
 		},
 	},
 	actions: {
-		addToStore(data: PerformerInfo | null) {
-			if (data) {
-				this.performer.push(data)
+		addToStore(performerContactInfo: PerformerInfo | null) {
+			if (performerContactInfo) {
+				this.performer.push(performerContactInfo)
 			} else {
 				this.performer.push({
 					id: '',
 					lastName: '',
 					firstName: '',
 					address: '',
-					city: '',
-					province: '',
+					city: 'Winnipeg',
+					province: 'MB',
 					postalCode: '',
 					phone: '',
 					email: '',
@@ -49,6 +49,8 @@ export const usePerformers = defineStore('performers', {
 				})
 			}
 		},
-		removePerformer() {},
+		removePerformer(index: number) {
+			this.performer.splice(index, 1)
+		},
 	},
 })

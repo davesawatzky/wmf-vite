@@ -1,10 +1,7 @@
 query SubDisciplines($disciplineId: ID) {
-  subdisciplines(disciplineID: $disciplineId) {
-    id
-    name
-    description
-    classes {
-      SGSlabel
-    }
-  }
+	subdisciplines(disciplineID: $disciplineId) {
+		id
+		name
+		description
+	}
 }

@@ -149,7 +149,7 @@
 
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia'
-	import { ref, reactive, computed, watch } from 'vue'
+	// import { ref, reactive, computed, watch } from 'vue'
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useGroup } from '@/stores/userGroup'
 	import { usePerformers } from '@/stores/userPerformer'
@@ -164,10 +164,10 @@
 	const performers = usePerformers()
 	const { performer } = storeToRefs(performers)
 	function addPerformer() {
-		performers.addPerformer()
+		performers.addToStore(null)
 	}
-	function removePerformer(id: number) {
-		performers.removePerformer(id)
+	function removePerformer(index: number) {
+		performers.removePerformer(index)
 	}
 
 	const teacher = useTeacher()

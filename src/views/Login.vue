@@ -1,6 +1,22 @@
 <template>
 	<div>
 		<h2>Welcome to the Registration Website</h2>
+		<div v-if="loading" class="lds-overlay">
+			<div class="lds-spinner">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
 		<form
 			class="max-w-md w-1/2 border-2 rounded-lg p-4 mx-auto mt-8"
 			@submit.prevent
@@ -52,11 +68,6 @@
 				</p>
 			</div>
 		</form>
-		<!-- <BaseRouteButton to="SignUp" class="btn btn-blue">Register</BaseRouteButton> -->
-		<div v-if="loading">Loading...</div>
-		<div>{{ email }}</div>
-		<div>{{ password }}</div>
-		<div>{{ password2 }}</div>
 	</div>
 </template>
 

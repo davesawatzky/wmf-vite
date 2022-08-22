@@ -1,0 +1,21 @@
+query SoloClassesQuery($registrationId: ID!) {
+	registration(id: $registrationId) {
+		registeredClasses {
+			category
+			classNumber
+			discipline
+			id
+			level
+			numberOfSelections
+			subdiscipline
+			selections {
+				composer
+				duration
+				id
+				largerWork
+				movement
+				title
+			}
+		}
+	}
+}

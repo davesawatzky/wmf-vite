@@ -1,0 +1,35 @@
+query ClassByNumber($classNumber: String!) {
+	classByNumber(classNumber: $classNumber) {
+		id
+		classNumber
+		maxSelection
+		minSelection
+		requiredSelection
+		SGSlabel
+		category {
+			id
+			name
+			description
+			requiredComposer
+		}
+		level {
+			id
+			name
+			description
+		}
+		subdiscipline {
+			id
+			name
+			description
+			discipline {
+				id
+				name
+			}
+		}
+		trophies {
+			id
+			name
+			description
+		}
+	}
+}

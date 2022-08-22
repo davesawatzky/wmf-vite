@@ -7,9 +7,16 @@ import GroupClasses from '@/views/GroupClasses.vue'
 import School from '@/views/School.vue'
 import SoloClasses from '@/views/SoloClasses.vue'
 import Form from '@/views/Form.vue'
+import Summary from '@/views/Summary.vue'
 
 const routes = [
 	{ path: '/', name: 'Login', component: Login },
+	{
+		path: '/registrations',
+		name: 'Registrations',
+		component: Registrations,
+		props: true,
+	},
 	{
 		path: '/form',
 		name: 'Form',
@@ -50,9 +57,9 @@ const routes = [
 	},
 
 	{
-		path: '/registrations',
-		name: 'Registrations',
-		component: Registrations,
+		path: '/summary',
+		name: 'Summary',
+		component: Summary,
 		props: true,
 	},
 

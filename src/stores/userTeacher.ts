@@ -24,9 +24,9 @@ export const useTeacher = defineStore('teacher', {
 		},
 	},
 	actions: {
-		addToStore(data: TeacherInfo | null) {
-			if (data) {
-				Object.assign(this.teacherInfo, data)
+		addToStore(teacherContactInfo: TeacherInfo | null) {
+			if (teacherContactInfo) {
+				Object.assign(this.teacherInfo, teacherContactInfo)
 			} else {
 				this.teacherInfo = {
 					id: '',
@@ -34,8 +34,8 @@ export const useTeacher = defineStore('teacher', {
 					lastName: '',
 					firstName: '',
 					address: '',
-					city: '',
-					province: '',
+					city: 'Winnipeg',
+					province: 'MB',
 					postalCode: '',
 					phone: '',
 					email: '',
