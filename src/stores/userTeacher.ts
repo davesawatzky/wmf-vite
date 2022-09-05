@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 
 interface TeacherInfo {
 	id: string
@@ -15,8 +15,19 @@ interface TeacherInfo {
 
 export const useTeacher = defineStore('teacher', {
 	state: () => ({
-		registrationId: '',
-		teacherInfo: {} as TeacherInfo,
+		// registrationId: '',
+		teacherInfo: {
+			id: '',
+			prefix: '',
+			lastName: '',
+			firstName: '',
+			address: '',
+			city: 'Winnipeg',
+			province: 'MB',
+			postalCode: '',
+			phone: '',
+			email: '',
+		} as TeacherInfo,
 	}),
 	getters: {
 		fullName(): String {
@@ -27,20 +38,11 @@ export const useTeacher = defineStore('teacher', {
 		addToStore(teacherContactInfo: TeacherInfo | null) {
 			if (teacherContactInfo) {
 				Object.assign(this.teacherInfo, teacherContactInfo)
-			} else {
-				this.teacherInfo = {
-					id: '',
-					prefix: '',
-					lastName: '',
-					firstName: '',
-					address: '',
-					city: 'Winnipeg',
-					province: 'MB',
-					postalCode: '',
-					phone: '',
-					email: '',
-				}
 			}
 		},
 	},
 })
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useTeacher, import.meta.hot))
+}

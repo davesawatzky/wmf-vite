@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 
 interface AppFlags {
 	editExisting: boolean
 	performerType: 'SOLO' | 'GROUP' | 'SCHOOL'
-	registrationId: string
 	registrationExists: boolean
 	performerContactLoaded: boolean
 	teacherContactLoaded: boolean
@@ -16,7 +15,6 @@ export const useAppStore = defineStore('appStore', {
 	state: () =>
 		<AppFlags>{
 			editExisting: false, // edits an existing registration from the db
-			registrationId: '', // The registration Id
 			performerType: 'SOLO', // default performertype - just in case.
 			registrationExists: false, // registration exists in the db
 			performerContactLoaded: false, // performer contact already exists and is loaded
@@ -26,3 +24,7 @@ export const useAppStore = defineStore('appStore', {
 			classContentLoaded: false, // Existing class content is loaded from db
 		},
 })
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot))
+}

@@ -1,4 +1,7 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
+import { provideApolloClient, useMutation } from '@vue/apollo-composable'
+import apolloClient from '@/utilities/apolloClient'
+import ADD_REGISTRATION_MUTATION from '@/graphql/mutations/addRegistration.mutation.gql'
 
 /**
  * Items get added to the Registration store when they're
@@ -7,7 +10,7 @@ import { defineStore } from 'pinia'
  * only one registration should be in the store at any one time.
  */
 interface Registration {
-	id: number
+	id: string
 	label: string
 	performerType: string
 	submittedAt: string
@@ -17,6 +20,8 @@ interface Registration {
 	confirmation: string
 }
 
+provideApolloClient(apolloClient)
+
 export const useRegistration = defineStore('registrations', {
 	state: () => ({
 		registrations: [] as Registration[],
@@ -25,8 +30,6 @@ export const useRegistration = defineStore('registrations', {
 	actions: {
 		loadRegistrationInfo() {},
 
-		// Only one registration allowed to be worked on at a time
-		// Therefore the currentitem is replaced.
 		addToStore(data: Registration) {
 			if (this.registrations.length > 0) {
 				this.registrations.splice(0, 1, data)
@@ -35,7 +38,21 @@ export const useRegistration = defineStore('registrations', {
 			}
 		},
 
-		removeRegistration() {},
+		async createRegistration(performerType: 'SOLO' | 'GROUP' | 'SCHOOL') {
+			const { mutate: newReg, onDone: doneNewReg } = useMutation(
+				ADD_REGISTRATION_MUTATION
+			)
+			newReg({ performerType })
+			doneNewReg((result) => {
+				this.addToStore(result.data.registrationCreate.registration)
+			})
+		},
+
+		removeRegistration(): void {},
 		saveRegistration() {},
 	},
 })
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useRegistration, import.meta.hot))
+}

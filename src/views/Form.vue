@@ -18,6 +18,7 @@
 	</div>
 
 	<router-view></router-view>
+	<button class="btn btn-blue">Save</button>
 </template>
 
 <script setup lang="ts">

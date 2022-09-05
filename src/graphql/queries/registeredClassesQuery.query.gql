@@ -1,4 +1,4 @@
-query SoloClassesQuery($registrationId: ID!) {
+query RegisteredClassesQuery($registrationId: ID!) {
 	registration(id: $registrationId) {
 		registeredClasses {
 			category

@@ -37,7 +37,7 @@
 						<BaseButton
 							class="btn btn-blue"
 							@click="
-								editRegistration(
+								loadRegistration(
 									registration.id,
 									registration.performerType,
 									index
@@ -69,93 +69,143 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed } from 'vue'
-	import { useRegistration } from '@/stores/userRegistration'
-	import {
-		useQuery,
-		useMutation,
-		useQueryLoading,
-	} from '@vue/apollo-composable'
+	import { computed, onBeforeMount } from 'vue'
+
+	import { useQuery, useQueryLoading } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/registrations.query.gql'
-	import ADD_REGISTRATION_MUTATION from '@/graphql/mutations/addRegistration.mutation.gql'
+	import SOLO_CONTACT_INFO_QUERY from '@/graphql/queries/soloContactInfo.query.gql'
+	import REGISTERED_CLASSES_QUERY from '@/graphql/queries/registeredClassesQuery.query.gql'
 	import { useRouter } from 'vue-router'
 	import routePerformerType from '@/composables/routePerformerType'
+	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
+	import { usePerformers } from '@/stores/userPerformer'
+	import { useTeacher } from '@/stores/userTeacher'
+	import { useClasses } from '@/stores/userClasses'
 
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
+	const performerStore = usePerformers()
+	const teacherStore = useTeacher()
+	const classesStore = useClasses()
+
+	onBeforeMount(() => {
+		registrationStore.$reset()
+		appStore.$reset()
+		performerStore.$reset()
+		teacherStore.$reset()
+		classesStore.$reset()
+	})
+
 	const router = useRouter()
 	const loading = useQueryLoading()
 
-	/**
-	 * Query for existing registrations from user
-	 * All registrations assigned to registrations array
-	 */
 	const { result, error } = useQuery(REGISTRATION_QUERY)
 	const registrations = computed(() => result.value?.registrations ?? [])
 
 	/**
-	 * Edit Existing Registration
+	 * Load and Edit Existing Registration
 	 *
 	 * @param registrationId The ID of the registration form
 	 * @param performerType SOLO, GROUP, or SCHOOL,
 	 * @param index Array Index of retrieved registrations
 	 */
-	function editRegistration(
+	async function loadRegistration(
 		registrationId: string,
 		performerType: 'SOLO' | 'GROUP' | 'SCHOOL',
 		index: number
 	) {
-		// Add chosen registration to store
-		// Only one registration allowed to be worked on at a time
 		registrationStore.addToStore(registrations.value[index])
-		// Application flags to store
-		appStore.$patch({
-			editExisting: true,
-			performerType,
-			registrationId,
-			registrationExists: true,
-		})
-
-		// Push Router to form page
+		switch (performerType) {
+			case 'SOLO':
+				loadSoloContactInfo(registrationId)
+				break
+			case 'GROUP':
+				LoadGroupContactInfo(registrationId)
+				break
+			case 'SCHOOL':
+				LoadSchoolContactInfo(registrationId)
+				break
+		}
+		loadClassInfo(registrationId)
 		router.push({
 			name: routePerformerType(performerType),
 		})
 	}
 
-	/**
-	 * Mutation code for new registrations
-	 * under 'newReg()'
-	 */
-	const { mutate: newReg, onDone: doneNewReg } = useMutation(
-		ADD_REGISTRATION_MUTATION
-	)
+	async function loadSoloContactInfo(registrationId: string) {
+		const { error, onResult: onPerformerContactResult } = useQuery(
+			SOLO_CONTACT_INFO_QUERY,
+			{ registrationId },
+			{ fetchPolicy: 'network-only' }
+		)
+		onPerformerContactResult((result) => {
+			performerStore.addToStore(result.data.registration.performers[0])
+			appStore.$patch({ performerContactLoaded: true })
+			teacherStore.$patch((state: any) => {
+				state.teacherInfo = { ...result.data.registration.teacher }
+			})
+			appStore.$patch({ teacherContactLoaded: true })
+		})
+	}
+
+	async function LoadGroupContactInfo(registrationId: string) {
+		const { error, onResult: onPerformerContactResult } = useQuery(
+			SOLO_CONTACT_INFO_QUERY,
+			{ registrationId },
+			{ fetchPolicy: 'network-only' }
+		)
+		onPerformerContactResult((result) => {
+			performerStore.addToStore(result.data.registration.performers[0])
+			appStore.$patch({ performerContactLoaded: true })
+			teacherStore.$patch((state: any) => {
+				state.teacherInfo = { ...result.data.registration.teacher }
+			})
+			appStore.$patch({ teacherContactLoaded: true })
+		})
+	}
+
+	async function loadClassInfo(registrationId: string) {
+		const { error, onResult: onClassesResult } = useQuery(
+			REGISTERED_CLASSES_QUERY,
+			{ registrationId },
+			{ fetchPolicy: 'network-only' }
+		)
+		onClassesResult((result) => {
+			classesStore.addClassToStore()
+			result.data.registration.registeredClasses.forEach(
+				(registeredClasses: any, classIndex: number) => {
+					classesStore.$patch((state: any) => {
+						state.registeredClasses[classIndex] = { ...registeredClasses }
+					})
+				}
+			)
+			appStore.$patch({ classContentLoaded: true })
+		})
+	}
 
 	/**
-	 * Create new Registration
+	 * Creates a new registration in the registration form.
 	 *
 	 * @param performerType SOLO, GROUP, or SCHOOL
 	 */
 	function newRegistration(performerType: 'SOLO' | 'GROUP' | 'SCHOOL') {
-		// Create new registration in db in order to get ID
-		newReg({ performerType })
-		// Once mutation is complete
-		// Assign the returned data result to the store
-		doneNewReg((result) => {
-			registrationStore.addToStore(result.data.registrationCreate.registration)
-			const registrationId = result.data.registrationCreate.registration.id
-			// Push to the Form page
-			// edit flag is set to false for a clean page
-			appStore.$patch({
-				editExisting: false,
-				performerType,
-				registrationId,
-				registrationExists: true,
+		registrationStore
+			.createRegistration(performerType)
+			.then(() => {
+				appStore.$patch({
+					editExisting: false,
+					performerType,
+					registrationExists: true,
+				})
+				performerStore.addToStore(null)
+				teacherStore.addToStore(null)
 			})
-			router.push({
-				name: routePerformerType(performerType),
+			.then(() => {
+				router.push({
+					name: routePerformerType(performerType),
+				})
 			})
-		})
 	}
 </script>
 
