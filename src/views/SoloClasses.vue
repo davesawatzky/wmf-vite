@@ -34,13 +34,6 @@
 			</div>
 		</div>
 	</div>
-
-	<BaseRouteButton type="button" to="SoloContactInfo" class="btn btn-blue"
-		>Previous</BaseRouteButton
-	>
-	<BaseRouteButton type="button" to="Summary" class="btn btn-blue"
-		>Next</BaseRouteButton
-	>
 </template>
 
 <script setup lang="ts">

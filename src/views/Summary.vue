@@ -10,8 +10,7 @@
 				:province="performers.performer[0].province"
 				:postal-code="performers.performer[0].postalCode"
 				:phone="performers.performer[0].phone"
-				:email="performers.performer[0].email"
-			/>
+				:email="performers.performer[0].email" />
 		</div>
 		<div>
 			<h3 class="pt-10 pb-2">Teacher</h3>
@@ -22,15 +21,15 @@
 				:province="teacher.teacherInfo.province"
 				:postal-code="teacher.teacherInfo.postalCode"
 				:phone="teacher.teacherInfo.phone"
-				:email="teacher.teacherInfo.email"
-			/>
+				:email="teacher.teacherInfo.email" />
 		</div>
 		<h3 class="pt-10 pb-2">Class Summary</h3>
 		<ClassSummary />
 	</div>
-	<BaseRouteButton type="button" to="/soloclasses" class="btn btn-blue"
-		>Previous</BaseRouteButton
+	<BaseRouteButton type="button" to="Form" class="btn btn-blue"
+		>Forms</BaseRouteButton
 	>
+	<BaseButton class="btn btn-blue">Submit</BaseButton>
 </template>
 
 <script setup lang="ts">

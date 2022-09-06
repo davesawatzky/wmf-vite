@@ -18,6 +18,19 @@
 	<div v-else-if="error">Error: {{ error.message }}</div>
 
 	<div v-else>
+		<div class="border border-gray-300 rounded-lg text-center mt-20">
+			<h3>Create new Registration Form</h3>
+			<BaseButton class="btn btn-blue" @click="newRegistration('SOLO')"
+				>Solo</BaseButton
+			>
+			<BaseButton class="btn btn-blue" @click="newRegistration('GROUP')"
+				>Group</BaseButton
+			>
+			<BaseButton class="btn btn-blue" @click="newRegistration('SCHOOL')"
+				>School</BaseButton
+			>
+		</div>
+		<br /><br />
 		<table>
 			<thead>
 				<tr>
@@ -53,19 +66,6 @@
 			</tbody>
 		</table>
 	</div>
-
-	<div class="border border-gray-300 rounded-lg text-center mt-20">
-		<h3>Create new Registration Form</h3>
-		<BaseButton class="btn btn-blue" @click="newRegistration('SOLO')"
-			>Solo</BaseButton
-		>
-		<BaseButton class="btn btn-blue" @click="newRegistration('GROUP')"
-			>Group</BaseButton
-		>
-		<BaseButton class="btn btn-blue" @click="newRegistration('SCHOOL')"
-			>School</BaseButton
-		>
-	</div>
 </template>
 
 <script lang="ts" setup>
@@ -82,11 +82,13 @@
 	import { usePerformers } from '@/stores/userPerformer'
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useClasses } from '@/stores/userClasses'
+	import { useGroup } from '@/stores/userGroup'
 
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
 	const performerStore = usePerformers()
 	const teacherStore = useTeacher()
+	const groupStore = useGroup()
 	const classesStore = useClasses()
 
 	onBeforeMount(() => {
@@ -94,6 +96,7 @@
 		appStore.$reset()
 		performerStore.$reset()
 		teacherStore.$reset()
+		groupStore.$reset()
 		classesStore.$reset()
 	})
 
@@ -118,19 +121,21 @@
 		registrationStore.addToStore(registrations.value[index])
 		switch (performerType) {
 			case 'SOLO':
+				appStore.performerType = 'SOLO'
 				loadSoloContactInfo(registrationId)
 				break
 			case 'GROUP':
+				appStore.performerType = 'GROUP'
 				LoadGroupContactInfo(registrationId)
 				break
 			case 'SCHOOL':
+				appStore.performerType = 'SCHOOL'
 				LoadSchoolContactInfo(registrationId)
 				break
 		}
 		loadClassInfo(registrationId)
-		router.push({
-			name: routePerformerType(performerType),
-		})
+
+		router.push({ name: 'Form' })
 	}
 
 	async function loadSoloContactInfo(registrationId: string) {
@@ -202,9 +207,7 @@
 				teacherStore.addToStore(null)
 			})
 			.then(() => {
-				router.push({
-					name: routePerformerType(performerType),
-				})
+				router.push({ name: 'Form' })
 			})
 	}
 </script>

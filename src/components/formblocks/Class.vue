@@ -100,8 +100,12 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, ref, watch } from 'vue'
-	import { useQuery, useQueryLoading } from '@vue/apollo-composable'
+	import { computed, ref } from 'vue'
+	import {
+		useQuery,
+		useQueryLoading,
+		useLazyQuery,
+	} from '@vue/apollo-composable'
 
 	import DISCIPLINES_QUERY from '@/graphql/queries/disciplines.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
@@ -143,6 +147,12 @@
 		set: (value) => emits('update:modelValue', value),
 	})
 
+	onMounted(() => {
+		subdiscLoad()
+		gradeLevelLoad()
+		catLoad()
+	})
+
 	/**
 	 * Disciplines
 	 */
@@ -163,12 +173,17 @@
 		chosenDiscipline.value = disciplines.value.find((item: any) => {
 			return item.name === selectedClasses.value.discipline
 		})
+		subdiscLoad()
 	}
 
 	/**
 	 * Subdisciplines
 	 */
-	const { result: subdisc, error: subdiscError } = useQuery(
+	const {
+		result: subdisc,
+		load: subdiscLoad,
+		error: subdiscError,
+	} = useLazyQuery(
 		SUBDISCIPLINES_BY_TYPE_QUERY,
 		() => ({
 			disciplineId: chosenDiscipline.value.id,
@@ -192,12 +207,17 @@
 		chosenSubdiscipline.value = subdisciplines.value.find((item: any) => {
 			return item.name === selectedClasses.value.subdiscipline
 		})
+		gradeLevelLoad()
 	}
 
 	/**
 	 * Grades / Levels
 	 */
-	const { result: gradeLevel, error: levelError } = useQuery(
+	const {
+		result: gradeLevel,
+		load: gradeLevelLoad,
+		error: levelError,
+	} = useLazyQuery(
 		LEVELS_QUERY,
 		() => ({
 			subdisciplineId: chosenSubdiscipline.value.id,
@@ -216,12 +236,17 @@
 		chosenGradeLevel.value = levels.value.find((item: any) => {
 			return item.name === selectedClasses.value.level
 		})
+		catLoad()
 	}
 
 	/**
 	 * Categories
 	 */
-	const { result: cat, error: catError } = useQuery(
+	const {
+		result: cat,
+		load: catLoad,
+		error: catError,
+	} = useLazyQuery(
 		CATEGORIES_QUERY,
 		() => ({
 			subdisciplineId: chosenSubdiscipline.value.id,
@@ -236,6 +261,7 @@
 		chosenCategory.value = categories.value.find((item: any) => {
 			return item.name === selectedClasses.value.category
 		})
+		classNumberLoad()
 
 		// ClassName
 		className.value =
@@ -249,7 +275,11 @@
 	/**
 	 * Class Number
 	 */
-	const { result: classSearch, error: classError } = useQuery(
+	const {
+		result: classSearch,
+		load: classNumberLoad,
+		error: classError,
+	} = useLazyQuery(
 		CLASS_SEARCH_QUERY,
 		() => ({
 			classSearchArgs: {

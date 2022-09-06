@@ -25,6 +25,9 @@ export const usePerformers = defineStore('performers', {
 		numberOfPerformers(): Number {
 			return this.performer.length
 		},
+		fullName(): String {
+			return this.performer[0].firstName + ' ' + this.performer[0].lastName
+		},
 	},
 	actions: {
 		addToStore(performerContactInfo: PerformerInfo | null) {
