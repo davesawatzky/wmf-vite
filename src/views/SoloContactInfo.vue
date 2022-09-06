@@ -73,6 +73,8 @@
 		useMutation(ADD_CONTACT_INFO_MUTATION, () => ({
 			variables: { ...mutationVariables.value },
 		}))
+
+	function saveContactInfo() {}
 </script>
 
 <style lang="scss" scoped></style>

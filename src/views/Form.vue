@@ -9,7 +9,9 @@
 			{{ tab }}
 		</button>
 		<KeepAlive>
-			<component :is="soloTabs[currentTab]" class="tab"></component>
+			<component
+				:is="soloTabs[(currentTab as 'Contact Info' | 'Solo Classes')]"
+				class="tab"></component>
 		</KeepAlive>
 	</div>
 	<div v-else-if="appStore.performerType === 'GROUP'" class="demo">
@@ -21,7 +23,9 @@
 			{{ tab }}
 		</button>
 		<KeepAlive>
-			<component :is="groupTabs[currentTab]" class="tab"></component>
+			<component
+				:is="groupTabs[(currentTab as 'Contact Info' | 'Group Classes')]"
+				class="tab"></component>
 		</KeepAlive>
 	</div>
 	<div v-else-if="appStore.performerType === 'SCHOOL'" class="demo">
@@ -33,7 +37,9 @@
 			{{ tab }}
 		</button>
 		<KeepAlive>
-			<component :is="schoolTabs[currentTab]" class="tab"></component>
+			<component
+				:is="schoolTabs[(currentTab as 'School Info')]"
+				class="tab"></component>
 		</KeepAlive>
 	</div>
 	<BaseRouteButton type="button" to="Registrations" class="btn btn-blue"
@@ -55,7 +61,8 @@
 	import { useAppStore } from '@/stores/appStore'
 	const appStore = useAppStore()
 
-	const currentTab = ref('')
+	const currentTab = ref()
+
 	switch (appStore.performerType) {
 		case 'SOLO':
 			currentTab.value = 'Contact Info'

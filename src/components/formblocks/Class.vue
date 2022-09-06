@@ -147,11 +147,11 @@
 		set: (value) => emits('update:modelValue', value),
 	})
 
-	onMounted(() => {
-		subdiscLoad()
-		gradeLevelLoad()
-		catLoad()
-	})
+	// onMounted(() => {
+	// 	subdiscLoad()
+	// 	gradeLevelLoad()
+	// 	catLoad()
+	// })
 
 	/**
 	 * Disciplines

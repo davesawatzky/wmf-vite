@@ -76,7 +76,6 @@
 	import SOLO_CONTACT_INFO_QUERY from '@/graphql/queries/soloContactInfo.query.gql'
 	import REGISTERED_CLASSES_QUERY from '@/graphql/queries/registeredClassesQuery.query.gql'
 	import { useRouter } from 'vue-router'
-	import routePerformerType from '@/composables/routePerformerType'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
 	import { usePerformers } from '@/stores/userPerformer'
@@ -169,6 +168,7 @@
 			appStore.$patch({ teacherContactLoaded: true })
 		})
 	}
+	async function LoadSchoolContactInfo(registrationId: string) {}
 
 	async function loadClassInfo(registrationId: string) {
 		const { error, onResult: onClassesResult } = useQuery(
