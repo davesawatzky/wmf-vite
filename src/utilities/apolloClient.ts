@@ -7,7 +7,7 @@ import {
 } from '@apollo/client/core'
 
 const httpLink = new HttpLink({
-	uri: 'http://localhost:4000/graphql',
+	uri: 'https://wmfserver.herokuapp.com/graphql',
 })
 
 const authLink = new ApolloLink((operation, forward) => {
