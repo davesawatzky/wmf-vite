@@ -2,23 +2,8 @@
 	<!-- Solo Performer Contact Information	-->
 	<div class="pb-8">
 		<h2 class="pb-4">Solo Performer Information</h2>
-		<div v-if="loading" class="lds-overlay">
-			<div class="lds-spinner">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-			</div>
-		</div>
-		<div v-else-if="isError">Error: {{ isError.message }}</div>
+		<BaseSpinner v-show="loading"></BaseSpinner>
+		<div v-if="isError">Error: {{ isError.message }}</div>
 		<form v-else @submit.prevent="saveContactInfo">
 			<div>
 				<div v-if="performerStore.performer[0]">

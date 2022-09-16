@@ -1,45 +1,28 @@
 <template>
 	<div>
 		<h2>Welcome to the Registration Website</h2>
-		<div v-if="loading" class="lds-overlay">
-			<div class="lds-spinner">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-			</div>
-		</div>
+		<BaseSpinner v-show="loading"></BaseSpinner>
 		<form
 			class="max-w-md w-1/2 border-2 rounded-lg p-4 mx-auto mt-8"
-			@submit.prevent
-		>
+			@submit.prevent>
 			<h3 class="loginheading">Sign in</h3>
 			<BaseInput
 				v-model="email"
 				type="email"
 				label="Email:"
-				:error="emailError"
-			></BaseInput>
+				:error="emailError"></BaseInput>
 
 			<BaseInput
 				v-model="password"
 				type="password"
 				label="Password:"
-			></BaseInput>
+				@keyup.enter="signin({ credentials: { email, password } })"></BaseInput>
 			<BaseInput
 				v-if="!isLogin"
 				v-model="password2"
 				type="password"
 				label="Re-enter Password:"
-			></BaseInput>
+				@keyup.enter="signin({ credentials: { email, password } })"></BaseInput>
 			<div v-if="error" class="text-red-600 text-center">{{ error }}</div>
 
 			<div v-if="isLogin">
@@ -79,6 +62,7 @@
 	import { setToken } from '@/composables/setTokens'
 	import SIGN_IN_MUTATION from '../graphql/mutations/signin.mutation.gql'
 	import SIGN_UP_MUTATION from '../graphql/mutations/signup.mutation.gql'
+	import BaseSpinner from '../components/base/BaseSpinner.vue'
 
 	const password = ref('')
 	const password2 = ref('')
@@ -88,6 +72,7 @@
 	const loading = useMutationLoading()
 	const { value: email, errorMessage: emailError } = useField(
 		'email',
+
 		function (value) {
 			if (!value) return 'This field is required'
 			const regex =

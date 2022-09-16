@@ -1,22 +1,6 @@
 <template>
-	<div v-if="loading" class="lds-overlay">
-		<div class="lds-spinner">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-	</div>
-	<div v-else-if="error">Error: {{ error.message }}</div>
-
+	<BaseSpinner v-show="loading"></BaseSpinner>
+	<div v-if="error">Error: {{ error.message }}</div>
 	<div v-else>
 		<div class="border border-gray-300 rounded-lg text-center mt-20">
 			<h3>Create new Registration Form</h3>
@@ -28,6 +12,9 @@
 			>
 			<BaseButton class="btn btn-blue" @click="newRegistration('SCHOOL')"
 				>School</BaseButton
+			>
+			<BaseButton class="btn btn-blue" @click="newRegistration('COMMUNITY')"
+				>Community Group</BaseButton
 			>
 		</div>
 		<br /><br />
@@ -70,7 +57,6 @@
 
 <script lang="ts" setup>
 	import { computed, onBeforeMount } from 'vue'
-
 	import { useQuery, useQueryLoading } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/registrations.query.gql'
 	import SOLO_CONTACT_INFO_QUERY from '@/graphql/queries/soloContactInfo.query.gql'
@@ -82,6 +68,14 @@
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useClasses } from '@/stores/userClasses'
 	import { useGroup } from '@/stores/userGroup'
+
+	enum EnumPerformerType {
+		'SOLO',
+		'GROUP',
+		'SCHOOL',
+		'COMMUNITY',
+	}
+	type PerformerType = keyof typeof EnumPerformerType
 
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
@@ -102,19 +96,21 @@
 	const router = useRouter()
 	const loading = useQueryLoading()
 
-	const { result, error } = useQuery(REGISTRATION_QUERY)
+	const { result, error } = useQuery(REGISTRATION_QUERY, null, () => ({
+		fetchPolicy: 'cache-and-network',
+	}))
 	const registrations = computed(() => result.value?.registrations ?? [])
 
 	/**
 	 * Load and Edit Existing Registration
 	 *
 	 * @param registrationId The ID of the registration form
-	 * @param performerType SOLO, GROUP, or SCHOOL,
+	 * @param performerType SOLO, GROUP, SCHOOL, or COMMUNITY
 	 * @param index Array Index of retrieved registrations
 	 */
 	async function loadRegistration(
 		registrationId: string,
-		performerType: 'SOLO' | 'GROUP' | 'SCHOOL',
+		performerType: PerformerType,
 		index: number
 	) {
 		registrationStore.addToStore(registrations.value[index])
@@ -130,6 +126,10 @@
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
 				LoadSchoolContactInfo(registrationId)
+				break
+			case 'COMMUNITY':
+				appStore.performerType = 'COMMUNITY'
+				LoadCommunityContactInfo(registrationId)
 				break
 		}
 		loadClassInfo(registrationId)
@@ -170,6 +170,8 @@
 	}
 	async function LoadSchoolContactInfo(registrationId: string) {}
 
+	async function LoadCommunityContactInfo(registrationId: string) {}
+
 	async function loadClassInfo(registrationId: string) {
 		const { error, onResult: onClassesResult } = useQuery(
 			REGISTERED_CLASSES_QUERY,
@@ -194,7 +196,7 @@
 	 *
 	 * @param performerType SOLO, GROUP, or SCHOOL
 	 */
-	function newRegistration(performerType: 'SOLO' | 'GROUP' | 'SCHOOL') {
+	function newRegistration(performerType: PerformerType) {
 		registrationStore
 			.createRegistration(performerType)
 			.then(() => {

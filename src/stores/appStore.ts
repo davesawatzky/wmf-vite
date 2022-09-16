@@ -1,8 +1,14 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 
+enum EnumPerformerType {
+	'SOLO',
+	'GROUP',
+	'SCHOOL',
+	'COMMUNITY',
+}
 interface AppFlags {
 	editExisting: boolean
-	performerType: 'SOLO' | 'GROUP' | 'SCHOOL'
+	performerType: keyof typeof EnumPerformerType
 	registrationExists: boolean
 	performerContactLoaded: boolean
 	teacherContactLoaded: boolean

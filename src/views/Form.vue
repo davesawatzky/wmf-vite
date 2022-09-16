@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-	<div v-if="appStore.performerType === 'SOLO'" class="demo">
+	<div v-if="appStore.performerType === 'SOLO'" class="section">
 		<button
 			v-for="(_, tab) in soloTabs"
 			:key="tab"
@@ -14,7 +14,7 @@
 				class="tab"></component>
 		</KeepAlive>
 	</div>
-	<div v-else-if="appStore.performerType === 'GROUP'" class="demo">
+	<div v-else-if="appStore.performerType === 'GROUP'" class="section">
 		<button
 			v-for="(_, tab) in groupTabs"
 			:key="tab"
@@ -28,7 +28,7 @@
 				class="tab"></component>
 		</KeepAlive>
 	</div>
-	<div v-else-if="appStore.performerType === 'SCHOOL'" class="demo">
+	<div v-else-if="appStore.performerType === 'SCHOOL'" class="section">
 		<button
 			v-for="(_, tab) in schoolTabs"
 			:key="tab"
@@ -39,6 +39,20 @@
 		<KeepAlive>
 			<component
 				:is="schoolTabs[(currentTab as 'School Info')]"
+				class="tab"></component>
+		</KeepAlive>
+	</div>
+	<div v-else-if="appStore.performerType === 'COMMUNITY'" class="section">
+		<button
+			v-for="(_, tab) in communityTabs"
+			:key="tab"
+			:class="['tab-button', { active: currentTab === tab }]"
+			@click="currentTab = tab">
+			{{ tab }}
+		</button>
+		<KeepAlive>
+			<component
+				:is="communityTabs[(currentTab as 'Community Group Info')]"
 				class="tab"></component>
 		</KeepAlive>
 	</div>
@@ -58,6 +72,8 @@
 	import GroupContactInfo from './GroupContactInfo.vue'
 	import GroupClasses from './GroupClasses.vue'
 	import School from './School.vue'
+	import CommunityContactInfo from './CommunityInfo.vue'
+	import CommunityClasses from './CommunityClasses.vue'
 	import { useAppStore } from '@/stores/appStore'
 	const appStore = useAppStore()
 
@@ -73,6 +89,9 @@
 		case 'SCHOOL':
 			currentTab.value = 'School Info'
 			break
+		case 'COMMUNITY':
+			currentTab.value = 'Community Group Info'
+			break
 	}
 	const soloTabs = {
 		'Contact Info': SoloContactInfo,
@@ -83,10 +102,15 @@
 		'Group Classes': GroupClasses,
 	}
 	const schoolTabs = { 'School Info': School }
+
+	const communityTabs = {
+		'Community Group Info': CommunityContactInfo,
+		'Community Group Classes': CommunityClasses,
+	}
 </script>
 
 <style scoped>
-	.demo {
+	.section {
 		font-family: sans-serif;
 		border: 1px solid #eee;
 		border-radius: 2px;

@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="bg-white py-8 px-6 rounded-lt sm:px-10 my-8 lg:max-w-5xl mx-auto rounded shadow-xl"
-	>
+		class="bg-white py-8 px-6 rounded-lt sm:px-10 my-8 lg:max-w-5xl mx-auto rounded shadow-xl">
+		<base-logout></base-logout>
 		<h1 class="pb-8">Winnipeg Music Festival</h1>
 		<form class="" @submit.prevent="">
 			<router-view></router-view>
@@ -9,7 +9,9 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+	import BaseLogout from './components/base/BaseLogout.vue'
+</script>
 
 <style>
 	input.error,

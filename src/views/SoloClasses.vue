@@ -2,6 +2,7 @@
 	<!-- Solo Class Information Page -->
 	<div class="pb-8">
 		<h2 class="pb-4">Solo Class Information</h2>
+
 		<div
 			v-for="(selectedClass, index) in classesStore.registeredClasses"
 			:key="index">
@@ -9,7 +10,7 @@
 				<h3 class="pb-4">Class {{ index + 1 }}</h3>
 				<Class
 					v-model="classesStore.registeredClasses[index]"
-					:index-number="index" />
+					:registration-index-number="index" />
 			</div>
 			<div class="pt-4">
 				<BaseButton
@@ -37,13 +38,8 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, computed } from 'vue'
-	import { useMutation } from '@vue/apollo-composable'
 	import { useClasses } from '@/stores/userClasses'
-	import { useAppStore } from '@/stores/appStore.js'
-	import { useRegistration } from '@/stores/userRegistration'
 
-	const appStore = useAppStore()
 	const classesStore = useClasses()
 
 	function addClass() {

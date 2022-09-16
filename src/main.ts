@@ -5,7 +5,6 @@ import App from './App.vue'
 import routes from './router'
 import { createPinia } from 'pinia'
 import './assets/css/index.css'
-import './assets/css/spinner.css'
 
 const app = createApp({
 	setup() {

@@ -3,6 +3,7 @@ import Login from '@/views/Login.vue'
 import Registrations from '@/views/Registrations.vue'
 import Form from '@/views/Form.vue'
 import Summary from '@/views/Summary.vue'
+import { isauthenticated } from '@/composables/setTokens'
 
 const routes = [
 	{ path: '/', name: 'Login', component: Login },
@@ -32,6 +33,12 @@ const routes = [
 const router = createRouter({
 	history: createWebHistory(),
 	routes,
+})
+
+router.beforeEach((to) => {
+	if (!isauthenticated() && to.name !== 'Login') {
+		return { name: 'Login' }
+	}
 })
 
 export default router

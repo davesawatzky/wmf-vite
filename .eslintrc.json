@@ -14,12 +14,17 @@
 		"vue/multi-word-component-names": [
 			"error",
 			{
-				"ignores": ["Registrations", "School", "Summary", "Login"]
+				"ignores": ["Registrations", "School", "Summary", "Login", "Class"]
 			}
-		]
+		],
 		// "vue/valid-define-props": "warn"
 		// override/add rules settings here, such as:
-		// 'vue/no-unused-vars': 'error'
+		// "vue/no-unused-vars": "error"
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "argsIgnorePattern": "^_" }
+		]
 	},
 	"plugins": ["vue", "@typescript-eslint"]
 	// "globals": { "defineProps": "readonly", "defineEmits": "readonly" }

@@ -9,10 +9,17 @@ import ADD_REGISTRATION_MUTATION from '@/graphql/mutations/addRegistration.mutat
  * The application only works on individual forms, therefore
  * only one registration should be in the store at any one time.
  */
+
+enum EnumPerformerType {
+	'SOLO',
+	'GROUP',
+	'SCHOOL',
+	'COMMUNITY',
+}
 interface Registration {
 	id: string
 	label: string
-	performerType: string
+	performerType: keyof typeof EnumPerformerType
 	submittedAt: string
 	totalAmt: number
 	payedAmt: number
@@ -38,7 +45,7 @@ export const useRegistration = defineStore('registrations', {
 			}
 		},
 
-		async createRegistration(performerType: 'SOLO' | 'GROUP' | 'SCHOOL') {
+		async createRegistration(performerType: Registration['performerType']) {
 			const { mutate: newReg, onDone: doneNewReg } = useMutation(
 				ADD_REGISTRATION_MUTATION
 			)
