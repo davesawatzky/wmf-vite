@@ -1,68 +1,68 @@
 @tailwind base;
 @tailwind components;
 .btn {
-  @apply rounded-lg h-10 w-24 m-2 text-center align-middle shadow-lg hover:ring-2;
+	@apply rounded-lg h-10 w-24 m-2 text-center align-middle shadow-lg hover:ring-2;
 }
 .btn-blue {
-  @apply bg-blue-700 text-white hover:ring-blue-800 shadow-blue-400;
+	@apply bg-blue-700 text-white hover:ring-blue-800 shadow-blue-400;
 }
 .btn-red {
-  @apply bg-rose-800 text-white hover:ring-rose-700 shadow-rose-400;
+	@apply bg-rose-800 text-white hover:ring-rose-700 shadow-rose-400;
 }
 
 @tailwind utilities;
 
 @layer base {
-  h6 {
-    @apply text-lg;
-  }
-  h5 {
-    @apply text-xl;
-  }
-  h4 {
-    @apply text-2xl;
-  }
-  h3 {
-    @apply text-3xl;
-  }
-  h2 {
-    @apply text-4xl;
-  }
-  h1 {
-    @apply text-5xl;
-  }
+	h6 {
+		@apply text-lg;
+	}
+	h5 {
+		@apply text-xl;
+	}
+	h4 {
+		@apply text-2xl;
+	}
+	h3 {
+		@apply text-3xl;
+	}
+	h2 {
+		@apply text-4xl;
+	}
+	h1 {
+		@apply text-5xl;
+	}
 
-  input[type='text'],
-  input[type='email'],
-  input[type='url'],
-  input[type='password'],
-  input[type='number'],
-  input[type='date'],
-  input[type='datetime-local'],
-  input[type='month'],
-  input[type='search'],
-  input[type='tel'],
-  input[type='time'],
-  input[type='week'],
-  select[multiple],
-  textarea,
-  select {
-    @apply rounded-lg w-full border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
-  }
+	input[type='text'],
+	input[type='email'],
+	input[type='url'],
+	input[type='password'],
+	input[type='number'],
+	input[type='date'],
+	input[type='datetime-local'],
+	input[type='month'],
+	input[type='search'],
+	input[type='tel'],
+	input[type='time'],
+	input[type='week'],
+	select[multiple],
+	textarea,
+	select {
+		@apply rounded-lg w-full border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+	}
 
-  input[type='checkbox'],
-  input[type='radio'] {
-    @apply rounded border-gray-300 text-blue-600 focus:ring-blue-500;
-  }
+	input[type='checkbox'],
+	input[type='radio'] {
+		@apply rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+	}
 
-  .off {
-    @apply disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none;
-  }
+	.off {
+		@apply disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none;
+	}
 
-  label {
-    @apply pl-3 font-medium text-gray-700 border-none;
-  }
-  .errorMessage {
-    @apply border-none;
-  }
+	label {
+		@apply pl-3 font-medium text-gray-700 border-none;
+	}
+	.errorMessage {
+		@apply border-none h-5 text-xs;
+	}
 }

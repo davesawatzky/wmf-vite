@@ -1,7 +1,7 @@
 <template>
-	<p :id="id" aria-live="assertive" class="errorMessage">
+	<div :id="id" aria-live="assertive" class="errorMessage">
 		<slot />
-	</p>
+	</div>
 </template>
 
 <script setup lang="ts">

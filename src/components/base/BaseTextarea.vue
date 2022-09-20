@@ -1,42 +1,53 @@
 <template>
-  <div>
-    <label v-if="label" class="" :for="uuid">{{ label }}</label>
-    <textarea
-      v-bind="$attrs"
-      :id="uuid"
-      :value="modelValue"
-      :aria-describedby="error ? `${uuid}-error` : ''"
-      :aria-invalid="error ? true : false"
-      @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
-    ></textarea>
-  </div>
-  <p
-    v-if="error"
-    :id="`${uuid}-error`"
-    class="errorMessage"
-    aria-live="assertive"
-  >
-    {{ error }}
-  </p>
+	<label v-if="label" class="" :for="uuid">{{ label }}</label>
+	<textarea
+		v-bind="{ ...$attrs }"
+		:id="uuid"
+		:value="inputValue"
+		:aria-describedby="error ? `${uuid}-error` : ''"
+		:aria-invalid="error ? true : false"
+		@input="handleChange"
+		@blur="handleBlur"></textarea>
+
+	<BaseErrorMessage>
+		{{ errorMessage }}
+	</BaseErrorMessage>
 </template>
 
 <script setup lang="ts">
-  import UniqueID from '@/composables/UniqueID'
+	import UniqueID from '@/composables/UniqueID'
+	import { toRef } from 'vue'
+	import { useForm, useField } from 'vee-validate'
+	const uuid = UniqueID().getID()
 
-  defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    error: {
-      type: String,
-      default: '',
-    },
-  })
-  defineEmits(['update:modelValue'])
-  const uuid = UniqueID().getID()
+	const props = defineProps({
+		label: {
+			type: String,
+			default: '',
+		},
+		name: {
+			type: String,
+			required: false,
+			default: '',
+		},
+		modelValue: {
+			type: String,
+			default: '',
+		},
+		error: {
+			type: String,
+			default: '',
+		},
+	})
+	defineEmits(['update:modelValue'])
+
+	const name = toRef(props, 'name')
+
+	const {
+		value: inputValue,
+		errorMessage,
+		handleBlur,
+		handleChange,
+		meta,
+	} = useField(name, undefined, { initialValue: props.modelValue })
 </script>

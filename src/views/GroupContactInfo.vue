@@ -1,130 +1,83 @@
 <template>
-	<!--
-	***
-	*** Group Information
-	*** Uses the Contact Info Component and other
-	*** Base components
-	***
-	-->
-	<div>
+	<BaseSpinner v-show="loading"></BaseSpinner>
+	<div v-if="isError">Error: {{ isError.message }}</div>
+	<form v-else>
 		<div class="pb-8">
 			<h2 class="pb-4">Group Information</h2>
-			<BaseSpinner v-show="loading"></BaseSpinner>
-			<div v-if="isError">Error: {{ isError.message }}</div>
-			<!--
-				*** Group Name
-				*** Regular groups only have one
-				*** registration.  ie. group[0]
-			 -->
-			<form v-else @submit.prevent="saveContactInfo">
-				<div>
-					<BaseInput
-						v-model="group[0].name"
-						label="Group Name"
-						type="text"
-						error="Please enter a group name" />
-				</div>
-				<div>
-					<BaseInput
-						v-model="group[0].numPerformers"
-						label="Number of Performers"
-						type="text"
-						error="Please enter the number of performers in the group" />
-				</div>
-				<div>
-					<BaseInput
-						v-model="group[0].numOfChaperones"
-						label="Number of Chaperones"
-						type="text"
-						error="Please enter the number of chaperones" />
-				</div>
-				<div>
-					<BaseInput
-						v-model="group[0].numWheelchairs"
-						label="Number of Wheelchairs"
-						type="text"
-						error="Please enter a group name" />
-				</div>
-				<fieldset>
-					<legend>Group Type</legend>
-					<div>
-						<BaseRadioGroup
-							v-model="group[0].type"
-							name="groupType"
-							:options="typeOptions" />
-					</div>
-				</fieldset>
-				<!--
-	***
-	*** Teacher Contact Information
-	***
-	-->
+			<div>
+				<BaseInput
+					v-model="groupStore.name"
+					name="groupname"
+					label="Group Name"
+					type="text" />
+			</div>
+			<div>
+				<BaseInput
+					v-model="groupStore.numPerformers"
+					name="numberOfPerformers"
+					label="Number of Performers"
+					type="number" />
+			</div>
+
+			<h3>Group Type</h3>
+			<div>
+				<BaseRadioGroup
+					v-model="groupStore.type"
+					name="groupType"
+					:options="typeOptions" />
+			</div>
+
+			<div class="pb-8">
+				<h3 class="pb-4">Teacher Information</h3>
+				<ContactInfo v-model="teacherStore.teacherInfo" teacher />
+			</div>
+			<h3>Performer Information</h3>
+			<div v-for="(person, index) in performerStore.performer" :key="person.id">
 				<div class="pb-8">
-					<h3 class="pb-4">Teacher Information</h3>
-					<ContactInfo v-model="teacher" teacher />
+					<h4 class="pb-4">Performer #{{ index + 1 }}</h4>
+					<ContactInfo v-model="performerStore.performer[index]" />
+				</div>
+				<div>
+					<BaseInput
+						v-model="performerStore.performer[index].instrument"
+						name="instrument"
+						type="text"
+						label="Instrument" />
+					<BaseInput
+						v-model="performerStore.performer[index].level"
+						name="level"
+						type="text"
+						label="Level" />
+				</div>
+				<div>
+					<BaseTextarea
+						v-model="performerStore.performer[index].otherClasses"
+						name="otherClasses"
+						:label="textAreaLabel" />
 				</div>
 
-				<!--
-	***
-	***  Contact information for each individual
-	***  performer in the group
-	***
-	-->
-				<h3>Performer Information</h3>
-				<div v-for="(person, index) in performer" :key="person.id">
-					<div class="pb-8">
-						<h4 class="pb-4">Performer #{{ index + 1 }}</h4>
-
-						<!-- Contact Info Component -->
-						<ContactInfo v-model="performer[index]" />
-					</div>
-
-					<!-- Listing of other registered classes -->
-					<div>
-						<BaseTextarea
-							v-model="performer[index].otherClasses"
-							:label="textAreaLabel" />
-					</div>
-
-					<!-- Instrument -->
-					<BaseInput
-						v-model="performer[index].instrument"
-						type="text"
-						label="Instrument"
-						error="Please enter an instrument" />
-
-					<!-- Instrument Level -->
-					<BaseInput
-						v-model="performer[index].level"
-						type="text"
-						label="Level"
-						error="Please indicate instrument level" />
-					<div class="pt-4">
-						<!-- Add Performer Button -->
-						<BaseButton
-							v-if="index + 1 === performer.length ? true : false"
-							class="btn btn-blue"
-							@click="addPerformer"
-							>Add Performer
-						</BaseButton>
-
-						<!-- Remove Performer Button -->
-						<BaseButton
-							v-if="performer.length > 1 ? true : false"
-							id="index"
-							class="btn btn-red"
-							@click="removePerformer(index)"
-							>Remove Performer</BaseButton
-						>
-						<br /><br />
-						<svg viewBox="0 0 800 2">
-							<line x1="0" x2="800" stroke="black" />
-						</svg>
-					</div>
+				<div class="pt-4">
+					<BaseButton
+						v-if="index + 1 === performerStore.performer.length ? true : false"
+						class="btn btn-blue"
+						@click="addPerformer"
+						>Add Performer
+					</BaseButton>
+					<BaseButton
+						v-if="performerStore.performer.length > 1 ? true : false"
+						id="index"
+						class="btn btn-red"
+						@click="removePerformer(index)"
+						>Remove Performer</BaseButton
+					>
+					<br /><br />
+					<svg viewBox="0 0 800 2">
+						<line x1="0" x2="800" stroke="black" />
+					</svg>
 				</div>
-			</form>
+			</div>
 		</div>
-	</div>
+	</form>
 </template>
 
 <script setup lang="ts">
@@ -135,32 +88,29 @@
 	import { usePerformers } from '@/stores/userPerformer'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { textAreaLabel } from '@/composables/formData'
+	import { useForm, useField } from 'vee-validate'
+	import * as yup from 'yup'
 
-	const registration = useRegistration()
-
-	const groups = useGroup()
-	const { group } = storeToRefs(groups)
-
-	const performers = usePerformers()
-	const { performer } = storeToRefs(performers)
+	const registrationStore = useRegistration()
+	const teacherStore = useTeacher()
+	const groupStore = useGroup()
+	const performerStore = usePerformers()
 	function addPerformer() {
-		performers.addToStore(null)
+		performerStore.addToStore(null)
 	}
 	function removePerformer(index: number) {
-		performers.removePerformer(index)
+		performerStore.removePerformer(index)
 	}
-
-	const teacher = useTeacher()
 
 	const typeOptions = [
 		{
 			label: 'Vocal Group',
-			description: 'Duets, Trios, Quartets, Ensembles, and Choirs',
+			description: 'Duets, Trios, Quartets, and Ensembles',
 			value: 'vocal',
 		},
 		{
 			label: 'Instrumental Group',
-			description: 'Duets, Trios, Ensembles, Chamber Groups and Orchestras',
+			description: 'Duets, Trios, Ensembles, and Chamber Groups',
 			value: 'instrumental',
 		},
 		{
@@ -170,7 +120,31 @@
 			value: 'mixed',
 		},
 	]
-	function saveContactInfo() {}
+
+	const validationSchema = yup.object({
+		groupname: yup.string().trim().required('Enter a group name'),
+		numberOfPerformers: yup
+			.number()
+			.integer('Only whole numbers')
+			.positive('Must be a positive number')
+			.nullable()
+			.required('Enter number of performers'),
+		instrument: yup.string().trim().nullable().required(),
+		level: yup.string().max(20).nullable().required(),
+		otherClasses: yup.string().nullable(),
+	})
+
+	const validateGroupType = {
+		groupType: (value: any) => {
+			if (value) {
+				return true
+			}
+			return 'Please select a group type'
+		},
+	}
+	const { value, errorMessage } = useField('groupType', validateGroupType)
+
+	useForm({ validationSchema })
 </script>
 
 <style scoped></style>

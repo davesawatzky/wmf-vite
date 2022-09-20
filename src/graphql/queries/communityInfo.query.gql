@@ -1,0 +1,25 @@
+query CommunityInfo($registrationId: ID!) {
+	registration(id: $registrationId) {
+		communities {
+			id
+			name
+			groupSize
+			chaperones
+			wheelchairs
+			conflictPerformers
+		}
+		teacher {
+			prefix
+			firstName
+			lastName
+			apartment
+			streetNumber
+			streetName
+			city
+			province
+			postalCode
+			phone
+			email
+		}
+	}
+}

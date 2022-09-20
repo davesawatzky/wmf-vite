@@ -1,7 +1,7 @@
 <template>
 	<BaseSpinner v-show="loading"></BaseSpinner>
-	<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-4 items-end">
-		<div class="col-span-2">
+	<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-4 items-start">
+		<div class="col-span-3">
 			<!-- <div v-if="discError">{{ discError.message }}</div> -->
 			<BaseSelect
 				id=""
@@ -10,7 +10,7 @@
 				:options="disciplines"
 				@change="changeSubdisciplineDropdown()" />
 		</div>
-		<div class="col-span-2">
+		<div class="col-span-3">
 			<!-- <div v-if="subdiscError">{{ subdiscError.message }}</div> -->
 			<BaseSelect
 				v-model="selectedClasses.subdiscipline"
@@ -20,7 +20,7 @@
 				:disabled="!selectedClasses.discipline"
 				@change="changeGradeLevelDropdown()" />
 		</div>
-		<div class="col-span-4">
+		<div class="col-span-3">
 			<!-- <div v-if="levelError">{{ levelError.message }}</div> -->
 			<BaseSelect
 				v-model="selectedClasses.level"
@@ -30,7 +30,7 @@
 				:disabled="!selectedClasses.subdiscipline"
 				@change="changeCategoryDropdown()" />
 		</div>
-		<div class="col-span-4">
+		<div class="col-span-3">
 			<!-- <div v-if="catError">{{ catError.message }}</div> -->
 			<BaseSelect
 				v-model="selectedClasses.category"
@@ -76,7 +76,7 @@
 			<BaseSelect
 				v-model="selectedClasses.numberOfSelections"
 				:class="selectedClasses.category ? '' : 'off'"
-				label="Number of Selections"
+				label="Selections"
 				:options="numberOfAllowedWorks"
 				:disabled="!selectedClasses.category"
 				@change="changeSelectionNumber(selectedClasses.numberOfSelections)" />

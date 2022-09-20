@@ -62,7 +62,7 @@
 	<BaseRouteButton type="button" to="Summary" class="btn btn-blue"
 		>Summary</BaseRouteButton
 	>
-	<button class="btn btn-blue">Save</button>
+	<button class="btn btn-blue" @click="saveRegistration">Save</button>
 </template>
 
 <script setup lang="ts">
@@ -71,7 +71,8 @@
 	import SoloClasses from './SoloClasses.vue'
 	import GroupContactInfo from './GroupContactInfo.vue'
 	import GroupClasses from './GroupClasses.vue'
-	import School from './School.vue'
+	import SchoolInfo from './SchoolInfo.vue'
+	import SchoolClasses from './SchoolClasses.vue'
 	import CommunityContactInfo from './CommunityInfo.vue'
 	import CommunityClasses from './CommunityClasses.vue'
 	import { useAppStore } from '@/stores/appStore'
@@ -101,12 +102,16 @@
 		'Contact Info': GroupContactInfo,
 		'Group Classes': GroupClasses,
 	}
-	const schoolTabs = { 'School Info': School }
-
+	const schoolTabs = {
+		'School Info': SchoolInfo,
+		'School Classes': SchoolClasses,
+	}
 	const communityTabs = {
 		'Community Group Info': CommunityContactInfo,
 		'Community Group Classes': CommunityClasses,
 	}
+
+	function saveRegistration() {}
 </script>
 
 <style scoped>

@@ -11,6 +11,9 @@ interface AppFlags {
 	performerType: keyof typeof EnumPerformerType
 	registrationExists: boolean
 	performerContactLoaded: boolean
+	groupInfoLoaded: boolean
+	schoolInfoLoaded: boolean
+	communityInfoLoaded: boolean
 	teacherContactLoaded: boolean
 	classExists: boolean
 	selectionExists: boolean
@@ -24,6 +27,9 @@ export const useAppStore = defineStore('appStore', {
 			performerType: 'SOLO', // default performertype - just in case.
 			registrationExists: false, // registration exists in the db
 			performerContactLoaded: false, // performer contact already exists and is loaded
+			groupInfoLoaded: false,
+			schoolInfoLoaded: false,
+			communityInfoLoaded: false,
 			teacherContactLoaded: false, // teacher contact already exists and is loaded
 			classExists: false, // registered class is fully loaded into class form
 			selectionExists: false, // registered selection is fully loaded into class form

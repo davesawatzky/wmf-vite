@@ -1,19 +1,46 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 
+interface SchoolInfo {
+	id: string
+	name: string
+	division: string
+	streetNumber: string
+	streetName: string
+	city: string
+	province: string
+	postalCode: string
+	phone: string
+	earliestTime: string
+	latestTime: string
+	unavailable: string
+	conflictStudents: string
+}
+
 export const useSchool = defineStore('school', {
-	state: () => ({
-		registrationID: 0,
-		id: 46,
-		name: 'Vincent Massey Collegiate',
-		division: 'Pembina Trails School Division',
-		address: 'Dowker St.',
-		city: 'Winnipeg',
-		province: 'MB',
-		postalCode: 'R3T 1H6',
-		phone: '(204) 555-5555',
-	}),
+	state: () =>
+		({
+			id: '',
+			name: '',
+			division: '',
+			streetNumber: '',
+			streetName: '',
+			city: 'Winnipeg',
+			province: 'MB',
+			postalCode: '',
+			phone: '',
+			earliestTime: '',
+			latestTime: '',
+			unavailable: '',
+			conflictStudents: '',
+		} as SchoolInfo),
 	getters: {},
-	actions: {},
+	actions: {
+		addToStore(schoolData: SchoolInfo) {
+			if (schoolData) {
+				Object.assign(this.$state, schoolData)
+			}
+		},
+	},
 })
 
 if (import.meta.hot) {

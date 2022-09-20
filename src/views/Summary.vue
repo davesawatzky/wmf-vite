@@ -5,7 +5,9 @@
 			<h3 class="pt-10 pb-2">Performer</h3>
 			<SummaryContactInfo
 				:full-name="performers.fullName"
-				:address="performers.performer[0].address"
+				:apartment="performers.performer[0].apartment"
+				:street-number="performers.performer[0].streetNumber"
+				:street-name="performers.performer[0].streetName"
 				:city="performers.performer[0].city"
 				:province="performers.performer[0].province"
 				:postal-code="performers.performer[0].postalCode"
@@ -16,7 +18,9 @@
 			<h3 class="pt-10 pb-2">Teacher</h3>
 			<SummaryContactInfo
 				:full-name="teacher.fullName"
-				:address="teacher.teacherInfo.address"
+				:apartment="teacher.teacherInfo.apartment"
+				:street-number="teacher.teacherInfo.streetNumber"
+				:street-name="teacher.teacherInfo.streetName"
 				:city="teacher.teacherInfo.city"
 				:province="teacher.teacherInfo.province"
 				:postal-code="teacher.teacherInfo.postalCode"

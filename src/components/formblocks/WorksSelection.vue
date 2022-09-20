@@ -4,48 +4,45 @@
 		<div class="col-span-7">
 			<BaseInput
 				v-model="work.title"
-				label="Title (including opus number if applicable)"
-				type="text"
-				error="This input has an error"
-			/>
+				name="title"
+				label="Title (including Opus number if applicable)"
+				type="text" />
 		</div>
 		<div class="col-span-5">
 			<BaseInput
 				v-model="work.composer"
+				name="composer"
 				label="Composer"
-				type="text"
-				error="This input has an error"
-			/>
+				type="text" />
 		</div>
 		<div class="col-span-5">
 			<BaseInput
 				v-model="work.largerWork"
-				label="Title of Larger Work"
-				type="text"
-				error="This input has an error"
-			/>
+				name="largerWork"
+				label="Title of Larger Work (if applicable)"
+				type="text" />
 		</div>
 		<div class="col-span-4">
 			<BaseInput
 				v-model="work.movement"
+				name="movement"
 				label="Movement (if applicable)"
-				type="text"
-				error="This input has an error"
-			/>
+				type="text" />
 		</div>
 		<div class="col-span-3">
 			<BaseInput
 				v-model="work.duration"
+				name="duration"
 				label="Duration"
-				type="text"
-				error="This input has an error"
-			/>
+				type="text" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import { computed } from 'vue'
+	import { useForm } from 'vee-validate'
+	import * as yup from 'yup'
 
 	const props = defineProps({
 		modelValue: {
@@ -63,6 +60,28 @@
 		get: () => props.modelValue,
 		set: (value) => emits('update:modelValue', value),
 	})
+
+	const validationSchema = yup.object({
+		title: yup
+			.string()
+			.trim()
+			.nullable()
+			.required('Enter the title of the selection'),
+		composer: yup
+			.string()
+			.trim()
+			.nullable()
+			.required('Enter the name of the composer'),
+		largerWork: yup.string().trim().nullable(),
+		movement: yup.string().trim().nullable(),
+		duration: yup
+			.string()
+			.trim()
+			.nullable()
+			.required('Indicate total duration of selection'),
+	})
+
+	useForm({ validationSchema })
 </script>
 
 <style scoped></style>

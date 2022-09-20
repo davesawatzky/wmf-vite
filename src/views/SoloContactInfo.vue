@@ -1,11 +1,11 @@
 <template>
 	<!-- Solo Performer Contact Information	-->
-	<div class="pb-8">
-		<h2 class="pb-4">Solo Performer Information</h2>
-		<BaseSpinner v-show="loading"></BaseSpinner>
-		<div v-if="isError">Error: {{ isError.message }}</div>
-		<form v-else @submit.prevent="saveContactInfo">
+	<BaseSpinner v-show="loading"></BaseSpinner>
+	<div v-if="isError">Error: {{ isError.message }}</div>
+	<form v-else @submit.prevent="saveContactInfo">
+		<div class="pb-8">
 			<div>
+				<h2 class="pb-4">Solo Performer Information</h2>
 				<div v-if="performerStore.performer[0]">
 					<ContactInfo v-model="performerStore.performer[0]" />
 				</div>
@@ -13,16 +13,15 @@
 					<BaseTextarea :label="textAreaLabel" />
 				</div>
 			</div>
-
-			<!-- Solo Teacher Contact Information -->
-			<div class="pb-8">
+			<div>
+				<!-- Solo Teacher Contact Information -->
 				<h2 class="pb-4">Teacher Information</h2>
 				<div>
-					<ContactInfo v-model="teacherStore.teacherInfo" />
+					<contact-info v-model="teacherStore.teacherInfo" :teacher="true" />
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </template>
 
 <script lang="ts" setup>

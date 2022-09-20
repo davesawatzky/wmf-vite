@@ -1,20 +1,15 @@
-query SoloContactInfo($registrationId: ID!) {
+query GroupInfo($registrationId: ID!) {
 	registration(id: $registrationId) {
-		performers {
-			firstName
-			lastName
-			apartment
-			streetNumber
-			streetName
-			city
-			province
-			postalCode
-			phone
-			email
+		groups {
+			id
 			age
-			level
+			groupType
+			instruments
+			name
+			numberOfPerformers
 		}
 		teacher {
+			id
 			prefix
 			firstName
 			lastName
@@ -26,6 +21,23 @@ query SoloContactInfo($registrationId: ID!) {
 			postalCode
 			phone
 			email
+		}
+		performers {
+			id
+			firstName
+			lastName
+			age
+			apartment
+			streetNumber
+			streetName
+			city
+			province
+			postalCode
+			phone
+			email
+			instrument
+			level
+			otherClasses
 		}
 	}
 }

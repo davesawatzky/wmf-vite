@@ -1,89 +1,94 @@
 <template>
-	<!--
-	**
-	**  Contact Information Component
-	**  Used for Solo and Group registrations
-	**
--->
-	<div class="grid grid-rows-3 grid-cols-12 gap-x-3 gap-y-3 items-end">
-		<div class="col-span-5">
-			<BaseInput
-				v-model="contact.firstName"
-				type="text"
-				label="First Name"
-				error="Please enter a first name"
-			/>
-		</div>
-		<div class="col-span-4">
-			<BaseInput
-				v-model="contact.lastName"
-				type="text"
-				label="Last Name"
-				error="Please enter a last name"
-			/>
-		</div>
-		<div v-if="!teacher" class="col-span-3">
-			<BaseInput
-				v-model="contact.age"
-				type="number"
-				:label="'Age on December 31, ' + currentYear"
-				error="Please enter an age"
-			/>
-		</div>
+	<form>
+		<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-3 items-start">
+			<div v-if="!school" class="col-span-5">
+				<BaseInput
+					v-model="contact.firstName"
+					name="firstName"
+					type="text"
+					label="First Name" />
+			</div>
+			<div v-if="!school" class="col-span-4">
+				<BaseInput
+					v-model="contact.lastName"
+					name="lastName"
+					type="text"
+					label="Last Name" />
+			</div>
+			<div v-if="!teacher && !school && !schoolteacher" class="col-span-3">
+				<BaseInput
+					v-model="contact.age"
+					name="age"
+					type="number"
+					:label="'Age on December 31, ' + currentYear" />
+			</div>
+			<div v-else class="col-span-3"></div>
 
-		<div class="col-span-5">
-			<BaseInput
-				v-model="contact.address"
-				type="text"
-				label="Address"
-				error="Please enter a valid address"
-			/>
+			<div v-if="!schoolteacher && !school" class="col-span-3">
+				<BaseInput
+					v-model="contact.apartment"
+					name="apartment"
+					type="text"
+					label="Apt." />
+			</div>
+			<div v-if="!schoolteacher" class="col-span-3">
+				<BaseInput
+					v-model="contact.streetNumber"
+					name="streetNumber"
+					type="text"
+					label="Steet Number" />
+			</div>
+			<div v-if="!schoolteacher" class="col-span-6">
+				<BaseInput
+					v-model="contact.streetName"
+					name="streetName"
+					type="text"
+					label="Street Name" />
+			</div>
+			<div v-if="!schoolteacher" class="col-span-7">
+				<BaseInput
+					v-model="contact.city"
+					name="city"
+					type="text"
+					label="City/Town" />
+			</div>
+			<div v-if="!schoolteacher" class="col-span-2">
+				<BaseSelect
+					v-model="contact.province"
+					name="province"
+					label="Province"
+					:options="provinces" />
+			</div>
+			<div v-if="!schoolteacher" class="col-span-3">
+				<BaseInput
+					v-model="contact.postalCode"
+					name="postalCode"
+					type="text"
+					label="Postal Code" />
+			</div>
+			<div class="col-span-5">
+				<BaseInput
+					v-model="contact.phone"
+					name="phone"
+					type="tel"
+					label="Phone Number" />
+			</div>
+			<div v-if="!school" class="col-span-7">
+				<BaseInput
+					v-model="contact.email"
+					name="email"
+					type="email"
+					label="Email" />
+			</div>
 		</div>
-		<div class="col-span-3">
-			<BaseInput
-				v-model="contact.city"
-				type="text"
-				label="City/Town"
-				error="Please enter a city or town"
-			/>
-		</div>
-		<div class="col-span-2">
-			<BaseSelect
-				v-model="contact.province"
-				label="Province"
-				:options="provinces"
-			/>
-		</div>
-		<div class="col-span-2">
-			<BaseInput
-				v-model="contact.postalCode"
-				type="text"
-				label="Postal Code"
-				error="Please enter a last name"
-			/>
-		</div>
-		<div class="col-span-5">
-			<BaseInput
-				v-model="contact.phone"
-				type="tel"
-				label="Phone Number"
-				error="Please enter a valid phone number"
-			/>
-		</div>
-		<div class="col-span-7">
-			<BaseInput
-				v-model="contact.email"
-				type="email"
-				label="Email"
-				error="Please enter an email address"
-			/>
-		</div>
-	</div>
+	</form>
 </template>
 
 <script lang="ts" setup>
 	import { computed } from 'vue'
 	import { provinces } from '@/composables/formData'
+	import { useForm } from 'vee-validate'
+	import * as yup from 'yup'
 
 	const currentYear = new Date().getFullYear()
 
@@ -96,8 +101,17 @@
 			type: Boolean,
 			required: false,
 		},
+		schoolteacher: {
+			type: Boolean,
+			required: false,
+		},
+		school: {
+			type: Boolean,
+			required: false,
+		},
 	})
 	const emits = defineEmits(['update:modelValue'])
+
 	/**
 	 * Sets the model value from all the props.
 	 * Allows the 'BaseInput' components to set
@@ -106,6 +120,67 @@
 	const contact = computed({
 		get: () => props.modelValue,
 		set: (value) => emits('update:modelValue', value),
+	})
+
+	const validationSchema = yup.object({
+		firstName: yup.string().trim().required('First name is required'),
+		lastName: yup.string().trim().required('Last name is required'),
+		age: yup
+			.number()
+			.positive()
+			.integer()
+			.max(100)
+			.nullable()
+			.required('Indicate age'),
+		apartment: yup
+			.string()
+			.notRequired()
+			.trim()
+			.nullable()
+			.max(5, '5 characters maximum'),
+		streetNumber: yup
+			.string()
+			.trim()
+			.max(5, '5 characters maximum')
+			.nullable()
+			.required('Enter a valid street number'),
+		streetName: yup
+			.string()
+			.trim()
+			.nullable()
+			.required('Enter a valid street name'),
+		city: yup
+			.string()
+			.trim()
+			.max(15, 'Too many characters')
+			.nullable()
+			.required('Enter a city name'),
+		province: yup.string().length(2),
+		postalCode: yup
+			.string()
+			.nullable()
+			.matches(
+				/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
+				'Enter a valid postal code'
+			)
+			.required('Enter a valid postal code'),
+		phone: yup
+			.string()
+			.nullable()
+			.matches(
+				/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i,
+				'Enter a valid phone number'
+			)
+			.required('Enter a valid phone number'),
+		email: yup
+			.string()
+			.email('Must be a valid email address')
+			.nullable()
+			.required('Enter a valid email address'),
+	})
+
+	useForm({
+		validationSchema,
 	})
 </script>
 

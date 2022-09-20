@@ -5,7 +5,9 @@ interface TeacherInfo {
 	prefix: string
 	lastName: string
 	firstName: string
-	address: string
+	apartment: string
+	streetNumber: string
+	streetName: string
 	city: string
 	province: string
 	postalCode: string
@@ -21,7 +23,9 @@ export const useTeacher = defineStore('teacher', {
 			prefix: '',
 			lastName: '',
 			firstName: '',
-			address: '',
+			apartment: '',
+			streetNumber: '',
+			streetName: '',
 			city: 'Winnipeg',
 			province: 'MB',
 			postalCode: '',

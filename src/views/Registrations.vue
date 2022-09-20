@@ -60,6 +60,9 @@
 	import { useQuery, useQueryLoading } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/registrations.query.gql'
 	import SOLO_CONTACT_INFO_QUERY from '@/graphql/queries/soloContactInfo.query.gql'
+	import GROUP_INFO_QUERY from '@/graphql/queries/groupInfo.query.gql'
+	import SCHOOL_INFO_QUERY from '@/graphql/queries/schoolInfo.query.gql'
+	import COMMUNITY_INFO_QUERY from '@/graphql/queries/communityInfo.query.gql'
 	import REGISTERED_CLASSES_QUERY from '@/graphql/queries/registeredClassesQuery.query.gql'
 	import { useRouter } from 'vue-router'
 	import { useRegistration } from '@/stores/userRegistration'
@@ -68,6 +71,8 @@
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useClasses } from '@/stores/userClasses'
 	import { useGroup } from '@/stores/userGroup'
+	import { useSchool } from '@/stores/userSchool'
+	import { useCommunity } from '@/stores/userCommunity'
 
 	enum EnumPerformerType {
 		'SOLO',
@@ -82,6 +87,8 @@
 	const performerStore = usePerformers()
 	const teacherStore = useTeacher()
 	const groupStore = useGroup()
+	const schoolStore = useSchool()
+	const communityStore = useCommunity()
 	const classesStore = useClasses()
 
 	onBeforeMount(() => {
@@ -90,6 +97,8 @@
 		performerStore.$reset()
 		teacherStore.$reset()
 		groupStore.$reset()
+		communityStore.$reset()
+		schoolStore.$reset()
 		classesStore.$reset()
 	})
 
@@ -146,31 +155,53 @@
 		onPerformerContactResult((result) => {
 			performerStore.addToStore(result.data.registration.performers[0])
 			appStore.$patch({ performerContactLoaded: true })
-			teacherStore.$patch((state: any) => {
-				state.teacherInfo = { ...result.data.registration.teacher }
-			})
-			appStore.$patch({ teacherContactLoaded: true })
+			teacherStore.addToStore(result.data.registration.teacher)
 		})
+		appStore.$patch({ teacherContactLoaded: true })
 	}
 
 	async function LoadGroupContactInfo(registrationId: string) {
-		const { error, onResult: onPerformerContactResult } = useQuery(
-			SOLO_CONTACT_INFO_QUERY,
+		const { error, onResult: onGroupInfoResult } = useQuery(
+			GROUP_INFO_QUERY,
 			{ registrationId },
 			{ fetchPolicy: 'network-only' }
 		)
-		onPerformerContactResult((result) => {
-			performerStore.addToStore(result.data.registration.performers[0])
-			appStore.$patch({ performerContactLoaded: true })
-			teacherStore.$patch((state: any) => {
-				state.teacherInfo = { ...result.data.registration.teacher }
-			})
-			appStore.$patch({ teacherContactLoaded: true })
+		onGroupInfoResult((result) => {
+			groupStore.addToStore(result.data.registration.groups[0] ?? [])
+			performerStore.addToStore(result.data.registration.performers)
+			teacherStore.addToStore(result.data.registration.teacher)
 		})
+		appStore.$patch({ groupInfoLoaded: true })
+		appStore.$patch({ teacherContactLoaded: true })
 	}
-	async function LoadSchoolContactInfo(registrationId: string) {}
 
-	async function LoadCommunityContactInfo(registrationId: string) {}
+	async function LoadSchoolContactInfo(registrationId: string) {
+		const { error, onResult: onSchoolInfoResult } = useQuery(
+			SCHOOL_INFO_QUERY,
+			{ registrationId },
+			{ fetchPolicy: 'network-only' }
+		)
+		onSchoolInfoResult((result) => {
+			schoolStore.addToStore(result.data.registration.school)
+			teacherStore.addToStore(result.data.registration.teacher)
+		})
+		appStore.$patch({ schoolInfoLoaded: true })
+		appStore.$patch({ teacherContactLoaded: true })
+	}
+
+	async function LoadCommunityContactInfo(registrationId: string) {
+		const { error, onResult: onCommunityInfoResult } = useQuery(
+			COMMUNITY_INFO_QUERY,
+			{ registrationId },
+			{ fetchPolicy: 'network-only' }
+		)
+		onCommunityInfoResult((result) => {
+			communityStore.addToStore(result.data.registration.communities)
+			teacherStore.addToStore(result.data.registration.teacher)
+		})
+		appStore.$patch({ communityInfoLoaded: true })
+		appStore.$patch({ teacherContactLoaded: true })
+	}
 
 	async function loadClassInfo(registrationId: string) {
 		const { error, onResult: onClassesResult } = useQuery(
@@ -194,7 +225,7 @@
 	/**
 	 * Creates a new registration in the registration form.
 	 *
-	 * @param performerType SOLO, GROUP, or SCHOOL
+	 * @param performerType SOLO, GROUP, SCHOOL or COMMUNITY
 	 */
 	function newRegistration(performerType: PerformerType) {
 		registrationStore

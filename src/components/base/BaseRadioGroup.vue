@@ -5,28 +5,29 @@
 		:key="option.value"
 		:class="{
 			horizontal: !vertical,
-		}"
-	>
+		}">
 		<BaseRadio
 			:label="option.label"
 			:description="option.description"
 			:value="option.value"
-			:model-value="modelValue"
+			:model-value="optionValue"
 			:name="name"
-			@update:model-value="$emit('update:modelValue', $event.target.value)"
-		/>
+			@change="handleChange" />
 	</component>
+	<BaseErrorMessage :name="name">{{ errorMessage }}</BaseErrorMessage>
 </template>
 
 <script setup lang="ts">
-	import { PropType } from 'vue'
+	import { PropType, toRef } from 'vue'
+	import { useForm, useField } from 'vee-validate'
+
 	interface OptionsType {
 		value: string | number
 		label: string
 		description: string
 	}
 
-	defineProps({
+	const props = defineProps({
 		options: {
 			type: Array as PropType<OptionsType[]>,
 			required: true,
@@ -46,6 +47,18 @@
 	})
 
 	defineEmits(['update:modelValue'])
+
+	const name = toRef(props, 'name')
+
+	const {
+		value: optionValue,
+		errorMessage,
+		handleBlur,
+		handleChange,
+		meta,
+	} = useField(name, undefined, {
+		initialValue: props.modelValue,
+	})
 </script>
 
 <style scoped>

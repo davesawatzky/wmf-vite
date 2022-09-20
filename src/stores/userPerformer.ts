@@ -4,7 +4,9 @@ interface PerformerInfo {
 	id: string
 	lastName: string
 	firstName: string
-	address: string
+	apartment: string
+	streetNumber: string
+	streetName: string
 	city: string
 	province: string
 	postalCode: string
@@ -36,7 +38,9 @@ export const usePerformers = defineStore('performers', {
 					id: '',
 					lastName: '',
 					firstName: '',
-					address: '',
+					apartment: '',
+					streetNumber: '',
+					streetName: '',
 					city: 'Winnipeg',
 					province: 'MB',
 					postalCode: '',
@@ -56,7 +60,9 @@ export const usePerformers = defineStore('performers', {
 					id: '',
 					lastName: '',
 					firstName: '',
-					address: '',
+					apartment: '',
+					streetNumber: '',
+					streetName: '',
 					city: 'Winnipeg',
 					province: 'MB',
 					postalCode: '',

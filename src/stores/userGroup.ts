@@ -1,30 +1,30 @@
 import { defineStore } from 'pinia'
 
-export const useGroup = defineStore('groups', {
-	state: () => ({
-		group: [
-			{
-				id: 0,
-				name: '',
-				type: '', //Vocal, Instrumental
-				numPerformers: 0,
-				age: 0,
-				instruments: '',
-				perfInOtherClasses: '',
-				numOfChaperones: 0,
-				numWheelchairs: 0,
-				earliestTime: '',
-				latestTime: '',
-				unavailable: [
-					{
-						id: 0,
-						date: '',
-						time: '',
-					},
-				],
-			},
-		],
-	}),
+interface Group {
+	id: string
+	name: string
+	type: string
+	numPerformers: number
+	age: number
+	instruments: string
+}
+
+export const useGroup = defineStore('group', {
+	state: () =>
+		({
+			id: '',
+			name: '',
+			type: '', //Vocal, Instrumental
+			numPerformers: 2,
+			age: 10,
+			instruments: '',
+		} as Group),
 	getters: {},
-	actions: {},
+	actions: {
+		addToStore(groupData: Group | null) {
+			if (groupData) {
+				Object.assign(this.$state, groupData)
+			}
+		},
+	},
 })

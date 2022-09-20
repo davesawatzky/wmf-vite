@@ -1,6 +1,6 @@
 <template>
 	<div class="pb-8">
-		<h2 class="pb-4">Group Class Information</h2>
+		<h2 class="pb-4">School Class Information</h2>
 		<div
 			v-for="(selectedClass, index) in classesStore.registeredClasses"
 			:key="index">

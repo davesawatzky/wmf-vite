@@ -2,7 +2,6 @@
 	<!-- Solo Class Information Page -->
 	<div class="pb-8">
 		<h2 class="pb-4">Solo Class Information</h2>
-
 		<div
 			v-for="(selectedClass, index) in classesStore.registeredClasses"
 			:key="index">
