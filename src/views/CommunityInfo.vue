@@ -1,40 +1,38 @@
 <template>
-	<BaseSpinner v-show="loading"></BaseSpinner>
-	<div v-if="isError">Error: {{ isError.message }}</div>
-	<form v-else>
+	<form>
 		<div class="pb-8">
 			<h2 class="pb-4">Community Group Information</h2>
 			<div>
 				<BaseInput
-					v-model="communityStore.group.name"
+					v-model="communityStore.communityInfo.name"
 					name="name"
 					type="text"
 					label="Community Group Name" />
 			</div>
 			<div>
 				<BaseInput
-					v-model="communityStore.group.groupSize"
+					v-model.number="communityStore.communityInfo.groupSize"
 					name="groupSize"
 					type="number"
 					label="Group Size" />
 			</div>
 			<div>
 				<BaseInput
-					v-model="communityStore.group.chaperones"
+					v-model.number="communityStore.communityInfo.chaperones"
 					name="numberOfChaperones"
 					type="number"
 					label="Number of chaperones" />
 			</div>
 			<div>
 				<BaseInput
-					v-model="communityStore.group.wheelchairs"
+					v-model.number="communityStore.communityInfo.wheelchairs"
 					name="numberOfWheelchairs"
 					type="number"
 					label="Number of wheelchairs" />
 			</div>
 			<h2 class="pb-4">Conductor/Contact Information</h2>
 			<div>
-				<contact-info v-model="teacherStore.teacherInfo" />
+				<contact-info v-model="teacherStore.teacherInfo" teacher />
 			</div>
 		</div>
 		<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2 items-start">
@@ -45,7 +43,7 @@
 					best to avoid scheduling conflicts:
 				</p>
 				<BaseTextarea
-					v-model="communityStore.group.conflictPerformers"
+					v-model="communityStore.communityInfo.conflictPerformers"
 					name="conflictPerformers"
 					label="Performers participating in other classes."
 					rows="5"></BaseTextarea>

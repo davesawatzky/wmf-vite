@@ -1,0 +1,10 @@
+mutation CommunityCreate($registrationId: ID!, $community: CommunityInput!) {
+	communityCreate(registrationID: $registrationId, community: $community) {
+		community {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

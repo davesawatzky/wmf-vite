@@ -1,0 +1,10 @@
+mutation SelectionDelete($selectionId: ID!) {
+	selectionDelete(selectionID: $selectionId) {
+		selection {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

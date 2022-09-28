@@ -1,0 +1,10 @@
+mutation SelectionUpdate($selectionId: ID!, $selection: SelectionInput!) {
+	selectionUpdate(selectionID: $selectionId, selection: $selection) {
+		selection {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

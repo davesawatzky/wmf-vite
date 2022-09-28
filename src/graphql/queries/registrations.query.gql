@@ -1,10 +1,13 @@
 query Registrations {
-  registrations {
-    id
-    createdAt
-    label
-    performerType
-    submittedAt
-    payedAmt
-  }
+	registrations {
+		id
+		createdAt
+		label
+		performerType
+		submittedAt
+		payedAmt
+		totalAmt
+		transactionInfo
+		confirmation
+	}
 }

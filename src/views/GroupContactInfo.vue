@@ -1,19 +1,24 @@
 <template>
-	<BaseSpinner v-show="loading"></BaseSpinner>
-	<div v-if="isError">Error: {{ isError.message }}</div>
-	<form v-else>
+	<form>
 		<div class="pb-8">
 			<h2 class="pb-4">Group Information</h2>
 			<div>
 				<BaseInput
-					v-model="groupStore.name"
+					v-model="groupStore.groupInfo.name"
 					name="groupname"
 					label="Group Name"
 					type="text" />
 			</div>
 			<div>
 				<BaseInput
-					v-model="groupStore.numPerformers"
+					v-model="groupStore.groupInfo.numberOfPerformers"
+					:value="
+						(groupStore.groupInfo.numberOfPerformers =
+							performerStore.numberOfPerformers)
+					"
+					disabled
+					class="off"
+					aria-disabled
 					name="numberOfPerformers"
 					label="Number of Performers"
 					type="number" />
@@ -22,7 +27,7 @@
 			<h3>Group Type</h3>
 			<div>
 				<BaseRadioGroup
-					v-model="groupStore.type"
+					v-model="groupStore.groupInfo.groupType"
 					name="groupType"
 					:options="typeOptions" />
 			</div>
@@ -32,33 +37,20 @@
 				<ContactInfo v-model="teacherStore.teacherInfo" teacher />
 			</div>
 			<h3>Performer Information</h3>
-			<div v-for="(person, index) in performerStore.performer" :key="person.id">
+			<div
+				v-for="(person, personIndex) in performerStore.performer"
+				:key="personIndex">
 				<div class="pb-8">
-					<h4 class="pb-4">Performer #{{ index + 1 }}</h4>
-					<ContactInfo v-model="performerStore.performer[index]" />
+					<h4 class="pb-4">Performer #{{ personIndex + 1 }}</h4>
+					<ContactInfo
+						v-model="performerStore.performer[personIndex]"
+						groupperformer />
 				</div>
-				<div>
-					<BaseInput
-						v-model="performerStore.performer[index].instrument"
-						name="instrument"
-						type="text"
-						label="Instrument" />
-					<BaseInput
-						v-model="performerStore.performer[index].level"
-						name="level"
-						type="text"
-						label="Level" />
-				</div>
-				<div>
-					<BaseTextarea
-						v-model="performerStore.performer[index].otherClasses"
-						name="otherClasses"
-						:label="textAreaLabel" />
-				</div>
-
 				<div class="pt-4">
 					<BaseButton
-						v-if="index + 1 === performerStore.performer.length ? true : false"
+						v-if="
+							personIndex + 1 === performerStore.performer.length ? true : false
+						"
 						class="btn btn-blue"
 						@click="addPerformer"
 						>Add Performer
@@ -67,7 +59,7 @@
 						v-if="performerStore.performer.length > 1 ? true : false"
 						id="index"
 						class="btn btn-red"
-						@click="removePerformer(index)"
+						@click="removePerformer(personIndex)"
 						>Remove Performer</BaseButton
 					>
 					<br /><br />
@@ -81,13 +73,11 @@
 </template>
 
 <script setup lang="ts">
-	import { storeToRefs } from 'pinia'
 	// import { ref, reactive, computed, watch } from 'vue'
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useGroup } from '@/stores/userGroup'
 	import { usePerformers } from '@/stores/userPerformer'
 	import { useRegistration } from '@/stores/userRegistration'
-	import { textAreaLabel } from '@/composables/formData'
 	import { useForm, useField } from 'vee-validate'
 	import * as yup from 'yup'
 
@@ -95,11 +85,12 @@
 	const teacherStore = useTeacher()
 	const groupStore = useGroup()
 	const performerStore = usePerformers()
-	function addPerformer() {
-		performerStore.addToStore(null)
+
+	async function addPerformer() {
+		await performerStore.createPerformer(registrationStore.registrationId)
 	}
-	function removePerformer(index: number) {
-		performerStore.removePerformer(index)
+	async function removePerformer(index: number) {
+		await performerStore.deletePerformer(performerStore.performer[index].id!)
 	}
 
 	const typeOptions = [
@@ -134,15 +125,18 @@
 		otherClasses: yup.string().nullable(),
 	})
 
-	const validateGroupType = {
-		groupType: (value: any) => {
-			if (value) {
-				return true
-			}
-			return 'Please select a group type'
-		},
-	}
-	const { value, errorMessage } = useField('groupType', validateGroupType)
+	// const validateGroupType = {
+	// 	groupType: (value: any) => {
+	// 		if (value) {
+	// 			return true
+	// 		}
+	// 		return 'Please select a group type'
+	// 	},
+	// }
+	// const { value: groupType, errorMessage } = useField(
+	// 	'groupStore.groupInfo.groupType',
+	// 	validateGroupType
+	// )
 
 	useForm({ validationSchema })
 </script>

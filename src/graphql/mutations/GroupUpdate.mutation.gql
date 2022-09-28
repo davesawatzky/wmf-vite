@@ -1,0 +1,10 @@
+mutation GroupUpdate($groupId: ID!, $group: GroupInput!) {
+	groupUpdate(groupID: $groupId, group: $group) {
+		group {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

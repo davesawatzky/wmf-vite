@@ -5,34 +5,40 @@ import {
 	provideApolloClient,
 } from '@vue/apollo-composable'
 import apolloClient from '@/utilities/apolloClient'
-import ADD_CLASS_MUTATION from '@/graphql/mutations/addClass.mutation.gql'
-import ADD_WORK_MUTATION from '@/graphql/mutations/addWork.mutation.gql'
+import REGISTERED_CLASSES_QUERY from '@/graphql/queries/RegisteredClasses.query.gql'
+import CLASS_CREATE_MUTATION from '@/graphql/mutations/ClassCreate.mutation.gql'
+import CLASS_UPDATE_MUTATION from '@/graphql/mutations/ClassUpdate.mutation.gql'
+import CLASS_DELETE_MUTATION from '@/graphql/mutations/ClassDelete.mutation.gql'
+import SELECTION_CREATE_MUTATION from '@/graphql/mutations/SelectionCreate.mutation.gql'
+import SELECTION_DELETE_MUTATION from '@/graphql/mutations/SelectionDelete.mutation.gql'
+import SELECTION_UPDATE_MUTATION from '@/graphql/mutations/SelectionUpdate.mutation.gql'
 
 interface RegisteredClass {
-	id: string
+	id?: string
 	classNumber: string
-	className: string
+	className?: string
 	discipline: string
 	subdiscipline: string
 	level: string
 	category: string
 	numberOfSelections: number
-	selections: [Selections]
+	__typename?: string
+	selections?: [Selections]
 }
 interface Selections {
-	id: string
+	id?: string
 	title: string
 	largerWork: string
 	movement: string
 	composer: string
 	duration: string
+	__typename?: string
 }
 
 provideApolloClient(apolloClient)
 
 export const useClasses = defineStore('registeredClasses', {
 	state: () => ({
-		registrationId: '',
 		registeredClasses: [] as RegisteredClass[],
 	}),
 	getters: {},
@@ -41,7 +47,7 @@ export const useClasses = defineStore('registeredClasses', {
 		 * Add empty class variables to store. Used when loading
 		 * existing classes
 		 */
-		addClassToStore() {
+		addClassToStore(registeredClass: RegisteredClass | null) {
 			this.registeredClasses.push(<RegisteredClass>{
 				id: '',
 				classNumber: '',
@@ -53,15 +59,12 @@ export const useClasses = defineStore('registeredClasses', {
 				numberOfSelections: 0,
 				selections: [] as Selections[],
 			})
-		},
-
-		/**
-		 * Removes a specific class from the database in the current registration
-		 *
-		 * @param index The array index of the specific registered class
-		 */
-		removeClassFromStore(classIndex: number) {
-			this.registeredClasses.splice(classIndex, 1)
+			if (registeredClass) {
+				Object.assign(
+					this.registeredClasses[this.registeredClasses.length - 1],
+					registeredClass
+				)
+			}
 		},
 
 		/**
@@ -70,63 +73,208 @@ export const useClasses = defineStore('registeredClasses', {
 		 *
 		 * @param index Index of specific class in array
 		 */
-		addSelection(classIndex: number) {
-			this.registeredClasses[classIndex].selections.push({
+		addSelectionToStore(classSelection: Selections | null, classIndex: number) {
+			this.registeredClasses[classIndex].selections!.push(<Selections>{
 				id: '',
 				title: '',
 				largerWork: '',
 				movement: '',
 				composer: '',
-				duration: '',
-			} as Selections)
+				duration: '3:00',
+			})
+			if (classSelection) {
+				Object.assign(
+					this.registeredClasses[classIndex].selections![
+						this.registeredClasses[classIndex].selections!.length - 1
+					],
+					classSelection
+				)
+			}
 		},
 
-		/**
-		 * Removes a musical work from a specific class
-		 * @param classIndex The array index of the specific class
-		 * @param selectionIndex The array index of the specific work
-		 */
-		removeSelection(classIndex: number, selectionIndex: number) {
-			this.registeredClasses[classIndex].selections.splice(selectionIndex, 1)
+		async createClass(registrationId: string) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: classCreate,
+					onDone: doneClassCreate,
+					onError,
+				} = useMutation(CLASS_CREATE_MUTATION)
+				this.addClassToStore(null)
+				let classLastIndex = this.registeredClasses.length - 1
+				let clone = Object.assign({}, this.registeredClasses[classLastIndex])
+				delete clone.id
+				delete clone.className
+				delete clone.selections
+
+				classCreate({ registrationId, registeredClass: clone })
+				doneClassCreate((result) => {
+					this.registeredClasses[classLastIndex].id =
+						result.data.registeredClassCreate.registeredClass.id
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
 		},
 
-		removeSelections(classIndex: number, remainingSelections: number) {
-			this.registeredClasses[classIndex].selections.splice(remainingSelections)
+		async loadClasses(registrationId: string) {
+			return new Promise((resolve, reject) => {
+				const { onResult: resultLoadClasses, onError } = useQuery(
+					REGISTERED_CLASSES_QUERY,
+					{ registrationId },
+					{ fetchPolicy: 'network-only' }
+				)
+				resultLoadClasses((result) => {
+					this.registeredClasses = structuredClone(
+						result.data.registration.registeredClasses
+					)
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
 		},
 
-		/**
-		 * Saves All class information for a registration
-		 *
-		 * @param registrationID The registration ID
-		 * @param registeredClass The new Class information
-		 * @param works The works of the new class
-		 */
-		saveClasses(registrationID: number) {
-			// const { mutate: mutationSaveClasses, onDone } = useMutation(
-			// 	ADD_CLASS_MUTATION,
-			// 	() => ({
-			// 		variables: {
-			// 			registrationID,
-			// 			registeredClass: {
-			// 				...this.registeredClasses,
-			// 			},
-			// 		},
-			// 	})
-			// )
-			// const {
-			// 	mutate: mutationAddWork,
-			// 	loading,
-			// 	error,
-			// 	onDone,
-			// } = useMutation(ADD_WORK_MUTATION, () => ({
-			// 	fetchPolicy: 'no-cache',
-			// 	variables: {
-			// 		registrationClassId,
-			// 		selections: {
-			// 			title: '', // Only need to include this to create the database record
-			// 		},
-			// 	},
-			// }))
+		async updateClass(classIndex: number) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: classUpdate,
+					onDone,
+					onError,
+				} = useMutation(CLASS_UPDATE_MUTATION)
+				let clone = Object.assign({}, this.registeredClasses[classIndex])
+				let classId = clone.id!
+				delete clone.id
+				delete clone.className
+				delete clone.selections
+				delete clone.__typename
+				classUpdate({
+					registeredClassId: classId,
+					registeredClass: clone,
+				})
+				onDone((result) => {
+					resolve(result)
+				})
+				onError((error) => reject(error))
+			})
+		},
+
+		async updateAllClasses() {
+			let classIndex = 0
+			while (classIndex < this.registeredClasses.length) {
+				await this.updateClass(classIndex)
+				if (this.registeredClasses[classIndex].selections![0]) {
+					await this.updateAllSelections(classIndex)
+				}
+				classIndex++
+			}
+		},
+
+		async deleteClass(classIndex: number, registeredClassId: string) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: classDelete,
+					onDone: doneClassDelete,
+					onError,
+				} = useMutation(CLASS_DELETE_MUTATION)
+				classDelete({ registeredClassId })
+				doneClassDelete((result) => {
+					this.registeredClasses.splice(classIndex, 1)
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
+		},
+
+		async createSelection(classIndex: number) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: selectionCreate,
+					onDone: doneSelectionCreate,
+					onError,
+				} = useMutation(SELECTION_CREATE_MUTATION)
+				this.addSelectionToStore(null, classIndex)
+				let classId = this.registeredClasses[classIndex].id
+				let selectionsLastIndex =
+					this.registeredClasses[classIndex].selections!.length - 1
+				let clone = Object.assign(
+					{},
+					this.registeredClasses[classIndex].selections![selectionsLastIndex]
+				)
+				delete clone.id
+				selectionCreate({ registeredClassId: classId, selection: clone })
+				doneSelectionCreate((result) => {
+					this.registeredClasses[classIndex].selections![
+						selectionsLastIndex
+					].id = result.data.selectionCreate.selection.id
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
+		},
+
+		async updateSelection(
+			classIndex: number,
+			selectionIndex: number,
+			selectionId: string
+		) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: selectionUpdate,
+					onDone,
+					onError,
+				} = useMutation(SELECTION_UPDATE_MUTATION)
+				let clone = Object.assign(
+					{},
+					this.registeredClasses[classIndex].selections![selectionIndex]
+				)
+				delete clone.id
+				delete clone.__typename
+				selectionUpdate({ selectionId, selection: clone })
+				onDone((result) => {
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
+		},
+
+		async updateAllSelections(classIndex: number) {
+			let selectionIndex = 0
+			for (let selection of this.registeredClasses[classIndex].selections!) {
+				await this.updateSelection(classIndex, selectionIndex, selection.id!)
+				selectionIndex++
+			}
+		},
+
+		async deleteSelection(classIndex: number, selectionIndex: number) {
+			return new Promise((resolve, reject) => {
+				const {
+					mutate: selectionDelete,
+					onDone: doneSelectionDelete,
+					onError,
+				} = useMutation(SELECTION_DELETE_MUTATION)
+				let selectionNum =
+					this.registeredClasses[classIndex].selections![selectionIndex].id
+				selectionDelete({ selectionId: selectionNum })
+				doneSelectionDelete((result) => {
+					this.registeredClasses[classIndex].selections?.splice(
+						selectionIndex,
+						1
+					)
+					resolve(result)
+				})
+				onError((error) => {
+					reject(error)
+				})
+			})
 		},
 	},
 })
@@ -134,45 +282,3 @@ export const useClasses = defineStore('registeredClasses', {
 if (import.meta.hot) {
 	import.meta.hot.accept(acceptHMRUpdate(useClasses, import.meta.hot))
 }
-
-// const { mutate: mutationAddClasses, onDone } = useMutation(
-// 	ADD_CLASS_MUTATION,
-// 	() => ({
-// 		fetchPolicy: 'no-cache',
-// 		variables: {
-// 			registrationID,
-// 			registeredClass: {
-// 				classNumber, // Only need to include this to create database record
-// 			},
-// 		},
-// 	})
-// )
-
-// mutationAddClasses({ registrationID, registeredClass: { classNumber } })
-// onDone((result) => {
-// 	this.registeredClasses.push({
-// 		// This needs to be returned from the database through the mutation
-// 		// so that we have the right id number.
-// 		id: result.data.registeredClassCreate.registeredClass.id,
-// 		classNumber: '',
-// 		discipline: '',
-// 		disciplineId: '',
-// 		subdiscipline: '',
-// 		subdisciplineId: '',
-// 		level: '',
-// 		levelId: '',
-// 		category: '',
-// 		categoryId: '',
-// 		numberOfSelections: 1,
-// 		selections: [
-// 			{
-// 				id: '',
-// 				title: '',
-// 				largerWork: '',
-// 				movement: '',
-// 				composer: '',
-// 				duration: '',
-// 			},
-// 		],
-// 	})
-// })

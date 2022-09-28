@@ -1,0 +1,16 @@
+mutation RegistrationUpdate(
+	$registrationId: ID!
+	$registration: RegistrationInput!
+) {
+	registrationUpdate(
+		registrationID: $registrationId
+		registration: $registration
+	) {
+		registration {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

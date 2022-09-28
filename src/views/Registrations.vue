@@ -1,5 +1,4 @@
 <template>
-	<BaseSpinner v-show="loading"></BaseSpinner>
 	<div v-if="error">Error: {{ error.message }}</div>
 	<div v-else>
 		<div class="border border-gray-300 rounded-lg text-center mt-20">
@@ -49,6 +48,13 @@
 					<td v-for="col in registration" :key="registration.id + col">
 						{{ col }}
 					</td>
+					<td>
+						<BaseButton
+							class="btn btn-red"
+							@click="deleteRegistration(registration.id)"
+							>Delete</BaseButton
+						>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -56,14 +62,9 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, onBeforeMount } from 'vue'
-	import { useQuery, useQueryLoading } from '@vue/apollo-composable'
-	import REGISTRATION_QUERY from '@/graphql/queries/registrations.query.gql'
-	import SOLO_CONTACT_INFO_QUERY from '@/graphql/queries/soloContactInfo.query.gql'
-	import GROUP_INFO_QUERY from '@/graphql/queries/groupInfo.query.gql'
-	import SCHOOL_INFO_QUERY from '@/graphql/queries/schoolInfo.query.gql'
-	import COMMUNITY_INFO_QUERY from '@/graphql/queries/communityInfo.query.gql'
-	import REGISTERED_CLASSES_QUERY from '@/graphql/queries/registeredClassesQuery.query.gql'
+	import { computed, onBeforeMount, ref } from 'vue'
+	import { useQuery } from '@vue/apollo-composable'
+	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
 	import { useRouter } from 'vue-router'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
@@ -73,6 +74,7 @@
 	import { useGroup } from '@/stores/userGroup'
 	import { useSchool } from '@/stores/userSchool'
 	import { useCommunity } from '@/stores/userCommunity'
+	import BaseButton from '@/components/base/BaseButton.vue'
 
 	enum EnumPerformerType {
 		'SOLO',
@@ -82,6 +84,19 @@
 	}
 	type PerformerType = keyof typeof EnumPerformerType
 
+	interface Registration {
+		id: string
+		label: string
+		performerType: keyof typeof EnumPerformerType
+		submittedAt: string
+		totalAmt: number
+		payedAmt: number
+		transactionInfo: string
+		confirmation: string
+		createdAt?: string
+		__typename?: string
+	}
+
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
 	const performerStore = usePerformers()
@@ -90,6 +105,8 @@
 	const schoolStore = useSchool()
 	const communityStore = useCommunity()
 	const classesStore = useClasses()
+	const registrationId = ref('')
+	const registrations = ref({} as Registration[])
 
 	onBeforeMount(() => {
 		registrationStore.$reset()
@@ -103,12 +120,19 @@
 	})
 
 	const router = useRouter()
-	const loading = useQueryLoading()
 
-	const { result, error } = useQuery(REGISTRATION_QUERY, null, () => ({
-		fetchPolicy: 'cache-and-network',
+	const {
+		refetch: refetchRegistrations,
+		onResult: doneRegistrationQuery,
+		onError,
+	} = useQuery(REGISTRATION_QUERY, null, () => ({
+		fetchPolicy: 'no-cache',
 	}))
-	const registrations = computed(() => result.value?.registrations ?? [])
+	// const registrations = computed(() => result.value?.registrations ?? [])
+	doneRegistrationQuery((result) => {
+		let clone = Object.assign({}, result.data.registrations)
+		registrations.value = clone
+	})
 
 	/**
 	 * Load and Edit Existing Registration
@@ -122,126 +146,88 @@
 		performerType: PerformerType,
 		index: number
 	) {
+		registrationStore.registrationId = registrationId
 		registrationStore.addToStore(registrations.value[index])
 		switch (performerType) {
 			case 'SOLO':
 				appStore.performerType = 'SOLO'
-				loadSoloContactInfo(registrationId)
+				await performerStore.loadPerformers(registrationId)
+				await teacherStore.loadTeacher(registrationId)
+				await classesStore.loadClasses(registrationId)
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
-				LoadGroupContactInfo(registrationId)
+				await groupStore.loadGroup(registrationId)
+				await teacherStore.loadTeacher(registrationId)
+				await performerStore.loadPerformers(registrationId)
+				await classesStore.loadClasses(registrationId)
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
-				LoadSchoolContactInfo(registrationId)
+				await schoolStore.loadSchool(registrationId)
+				await teacherStore.loadTeacher(registrationId)
+				await classesStore.loadClasses(registrationId)
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
-				LoadCommunityContactInfo(registrationId)
+				await communityStore.loadCommunity(registrationId)
+				await teacherStore.loadTeacher(registrationId)
+				await classesStore.loadClasses(registrationId)
 				break
 		}
-		loadClassInfo(registrationId)
-
+		classesStore.loadClasses(registrationId)
 		router.push({ name: 'Form' })
-	}
-
-	async function loadSoloContactInfo(registrationId: string) {
-		const { error, onResult: onPerformerContactResult } = useQuery(
-			SOLO_CONTACT_INFO_QUERY,
-			{ registrationId },
-			{ fetchPolicy: 'network-only' }
-		)
-		onPerformerContactResult((result) => {
-			performerStore.addToStore(result.data.registration.performers[0])
-			appStore.$patch({ performerContactLoaded: true })
-			teacherStore.addToStore(result.data.registration.teacher)
-		})
-		appStore.$patch({ teacherContactLoaded: true })
-	}
-
-	async function LoadGroupContactInfo(registrationId: string) {
-		const { error, onResult: onGroupInfoResult } = useQuery(
-			GROUP_INFO_QUERY,
-			{ registrationId },
-			{ fetchPolicy: 'network-only' }
-		)
-		onGroupInfoResult((result) => {
-			groupStore.addToStore(result.data.registration.groups[0] ?? [])
-			performerStore.addToStore(result.data.registration.performers)
-			teacherStore.addToStore(result.data.registration.teacher)
-		})
-		appStore.$patch({ groupInfoLoaded: true })
-		appStore.$patch({ teacherContactLoaded: true })
-	}
-
-	async function LoadSchoolContactInfo(registrationId: string) {
-		const { error, onResult: onSchoolInfoResult } = useQuery(
-			SCHOOL_INFO_QUERY,
-			{ registrationId },
-			{ fetchPolicy: 'network-only' }
-		)
-		onSchoolInfoResult((result) => {
-			schoolStore.addToStore(result.data.registration.school)
-			teacherStore.addToStore(result.data.registration.teacher)
-		})
-		appStore.$patch({ schoolInfoLoaded: true })
-		appStore.$patch({ teacherContactLoaded: true })
-	}
-
-	async function LoadCommunityContactInfo(registrationId: string) {
-		const { error, onResult: onCommunityInfoResult } = useQuery(
-			COMMUNITY_INFO_QUERY,
-			{ registrationId },
-			{ fetchPolicy: 'network-only' }
-		)
-		onCommunityInfoResult((result) => {
-			communityStore.addToStore(result.data.registration.communities)
-			teacherStore.addToStore(result.data.registration.teacher)
-		})
-		appStore.$patch({ communityInfoLoaded: true })
-		appStore.$patch({ teacherContactLoaded: true })
-	}
-
-	async function loadClassInfo(registrationId: string) {
-		const { error, onResult: onClassesResult } = useQuery(
-			REGISTERED_CLASSES_QUERY,
-			{ registrationId },
-			{ fetchPolicy: 'network-only' }
-		)
-		onClassesResult((result) => {
-			classesStore.addClassToStore()
-			result.data.registration.registeredClasses.forEach(
-				(registeredClasses: any, classIndex: number) => {
-					classesStore.$patch((state: any) => {
-						state.registeredClasses[classIndex] = { ...registeredClasses }
-					})
-				}
-			)
-			appStore.$patch({ classContentLoaded: true })
-		})
 	}
 
 	/**
 	 * Creates a new registration in the registration form.
 	 *
 	 * @param performerType SOLO, GROUP, SCHOOL or COMMUNITY
+	 * @param label A given label for the registration form
 	 */
-	function newRegistration(performerType: PerformerType) {
-		registrationStore
-			.createRegistration(performerType)
-			.then(() => {
-				appStore.$patch({
-					editExisting: false,
-					performerType,
-					registrationExists: true,
-				})
-				performerStore.addToStore(null)
-				teacherStore.addToStore(null)
-			})
-			.then(() => {
-				router.push({ name: 'Form' })
-			})
+	async function newRegistration(performerType: PerformerType, label?: string) {
+		if (!label || label.length == 0) label = 'Registration Form'
+		await registrationStore.createRegistration(performerType, label)
+		registrationId.value = registrationStore.registrationId
+
+		appStore.$patch({
+			editExisting: false,
+			performerType,
+			registrationExists: true,
+		})
+		switch (performerType) {
+			case 'SOLO':
+				appStore.performerType = 'SOLO'
+				await performerStore.createPerformer(registrationId.value)
+				await teacherStore.createTeacher(registrationId.value)
+				await classesStore.createClass(registrationId.value)
+				break
+			case 'GROUP':
+				appStore.performerType = 'GROUP'
+				await groupStore.createGroup(registrationId.value)
+				await teacherStore.createTeacher(registrationId.value)
+				await performerStore.createPerformer(registrationId.value)
+				await classesStore.createClass(registrationId.value)
+				break
+			case 'SCHOOL':
+				appStore.performerType = 'SCHOOL'
+				await schoolStore.createSchool(registrationId.value)
+				await teacherStore.createTeacher(registrationId.value)
+				await classesStore.createClass(registrationId.value)
+				break
+			case 'COMMUNITY':
+				appStore.performerType = 'COMMUNITY'
+				await communityStore.createCommunity(registrationId.value)
+				await teacherStore.createTeacher(registrationId.value)
+				await classesStore.createClass(registrationId.value)
+		}
+
+		router.push({ name: 'Form' })
+	}
+
+	async function deleteRegistration(regId: string) {
+		await registrationStore.deleteRegistration(regId)
+		refetchRegistrations()
 	}
 </script>
 

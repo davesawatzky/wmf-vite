@@ -15,13 +15,5 @@ query SchoolInfo($registrationId: ID!) {
 			conflictStudents
 			unavailable
 		}
-		teacher {
-			id
-			prefix
-			firstName
-			lastName
-			phone
-			email
-		}
 	}
 }

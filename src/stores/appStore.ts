@@ -14,7 +14,7 @@ interface AppFlags {
 	groupInfoLoaded: boolean
 	schoolInfoLoaded: boolean
 	communityInfoLoaded: boolean
-	teacherContactLoaded: boolean
+	teacherLoaded: boolean
 	classExists: boolean
 	selectionExists: boolean
 	classContentLoaded: boolean
@@ -30,7 +30,7 @@ export const useAppStore = defineStore('appStore', {
 			groupInfoLoaded: false,
 			schoolInfoLoaded: false,
 			communityInfoLoaded: false,
-			teacherContactLoaded: false, // teacher contact already exists and is loaded
+			teacherLoaded: false, // teacher contact already exists and is loaded
 			classExists: false, // registered class is fully loaded into class form
 			selectionExists: false, // registered selection is fully loaded into class form
 			classContentLoaded: false, // Existing class content is loaded from db

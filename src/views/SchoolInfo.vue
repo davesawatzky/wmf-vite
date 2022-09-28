@@ -1,44 +1,36 @@
 <template>
-	<BaseSpinner v-show="loading"></BaseSpinner>
-	<div v-if="isError">Error: {{ isError.message }}</div>
-	<form v-else>
+	<form>
 		<div class="pb-8">
 			<h2 class="pb-4">School Information</h2>
 			<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2">
 				<div class="col-span-6">
 					<BaseInput
-						v-model="schoolStore.name"
+						v-model="schoolStore.schoolInfo.name"
 						name="schoolName"
 						type="text"
 						label="School Name" />
 				</div>
 				<div class="col-span-6">
 					<BaseSelect
-						v-model="schoolStore.division"
+						v-model="schoolStore.schoolInfo.division"
 						name="schoolDivision"
 						label="School Division"
 						:options="divisions" />
 				</div>
 			</div>
-			<contact-info
-				v-model="schoolStore"
-				:teacher="false"
-				:schoolteacher="false"
-				:school="true">
-			</contact-info>
+			<contact-info v-model="schoolStore.schoolInfo" school> </contact-info>
 
 			<h2 class="pb-4">Teacher Information</h2>
 			<div>
-				<contact-info
-					v-model="teacherStore.teacherInfo"
-					:teacher="true"
-					:schoolteacher="true" />
+				<contact-info v-model="teacherStore.teacherInfo" teacher schoolteacher>
+				</contact-info>
 			</div>
 		</div>
+		<h2>Performance Information</h2>
 		<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2 items-center">
 			<div class="col-span-6">
 				<BaseInput
-					v-model="schoolStore.earliestTime"
+					v-model="schoolStore.schoolInfo.earliestTime"
 					name="earliestTime"
 					label="Earliest time your group can perform"
 					type="time" />
@@ -46,7 +38,7 @@
 
 			<div class="col-span-6">
 				<BaseInput
-					v-model="schoolStore.latestTime"
+					v-model="schoolStore.schoolInfo.latestTime"
 					name="latestTime"
 					label="Latest time your group can perform"
 					type="time" />
@@ -61,7 +53,7 @@
 					school cycle days, between February 23 and March 20, 2023.
 				</p>
 				<BaseTextarea
-					v-model="schoolStore.unavailable"
+					v-model="schoolStore.schoolInfo.unavailable"
 					name="unavailable"
 					label="Unavailable Dates/Times"
 					rows="5"></BaseTextarea>
@@ -73,7 +65,7 @@
 					to avoid scheduling conflicts:
 				</p>
 				<BaseTextarea
-					v-model="schoolStore.conflictStudents"
+					v-model="schoolStore.schoolInfo.conflictStudents"
 					name="conflictStudents"
 					label="Students participating in other classes."
 					rows="5"></BaseTextarea>

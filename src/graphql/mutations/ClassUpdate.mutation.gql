@@ -1,0 +1,16 @@
+mutation ClassUpdate(
+	$registeredClassId: ID!
+	$registeredClass: RegisteredClassInput!
+) {
+	registeredClassUpdate(
+		registeredClassID: $registeredClassId
+		registeredClass: $registeredClass
+	) {
+		registeredClass {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

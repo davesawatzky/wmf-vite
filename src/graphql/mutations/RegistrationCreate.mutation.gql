@@ -1,4 +1,4 @@
-mutation AddRegistration($performerType: SGSlabel!, $label: String) {
+mutation CreateRegistration($performerType: SGSlabel!, $label: String) {
 	registrationCreate(performerType: $performerType, label: $label) {
 		registration {
 			id

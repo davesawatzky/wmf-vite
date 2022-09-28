@@ -1,14 +1,7 @@
 <template>
-	<div :id="id" aria-live="assertive" class="errorMessage">
+	<div aria-live="assertive" class="errorMessage">
 		<slot />
 	</div>
 </template>
 
-<script setup lang="ts">
-	defineProps({
-		id: {
-			type: String,
-			required: true,
-		},
-	})
-</script>
+<script setup lang="ts"></script>

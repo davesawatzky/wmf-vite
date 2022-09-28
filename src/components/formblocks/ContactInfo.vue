@@ -17,7 +17,7 @@
 			</div>
 			<div v-if="!teacher && !school && !schoolteacher" class="col-span-3">
 				<BaseInput
-					v-model="contact.age"
+					v-model.number="contact.age"
 					name="age"
 					type="number"
 					:label="'Age on December 31, ' + currentYear" />
@@ -36,7 +36,7 @@
 					v-model="contact.streetNumber"
 					name="streetNumber"
 					type="text"
-					label="Steet Number" />
+					label="Street Number" />
 			</div>
 			<div v-if="!schoolteacher" class="col-span-6">
 				<BaseInput
@@ -80,6 +80,26 @@
 					type="email"
 					label="Email" />
 			</div>
+			<div v-if="groupperformer" class="col-span-6">
+				<BaseInput
+					v-model="contact.instrument"
+					name="instrument"
+					type="text"
+					label="Instrument" />
+			</div>
+			<div v-if="groupperformer" class="col-span-6">
+				<BaseInput
+					v-model="contact.level"
+					name="level"
+					type="text"
+					label="Level" />
+			</div>
+			<div v-if="groupperformer" class="col-span-12">
+				<BaseTextarea
+					v-model="contact.otherClasses"
+					name="otherClasses"
+					:label="textAreaLabel" />
+			</div>
 		</div>
 	</form>
 </template>
@@ -87,6 +107,7 @@
 <script lang="ts" setup>
 	import { computed } from 'vue'
 	import { provinces } from '@/composables/formData'
+	import { textAreaLabel } from '@/composables/formData'
 	import { useForm } from 'vee-validate'
 	import * as yup from 'yup'
 
@@ -106,6 +127,10 @@
 			required: false,
 		},
 		school: {
+			type: Boolean,
+			required: false,
+		},
+		groupperformer: {
 			type: Boolean,
 			required: false,
 		},

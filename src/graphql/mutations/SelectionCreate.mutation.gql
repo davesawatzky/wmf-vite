@@ -1,0 +1,13 @@
+mutation SelectionCreate($registeredClassId: ID!, $selection: SelectionInput!) {
+	selectionCreate(
+		registeredClassID: $registeredClassId
+		selection: $selection
+	) {
+		selection {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

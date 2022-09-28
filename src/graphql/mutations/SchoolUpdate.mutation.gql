@@ -1,0 +1,10 @@
+mutation SchoolUpdate($schoolId: ID!, $school: SchoolInput!) {
+	schoolUpdate(schoolID: $schoolId, school: $school) {
+		school {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

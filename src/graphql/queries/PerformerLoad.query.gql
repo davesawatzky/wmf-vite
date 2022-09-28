@@ -1,17 +1,10 @@
-query CommunityInfo($registrationId: ID!) {
+query PerformerLoad($registrationId: ID!) {
 	registration(id: $registrationId) {
-		communities {
+		performers {
 			id
-			name
-			groupSize
-			chaperones
-			wheelchairs
-			conflictPerformers
-		}
-		teacher {
-			prefix
 			firstName
 			lastName
+			age
 			apartment
 			streetNumber
 			streetName
@@ -20,6 +13,8 @@ query CommunityInfo($registrationId: ID!) {
 			postalCode
 			phone
 			email
+			instrument
+			level
 		}
 	}
 }

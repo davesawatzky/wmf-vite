@@ -1,0 +1,10 @@
+mutation TeacherDelete($teacherId: ID!) {
+	teacherDelete(teacherID: $teacherId) {
+		teacher {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

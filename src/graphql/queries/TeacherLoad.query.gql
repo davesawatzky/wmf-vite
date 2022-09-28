@@ -1,0 +1,18 @@
+query TeacherLoad($registrationId: ID!) {
+	registration(id: $registrationId) {
+		teacher {
+			id
+			prefix
+			firstName
+			lastName
+			apartment
+			streetNumber
+			streetName
+			city
+			province
+			postalCode
+			phone
+			email
+		}
+	}
+}

@@ -1,0 +1,10 @@
+mutation TeacherUpdate($teacherId: ID!, $teacher: TeacherInput!) {
+	teacherUpdate(teacherID: $teacherId, teacher: $teacher) {
+		teacher {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

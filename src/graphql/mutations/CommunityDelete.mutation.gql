@@ -1,0 +1,10 @@
+mutation CommunityDelete($communityId: ID!) {
+	communityDelete(communityID: $communityId) {
+		community {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

@@ -1,0 +1,16 @@
+mutation ClassCreate(
+	$registrationId: ID!
+	$registeredClass: RegisteredClassInput!
+) {
+	registeredClassCreate(
+		registrationID: $registrationId
+		registeredClass: $registeredClass
+	) {
+		registeredClass {
+			id
+		}
+		userErrors {
+			message
+		}
+	}
+}

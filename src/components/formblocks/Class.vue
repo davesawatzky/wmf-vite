@@ -1,5 +1,4 @@
 <template>
-	<BaseSpinner v-show="loading"></BaseSpinner>
 	<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-4 items-start">
 		<div class="col-span-3">
 			<!-- <div v-if="discError">{{ discError.message }}</div> -->
@@ -74,32 +73,28 @@
 		</div>
 		<div class="col-span-2">
 			<BaseSelect
-				v-model="selectedClasses.numberOfSelections"
+				v-model.number="selectedClasses.numberOfSelections"
 				:class="selectedClasses.category ? '' : 'off'"
 				label="Selections"
 				:options="numberOfAllowedWorks"
-				:disabled="!selectedClasses.category"
-				@change="changeSelectionNumber(selectedClasses.numberOfSelections)" />
+				:disabled="!selectedClasses.category" />
+			<!-- @change="changeSelectionNumber(selectedClasses.numberOfSelections)" -->
 		</div>
 		<div class="col-span-12">
 			<WorksSelection
-				v-for="(selection, index) in selectedClasses.selections"
-				:key="index"
-				v-model="selectedClasses.selections[index]"
-				:work-number="index" />
+				v-for="(selection, selectionIndex) in selectedClasses.selections"
+				:key="selectionIndex"
+				v-model="selectedClasses.selections[selectionIndex]"
+				:work-number="selectionIndex" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-	import { computed, onMounted } from 'vue'
-	import {
-		useQueryLoading,
-		useQuery,
-		useLazyQuery,
-	} from '@vue/apollo-composable'
+	import { computed, onMounted, watch, ref } from 'vue'
+	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 
-	import DISCIPLINES_QUERY from '@/graphql/queries/disciplines.query.gql'
+	import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
 	import LEVELS_QUERY from '@/graphql/queries/levels.query.gql'
 	import CATEGORIES_QUERY from '@/graphql/queries/categories.query.gql'
@@ -109,14 +104,13 @@
 	import BaseSelect from '../base/BaseSelect.vue'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
-	import BaseSpinner from '../base/BaseSpinner.vue'
 
 	const props = defineProps({
 		modelValue: {
 			type: Object,
 			default: () => ({}),
 		},
-		registrationIndexNumber: {
+		classIndex: {
 			type: Number,
 			default: 0,
 		},
@@ -140,8 +134,11 @@
 	/**
 	 * Disciplines
 	 */
-	const { result: disc, error: discError } = useQuery(DISCIPLINES_QUERY)
-	const disciplines = computed(() => disc.value?.disciplines ?? [])
+	const { result: disc, error: discError } = useQuery(
+		DISCIPLINES_BY_TYPE_QUERY,
+		() => ({ sgSlabel: appStore.performerType })
+	)
+	const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
 	const chosenDiscipline = computed({
 		get: () => {
 			return (
@@ -337,18 +334,6 @@
 		},
 		set: (newValue) => newValue,
 	})
-	// const chosenSelectionNumber = computed({
-	// 	get: () => {
-	// 		return (
-	// 			classSelection.value.find((item: any) => {
-	// 				return item.name === selectedClasses.value.numberOfSelections
-	// 			}) ?? {}
-	// 		)
-	// 	},
-	// 	set: (newValue) => newValue,
-	// })
-
-	const loading = useQueryLoading()
 
 	/**
 	 * Number of Allowed Works
@@ -374,15 +359,27 @@
 	/**
 	 * Updating number of selections
 	 */
-	function changeSelectionNumber(works: number) {
-		classesStore.removeSelections(props.registrationIndexNumber, works)
-		let currentSelections =
-			classesStore.registeredClasses[props.registrationIndexNumber].selections
-				.length
-		for (let i = currentSelections; i < works; i++) {
-			classesStore.addSelection(props.registrationIndexNumber)
+	watch(
+		() => selectedClasses.value.numberOfSelections,
+		async (newNumber) => {
+			let oldNumber =
+				classesStore.registeredClasses[props.classIndex].selections?.length ?? 0
+			if (oldNumber < newNumber) {
+				while (oldNumber < newNumber) {
+					await classesStore.createSelection(props.classIndex)
+					oldNumber++
+				}
+			}
+
+			if (oldNumber > newNumber) {
+				while (oldNumber > newNumber) {
+					await classesStore.deleteSelection(props.classIndex, oldNumber - 1)
+					oldNumber--
+				}
+			}
+			await classesStore.updateClass(props.classIndex)
 		}
-	}
+	)
 </script>
 
 <style scoped></style>
