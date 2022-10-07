@@ -4,28 +4,28 @@
 			<h2 class="pb-4">Community Group Information</h2>
 			<div>
 				<BaseInput
-					v-model="communityStore.communityInfo.name"
+					v-model="communityStore.communityInfo[0].name"
 					name="name"
 					type="text"
 					label="Community Group Name" />
 			</div>
 			<div>
 				<BaseInput
-					v-model.number="communityStore.communityInfo.groupSize"
+					v-model.number="communityStore.communityInfo[0].groupSize"
 					name="groupSize"
 					type="number"
 					label="Group Size" />
 			</div>
 			<div>
 				<BaseInput
-					v-model.number="communityStore.communityInfo.chaperones"
+					v-model.number="communityStore.communityInfo[0].chaperones"
 					name="numberOfChaperones"
 					type="number"
 					label="Number of chaperones" />
 			</div>
 			<div>
 				<BaseInput
-					v-model.number="communityStore.communityInfo.wheelchairs"
+					v-model.number="communityStore.communityInfo[0].wheelchairs"
 					name="numberOfWheelchairs"
 					type="number"
 					label="Number of wheelchairs" />
@@ -43,7 +43,7 @@
 					best to avoid scheduling conflicts:
 				</p>
 				<BaseTextarea
-					v-model="communityStore.communityInfo.conflictPerformers"
+					v-model="communityStore.communityInfo[0].conflictPerformers"
 					name="conflictPerformers"
 					label="Performers participating in other classes."
 					rows="5"></BaseTextarea>
@@ -53,14 +53,12 @@
 </template>
 
 <script lang="ts" setup>
-	import { useAppStore } from '@/stores/appStore'
 	import { useCommunity } from '@/stores/userCommunity'
 	import { useTeacher } from '@/stores/userTeacher'
 	import * as yup from 'yup'
-	import { useField, useForm } from 'vee-validate'
+	import { useForm } from 'vee-validate'
 	import BaseTextarea from '@/components/base/BaseTextarea.vue'
 
-	const appStore = useAppStore()
 	const teacherStore = useTeacher()
 	const communityStore = useCommunity()
 

@@ -7,7 +7,9 @@ query RegisteredClasses($registrationId: ID!) {
 			id
 			level
 			numberOfSelections
+			price
 			subdiscipline
+			schoolCommunityId
 			selections {
 				composer
 				duration

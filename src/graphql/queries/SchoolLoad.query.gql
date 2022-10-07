@@ -10,10 +10,6 @@ query SchoolInfo($registrationId: ID!) {
 			province
 			postalCode
 			phone
-			earliestTime
-			latestTime
-			conflictStudents
-			unavailable
 		}
 	}
 }

@@ -1,9 +1,12 @@
 <template>
-	<div>
-		<h2>Welcome to the Registration Website</h2>
-		<form class="max-w-md w-1/2 border-2 rounded-lg p-4 mx-auto mt-8">
-			{{ isLogin }}
+	<div v-auto-animate>
+		<h2 class="text-center">Welcome to the Registration Website</h2>
+		<form
+			v-auto-animate
+			class="max-w-md w-1/2 border rounded-lg border-sky-500 p-4 mx-auto mt-8">
 			<h3 class="loginheading">Sign in</h3>
+			<!-- <BaseInput v-if="!isLogin" v-model></BaseInput> -->
+
 			<BaseInput
 				v-model="email"
 				name="email"
@@ -59,7 +62,7 @@
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import { useRouter } from 'vue-router'
-	import { useMutation, useMutationLoading } from '@vue/apollo-composable'
+	import { useMutation } from '@vue/apollo-composable'
 	import { useField, useForm } from 'vee-validate'
 	import { setToken } from '@/composables/setTokens'
 	import * as yup from 'yup'
@@ -82,13 +85,13 @@
 			.label('Password Check')
 			.oneOf([yup.ref('password')]),
 	})
-	const { errors, setFieldValue, handleSubmit } = useForm({
+	const { setFieldValue, handleSubmit } = useForm({
 		validationSchema,
 	})
 	const { value: email } = useField('email')
 	const { value: password } = useField('password')
 	const { value: password2 } = useField('password2')
-	const handleChange = (event) => {
+	const handleChange = (event: any) => {
 		setFieldValue('email', event.target.value)
 	}
 

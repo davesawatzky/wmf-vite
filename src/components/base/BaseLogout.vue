@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<button class="btn" @click="signout">Logout</button>
+		<a class="hover:cursor-pointer" @click="signout">Logout</a>
 	</div>
 </template>
 

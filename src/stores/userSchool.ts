@@ -20,10 +20,6 @@ interface SchoolInfo {
 	province: string
 	postalCode: string
 	phone: string
-	earliestTime: string
-	latestTime: string
-	unavailable: string
-	conflictStudents: string
 	__typename?: string
 }
 
@@ -41,10 +37,6 @@ export const useSchool = defineStore('school', {
 			province: 'MB',
 			postalCode: '',
 			phone: '',
-			earliestTime: '',
-			latestTime: '',
-			unavailable: '',
-			conflictStudents: '',
 		} as SchoolInfo,
 	}),
 	getters: {},

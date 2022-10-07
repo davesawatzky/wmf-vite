@@ -1,8 +1,40 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 
-// Thinking about using a Store to hold all the festival classes
-// Rather than using Apollo Cache.
-// Still deciding
+interface Descriptions {
+	subdisciplineDescription: string
+	categoryDescription: string
+	levelDescription: string
+	trophyDescriptions: TrophyDescriptions[]
+	requiredSelection: string
+}
+interface TrophyDescriptions {
+	name: string
+	description: string
+}
+
 export const festivalClasses = defineStore('festivalClasses', {
-  state: () => ({}),
+	state: () => ({
+		descriptions: [
+			{
+				subdisciplineDescription: '',
+				categoryDescription: '',
+				levelDescription: '',
+				trophyDescriptions: [{ name: '', description: '' }],
+				requiredSelection: '',
+			},
+		] as Descriptions[],
+	}),
+	actions: {
+		async addDescriptions() {
+			this.descriptions.push({} as Descriptions)
+		},
+
+		async removeDescriptions(index: number) {
+			this.descriptions.splice(index, 1)
+		},
+	},
 })
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(festivalClasses, import.meta.hot))
+}

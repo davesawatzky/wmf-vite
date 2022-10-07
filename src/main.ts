@@ -4,7 +4,14 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 import App from './App.vue'
 import routes from './router'
 import { createPinia } from 'pinia'
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faFilePen, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import './assets/css/index.css'
+
+library.add(faFilePen, faTrashCan, faEye)
 
 const app = createApp({
 	setup() {
@@ -15,4 +22,9 @@ const app = createApp({
 	},
 })
 
-app.use(createPinia()).use(routes).mount('#app')
+app
+	.use(createPinia())
+	.use(routes)
+	.use(autoAnimatePlugin)
+	.component('font-awesome-icon', FontAwesomeIcon)
+	.mount('#app')

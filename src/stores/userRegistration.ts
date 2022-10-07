@@ -22,7 +22,7 @@ interface Registration {
 	id?: string
 	label: string
 	performerType: keyof typeof EnumPerformerType
-	submittedAt: string
+	submittedAt: Date
 	totalAmt: number
 	payedAmt: number
 	transactionInfo: string

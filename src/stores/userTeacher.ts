@@ -15,7 +15,7 @@ interface TeacherInfo {
 	prefix: string
 	lastName: string
 	firstName: string
-	apartment: string
+	apartment?: string
 	streetNumber: string
 	streetName: string
 	city: string

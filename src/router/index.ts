@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
 import Registrations from '@/views/Registrations.vue'
 import Form from '@/views/Form.vue'
-import Summary from '@/views/Summary.vue'
 import { isauthenticated } from '@/composables/setTokens'
-import Validations from '@/views/validations.vue'
+import Submission from '@/views/Submission.vue'
 
 const routes = [
 	{ path: '/', name: 'Login', component: Login },
@@ -20,16 +19,13 @@ const routes = [
 		component: Form,
 		props: true,
 	},
-
 	{
-		path: '/summary',
-		name: 'Summary',
-		component: Summary,
-		props: true,
+		path: '/submission',
+		name: 'Submission',
+		component: Submission,
 	},
-	{ path: '/validations', name: 'Validations', component: Validations },
 
-	// { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+	{ path: '/:pathMatch(.*)*', name: 'NotFound', component: Registrations },
 ]
 
 const router = createRouter({

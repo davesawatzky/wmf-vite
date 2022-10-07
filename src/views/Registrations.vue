@@ -1,7 +1,6 @@
 <template>
-	<div v-if="error">Error: {{ error.message }}</div>
-	<div v-else>
-		<div class="border border-gray-300 rounded-lg text-center mt-20">
+	<div v-auto-animate>
+		<div class="border border-sky-500 rounded-lg text-center mt-20">
 			<h3>Create new Registration Form</h3>
 			<BaseButton class="btn btn-blue" @click="newRegistration('SOLO')"
 				>Solo</BaseButton
@@ -13,28 +12,29 @@
 				>School</BaseButton
 			>
 			<BaseButton class="btn btn-blue" @click="newRegistration('COMMUNITY')"
-				>Community Group</BaseButton
+				>Community</BaseButton
 			>
 		</div>
 		<br /><br />
-		<table>
-			<thead>
-				<tr>
-					<th>Edit</th>
-					<th>Type</th>
+		<table v-auto-animate class="bg-white table-auto border-collapse w-full">
+			<thead class="bg-sky-500 text-white">
+				<tr class="py-2 px-4">
+					<th class="rounded-tl-lg">Edit</th>
 					<th>ID</th>
-					<th>Created</th>
 					<th>Label</th>
+					<th>Created</th>
 					<th>Type</th>
 					<th>Submitted</th>
-					<th>Payed Amount</th>
+					<th>Total</th>
+					<th>Confirmation#</th>
+					<th class="rounded-tr-lg">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="(registration, index) in registrations" :key="index">
 					<td>
 						<BaseButton
-							class="btn btn-blue"
+							class="text-sky-600 ml-4"
 							@click="
 								loadRegistration(
 									registration.id,
@@ -42,18 +42,26 @@
 									index
 								)
 							"
-							>Edit</BaseButton
-						>
+							><font-awesome-icon
+								v-if="!registration.confirmation"
+								icon="fa-solid fa-file-pen" />
+							<font-awesome-icon v-else icon="fa-solid fa-eye"
+						/></BaseButton>
 					</td>
-					<td v-for="col in registration" :key="registration.id + col">
-						{{ col }}
-					</td>
+					<td>{{ registration.id }}</td>
+					<td>{{ registration.label }}</td>
+					<td>{{ registration.createdAt }}</td>
+					<td>{{ registration.performerType }}</td>
+					<td>{{ registration.submittedAt }}</td>
+					<td>${{ registration.totalAmt }}.00</td>
+					<td>{{ registration.confirmation }}</td>
 					<td>
 						<BaseButton
-							class="btn btn-red"
+							v-if="!registration.confirmation"
+							class="text-red-600 ml-4"
 							@click="deleteRegistration(registration.id)"
-							>Delete</BaseButton
-						>
+							><font-awesome-icon icon="fa-regular fa-trash-can"
+						/></BaseButton>
 					</td>
 				</tr>
 			</tbody>
@@ -62,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, onBeforeMount, ref } from 'vue'
+	import { onBeforeMount, ref } from 'vue'
 	import { useQuery } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
 	import { useRouter } from 'vue-router'
@@ -88,7 +96,7 @@
 		id: string
 		label: string
 		performerType: keyof typeof EnumPerformerType
-		submittedAt: string
+		submittedAt: Date
 		totalAmt: number
 		payedAmt: number
 		transactionInfo: string
@@ -121,13 +129,10 @@
 
 	const router = useRouter()
 
-	const {
-		refetch: refetchRegistrations,
-		onResult: doneRegistrationQuery,
-		onError,
-	} = useQuery(REGISTRATION_QUERY, null, () => ({
-		fetchPolicy: 'no-cache',
-	}))
+	const { refetch: refetchRegistrations, onResult: doneRegistrationQuery } =
+		useQuery(REGISTRATION_QUERY, null, () => ({
+			fetchPolicy: 'no-cache',
+		}))
 	// const registrations = computed(() => result.value?.registrations ?? [])
 	doneRegistrationQuery((result) => {
 		let clone = Object.assign({}, result.data.registrations)
@@ -165,12 +170,13 @@
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
 				await schoolStore.loadSchool(registrationId)
+				await communityStore.loadCommunities(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
-				await communityStore.loadCommunity(registrationId)
+				await communityStore.loadCommunities(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
 				break
@@ -212,6 +218,7 @@
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
 				await schoolStore.createSchool(registrationId.value)
+				await communityStore.createCommunity(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
 				break
@@ -232,22 +239,11 @@
 </script>
 
 <style scoped>
-	table {
-		border-radius: 20px;
-		overflow: hidden;
-		border-collapse: collapse;
-	}
-
-	thead {
-		background-color: blue;
-		color: #fff;
-	}
-	tr {
-		border-bottom: 1px solid #c1c1c1;
-	}
-
-	td,
 	th {
-		padding: 7px 10px;
+		@apply py-1 px-4;
+	}
+
+	td {
+		@apply px-2 py-1 border-b border-slate-300;
 	}
 </style>

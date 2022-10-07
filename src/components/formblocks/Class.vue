@@ -1,5 +1,7 @@
 <template>
-	<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-4 items-start">
+	<div
+		v-auto-animate
+		class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-5 items-start">
 		<div class="col-span-3">
 			<!-- <div v-if="discError">{{ discError.message }}</div> -->
 			<BaseSelect
@@ -45,11 +47,7 @@
 				id="classNumber"
 				class="off"
 				:v-model="selectedClasses.classNumber"
-				:value="
-					selectedClasses.classNumber
-						? selectedClasses.classNumber
-						: (selectedClasses.classNumber = classSelection.classNumber)
-				"
+				:value="(selectedClasses.classNumber = classSelection.classNumber)"
 				label="Class Number"
 				type="text"
 				disabled
@@ -62,11 +60,7 @@
 				id="className"
 				class="off"
 				:v-model="selectedClasses.className"
-				:value="
-					selectedClasses.className
-						? selectedClasses.className
-						: (selectedClasses.className = className)
-				"
+				:value="(selectedClasses.className = className)"
 				label="Class Name"
 				type="text"
 				disabled />
@@ -81,19 +75,41 @@
 			<!-- @change="changeSelectionNumber(selectedClasses.numberOfSelections)" -->
 		</div>
 		<div class="col-span-12">
+			<h4 class="pb-2">Notes</h4>
+			<div v-if="chosenSubdiscipline.description" v-auto-animate>
+				<div class="font-bold">Subdiscipline</div>
+				<p class="text-sm pb-2">{{ chosenSubdiscipline.description }}</p>
+			</div>
+			<div v-if="chosenGradeLevel.description" v-auto-animate>
+				<div class="font-bold">Grade / Level</div>
+				<p class="text-sm pb-2">{{ chosenGradeLevel.description }}</p>
+			</div>
+			<div v-if="chosenCategory.description" v-auto-animate>
+				<div class="font-bold">Category</div>
+				<p class="text-sm pb-2">{{ chosenCategory.description }}</p>
+			</div>
+			<div v-if="classSelection.trophies" v-auto-animate>
+				<div class="font-bold">Trophy Eligibility</div>
+				<div v-for="trophy in classSelection.trophies" :key="trophy.id">
+					<div class="font-semibold text-sm">{{ trophy.name }}:</div>
+					<p class="text-sm pb-2">{{ trophy.description }}</p>
+				</div>
+			</div>
+		</div>
+		<div v-auto-animate class="col-span-12">
 			<WorksSelection
 				v-for="(selection, selectionIndex) in selectedClasses.selections"
-				:key="selectionIndex"
+				:key="selection.id"
 				v-model="selectedClasses.selections[selectionIndex]"
+				v-auto-animate
 				:work-number="selectionIndex" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-	import { computed, onMounted, watch, ref } from 'vue'
+	import { computed, onMounted, watch } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
-
 	import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
 	import LEVELS_QUERY from '@/graphql/queries/levels.query.gql'
@@ -104,6 +120,7 @@
 	import BaseSelect from '../base/BaseSelect.vue'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
+	import BaseSelect1 from '../base/BaseSelect.vue'
 
 	const props = defineProps({
 		modelValue: {
@@ -192,6 +209,11 @@
 			)
 		},
 		set: (newValue) => newValue,
+	})
+
+	watch(chosenSubdiscipline, (newSubdiscipline) => {
+		classesStore.registeredClasses[props.classIndex].price =
+			newSubdiscipline.price
 	})
 	function changeGradeLevelDropdown() {
 		selectedClasses.value.level = null

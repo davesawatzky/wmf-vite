@@ -1,8 +1,8 @@
 <template>
 	<form>
-		<div class="pb-8">
+		<div class="pt-8">
 			<h2 class="pb-4">School Information</h2>
-			<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2">
+			<div class="grid grid-cols-12 gap-x-3 gap-y-2">
 				<div class="col-span-6">
 					<BaseInput
 						v-model="schoolStore.schoolInfo.name"
@@ -19,56 +19,49 @@
 				</div>
 			</div>
 			<contact-info v-model="schoolStore.schoolInfo" school> </contact-info>
-
-			<h2 class="pb-4">Teacher Information</h2>
-			<div>
-				<contact-info v-model="teacherStore.teacherInfo" teacher schoolteacher>
-				</contact-info>
+			<div class="pt-8">
+				<h2 class="pb-4">Teacher Information</h2>
+				<div>
+					<contact-info
+						v-model="teacherStore.teacherInfo"
+						teacher
+						schoolteacher>
+					</contact-info>
+				</div>
 			</div>
 		</div>
-		<h2>Performance Information</h2>
-		<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2 items-center">
-			<div class="col-span-6">
-				<BaseInput
-					v-model="schoolStore.schoolInfo.earliestTime"
-					name="earliestTime"
-					label="Earliest time your group can perform"
-					type="time" />
-			</div>
-
-			<div class="col-span-6">
-				<BaseInput
-					v-model="schoolStore.schoolInfo.latestTime"
-					name="latestTime"
-					label="Latest time your group can perform"
-					type="time" />
-			</div>
-		</div>
-		<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-2">
-			<div class="col-span-12">
-				<!-- Change dates below into constants -->
-				<p>
-					List any date/time when you are unavailable for performance, including
-					school in-service days, using <strong>calendar dates</strong>, not
-					school cycle days, between February 23 and March 20, 2023.
-				</p>
-				<BaseTextarea
-					v-model="schoolStore.schoolInfo.unavailable"
-					name="unavailable"
-					label="Unavailable Dates/Times"
-					rows="5"></BaseTextarea>
-			</div>
-			<div class="col-span-12">
-				<p>
-					If there are any students in your group participating in other
-					festival classes, list the students' names so that we can do our best
-					to avoid scheduling conflicts:
-				</p>
-				<BaseTextarea
-					v-model="schoolStore.schoolInfo.conflictStudents"
-					name="conflictStudents"
-					label="Students participating in other classes."
-					rows="5"></BaseTextarea>
+		<h2>School Group Information</h2>
+		<div v-auto-animate>
+			<div
+				v-for="(community, communityIndex) in communityStore.communityInfo"
+				:key="communityIndex">
+				<div class="py-4">
+					<h4 class="pb-4">School Group #{{ communityIndex + 1 }}</h4>
+					<SchoolGroup v-model="communityStore.communityInfo[communityIndex]" />
+				</div>
+				<div class="pt-4">
+					<BaseButton
+						v-if="
+							communityIndex + 1 === communityStore.communityInfo.length
+								? true
+								: false
+						"
+						class="btn btn-blue mb-6"
+						@click="addSchoolGroup"
+						>Add School Group
+					</BaseButton>
+					<BaseButton
+						v-if="communityStore.communityInfo.length > 1 ? true : false"
+						id="index"
+						class="btn btn-red mb-6"
+						@click="removeSchoolGroup(communityIndex)"
+						>Remove School Group</BaseButton
+					>
+					<br /><br />
+					<svg viewBox="0 0 800 2">
+						<line x1="0" x2="800" stroke="black" />
+					</svg>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -76,15 +69,18 @@
 
 <script lang="ts" setup>
 	import { ref } from 'vue'
-	import { useAppStore } from '@/stores/appStore'
 	import { useSchool } from '@/stores/userSchool'
 	import { useTeacher } from '@/stores/userTeacher'
+	import { useCommunity } from '@/stores/userCommunity'
+	import { useRegistration } from '@/stores/userRegistration'
 	import { useForm } from 'vee-validate'
 	import * as yup from 'yup'
+	import SchoolGroup from '../components/formblocks/SchoolGroup.vue'
 
-	const appStore = useAppStore()
 	const teacherStore = useTeacher()
 	const schoolStore = useSchool()
+	const communityStore = useCommunity()
+	const registrationStore = useRegistration()
 
 	const divisions = ref([
 		{ name: 'Pembina Trails School Division', id: '1' },
@@ -95,6 +91,14 @@
 		{ name: 'River East-Transcona School Division', id: '6' },
 	])
 
+	async function addSchoolGroup() {
+		await communityStore.createCommunity(registrationStore.registrationId)
+	}
+	async function removeSchoolGroup(index: number) {
+		await communityStore.deleteCommunity(
+			communityStore.communityInfo[index].id!
+		)
+	}
 	const validationSchema = yup.object({
 		schoolName: yup
 			.string()
@@ -106,10 +110,6 @@
 			.trim()
 			.nullable()
 			.required('Enter the name of the school divison'),
-		earliestTime: yup.string().nullable().required('Enter a time'),
-		latestTime: yup.string().nullable().required('Enter a time'),
-		unavailable: yup.string().trim().nullable(),
-		conflictStudents: yup.string().trim().nullable(),
 	})
 
 	useForm({ validationSchema })

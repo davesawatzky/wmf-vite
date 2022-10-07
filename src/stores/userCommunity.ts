@@ -16,27 +16,40 @@ interface CommunityInfo {
 	groupSize: number
 	chaperones: number
 	wheelchairs: number
+	earliestTime: string
+	latestTime: string
+	unavailable: string
 	conflictPerformers: string
+	__typename?: string
 }
 
 provideApolloClient(apolloClient)
 
 export const useCommunity = defineStore('community', {
 	state: () => ({
-		communityInfo: {
-			id: '',
-			name: '',
-			groupSize: 10,
-			chaperones: 0,
-			wheelchairs: 0,
-			conflictPerformers: '',
-		} as CommunityInfo,
+		communityInfo: [] as CommunityInfo[],
 	}),
 
 	getters: {},
 	actions: {
-		addToStore(communityData: CommunityInfo) {
-			Object.assign(this.communityInfo, communityData)
+		addToStore(communityData: CommunityInfo | null) {
+			this.communityInfo.push({
+				id: '',
+				name: '',
+				groupSize: 10,
+				chaperones: 0,
+				wheelchairs: 0,
+				earliestTime: '',
+				latestTime: '',
+				unavailable: '',
+				conflictPerformers: '',
+			})
+			if (communityData) {
+				Object.assign(
+					this.communityInfo[this.communityInfo.length - 1],
+					communityData
+				)
+			}
 		},
 
 		async createCommunity(registrationId: string) {
@@ -46,14 +59,19 @@ export const useCommunity = defineStore('community', {
 					onDone: doneCommunityCreate,
 					onError,
 				} = useMutation(COMMUNITY_CREATE_MUTATION)
-				let clone = Object.assign({}, this.communityInfo)
+				this.addToStore(null)
+				let clone = Object.assign(
+					{},
+					this.communityInfo[this.communityInfo.length - 1]
+				)
 				delete clone.id
 				communityCreate({
 					registrationId,
 					community: clone,
 				})
 				doneCommunityCreate((result) => {
-					this.communityInfo.id = result.data.communityCreate.community.id
+					this.communityInfo[this.communityInfo.length - 1].id =
+						result.data.communityCreate.community.id
 					resolve(result)
 				})
 				onError((error) => {
@@ -62,18 +80,20 @@ export const useCommunity = defineStore('community', {
 			})
 		},
 
-		async loadCommunity(registrationId: string) {
+		async loadCommunities(registrationId: string) {
 			return new Promise((resolve, reject) => {
 				const { onResult: resultLoadCommunity, onError } = useQuery(
 					COMMUNITY_LOAD_QUERY,
 					{ registrationId },
-					{ fetchPolicy: 'network-only' }
+					{ fetchPolicy: 'no-cache' }
 				)
 				resultLoadCommunity((result) => {
-					let clone = Object.assign({}, result.data.registration.communities[0])
-					delete clone.__typename
-					this.addToStore(clone)
-					resolve(result)
+					let clone = structuredClone(result.data.registration.communities)
+					for (let i = 0; i < clone.length; i++) {
+						delete clone.__typename
+						this.addToStore(clone[i])
+					}
+					resolve(true)
 				})
 				onError((error) => {
 					reject(error)
@@ -81,19 +101,20 @@ export const useCommunity = defineStore('community', {
 			})
 		},
 
-		async updateCommunity() {
+		async updateCommunity(communityIndex: number, communityId: string) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: communityUpdate,
 					onDone,
 					onError,
 				} = useMutation(COMMUNITY_UPDATE_MUTATION, {
-					fetchPolicy: 'network-only',
+					fetchPolicy: 'no-cache',
 				})
-				let clone = Object.assign({}, this.communityInfo)
+				let clone = Object.assign({}, this.communityInfo[communityIndex])
 				delete clone.id
+				delete clone.__typename
 				communityUpdate({
-					communityId: this.communityInfo.id,
+					communityId,
 					community: clone,
 				})
 				onDone((result) => {
@@ -105,15 +126,25 @@ export const useCommunity = defineStore('community', {
 			})
 		},
 
+		async updateAllCommunities() {
+			let communityIndex = 0
+			for (let eachCommunity of this.communityInfo) {
+				await this.updateCommunity(communityIndex, eachCommunity.id!)
+				communityIndex++
+			}
+		},
+
 		async deleteCommunity(communityId: string) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: communityDelete,
-					onDone,
+					onDone: doneCommunityDelete,
 					onError,
 				} = useMutation(COMMUNITY_DELETE_MUTATION)
 				communityDelete({ communityId })
-				onDone((result) => {
+				doneCommunityDelete((result) => {
+					let index = this.communityInfo.map((e) => e.id).indexOf(communityId)
+					this.communityInfo.splice(index, 1)
 					resolve(result)
 				})
 				onError((error) => {

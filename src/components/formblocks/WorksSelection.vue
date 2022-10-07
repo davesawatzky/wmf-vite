@@ -1,40 +1,42 @@
 <template>
-	<h3 class="pt-6">Selection {{ workNumber + 1 }}</h3>
-	<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-8 pt-4 items-end">
-		<div class="col-span-7">
-			<BaseInput
-				v-model="work.title"
-				name="title"
-				label="Title (including Opus number if applicable)"
-				type="text" />
-		</div>
-		<div class="col-span-5">
-			<BaseInput
-				v-model="work.composer"
-				name="composer"
-				label="Composer"
-				type="text" />
-		</div>
-		<div class="col-span-5">
-			<BaseInput
-				v-model="work.largerWork"
-				name="largerWork"
-				label="Title of Larger Work (if applicable)"
-				type="text" />
-		</div>
-		<div class="col-span-4">
-			<BaseInput
-				v-model="work.movement"
-				name="movement"
-				label="Movement (if applicable)"
-				type="text" />
-		</div>
-		<div class="col-span-3">
-			<BaseInput
-				v-model="work.duration"
-				name="duration"
-				label="Duration"
-				type="text" />
+	<div>
+		<h3 class="pt-6">Selection {{ workNumber + 1 }}</h3>
+		<div class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-1 pt-4 items-end">
+			<div class="col-span-7">
+				<BaseInput
+					v-model="work.title"
+					name="title"
+					label="Title (including Opus number if applicable)"
+					type="text" />
+			</div>
+			<div class="col-span-5">
+				<BaseInput
+					v-model="work.composer"
+					name="composer"
+					label="Composer"
+					type="text" />
+			</div>
+			<div class="col-span-5">
+				<BaseInput
+					v-model="work.largerWork"
+					name="largerWork"
+					label="Title of Larger Work (if applicable)"
+					type="text" />
+			</div>
+			<div class="col-span-4">
+				<BaseInput
+					v-model="work.movement"
+					name="movement"
+					label="Movement (if applicable)"
+					type="text" />
+			</div>
+			<div class="col-span-3">
+				<BaseInput
+					v-model="work.duration"
+					name="duration"
+					label="Duration"
+					type="text" />
+			</div>
 		</div>
 	</div>
 </template>

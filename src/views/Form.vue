@@ -1,75 +1,50 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-	<BaseInput
-		v-model="registrationStore.registrations[0].label"
-		name="registrationLabel"
-		type="text" />
-	<div v-if="appStore.performerType === 'SOLO'" class="section">
+	<div>
+		<BaseInput
+			v-model="registrationStore.registrations[0].label"
+			class="text-3xl mb-6 h-12 p-6"
+			label="Registration Label"
+			name="registrationLabel"
+			:disabled="registrationStore.registrations[0].confirmation"
+			type="text" />
+
+		<div
+			v-if="!registrationStore.registrations[0].confirmation"
+			class="border border-spacing-1 shadow-md rounded-lg border-sky-500 p-6 mb-6">
+			<div class="text-center">
+				<button
+					v-for="(_, tab, index) in tabs"
+					:key="tab"
+					class="btn btn-blue mx-5"
+					:class="[
+						{ active: currentTab === tab },
+						currentTab === tab ? 'bg-sky-600' : '',
+					]"
+					@click="currentTab = String(tab)">
+					{{ index! + 1 }}. {{ tab }}
+				</button>
+			</div>
+			<KeepAlive>
+				<component :is="tabs[currentTab]"></component>
+			</KeepAlive>
+		</div>
+		<div
+			v-else
+			class="border border-spacing-1 shadow-md rounded-lg border-sky-500 p-6 mb-6">
+			<Summary />
+		</div>
 		<button
-			v-for="(_, tab) in soloTabs"
-			:key="tab"
-			:class="['tab-button', { active: currentTab === tab }]"
-			@click="currentTab = tab">
-			{{ tab }}
+			v-if="!registrationStore.registrations[0].confirmation"
+			class="btn btn-blue"
+			@click="saveRegistration()">
+			Save
 		</button>
-		<KeepAlive>
-			<component
-				:is="soloTabs[(currentTab as 'Contact Info' | 'Solo Classes')]"
-				class="tab"></component>
-		</KeepAlive>
 	</div>
-	<div v-else-if="appStore.performerType === 'GROUP'" class="section">
-		<button
-			v-for="(_, tab) in groupTabs"
-			:key="tab"
-			:class="['tab-button', { active: currentTab === tab }]"
-			@click="currentTab = tab">
-			{{ tab }}
-		</button>
-		<KeepAlive>
-			<component
-				:is="groupTabs[(currentTab as 'Contact Info' | 'Group Classes')]"
-				class="tab"></component>
-		</KeepAlive>
-	</div>
-	<div v-else-if="appStore.performerType === 'SCHOOL'" class="section">
-		<button
-			v-for="(_, tab) in schoolTabs"
-			:key="tab"
-			:class="['tab-button', { active: currentTab === tab }]"
-			@click="currentTab = tab">
-			{{ tab }}
-		</button>
-		<KeepAlive>
-			<component
-				:is="schoolTabs[(currentTab as 'School Info')]"
-				class="tab"></component>
-		</KeepAlive>
-	</div>
-	<div v-else-if="appStore.performerType === 'COMMUNITY'" class="section">
-		<button
-			v-for="(_, tab) in communityTabs"
-			:key="tab"
-			:class="['tab-button', { active: currentTab === tab }]"
-			@click="currentTab = tab">
-			{{ tab }}
-		</button>
-		<KeepAlive>
-			<component
-				:is="communityTabs[(currentTab as 'Community Group Info')]"
-				class="tab"></component>
-		</KeepAlive>
-	</div>
-	<BaseRouteButton type="button" to="Registrations" class="btn btn-blue"
-		>Registrations</BaseRouteButton
-	>
-	<BaseRouteButton type="button" to="Summary" class="btn btn-blue"
-		>Summary</BaseRouteButton
-	>
-	<button class="btn btn-blue" @click="saveRegistration()">Save</button>
 </template>
 
 <script setup lang="ts">
+	import type { Component } from 'vue'
 	import { ref } from 'vue'
 	import SoloContactInfo from './SoloContactInfo.vue'
 	import SoloClasses from './SoloClasses.vue'
@@ -79,7 +54,7 @@
 	import SchoolClasses from './SchoolClasses.vue'
 	import CommunityContactInfo from './CommunityInfo.vue'
 	import CommunityClasses from './CommunityClasses.vue'
-	import BaseInput from '@/components/base/BaseInput.vue'
+	import Summary from './Summary.vue'
 	import { useAppStore } from '@/stores/appStore'
 	import { useClasses } from '@/stores/userClasses'
 	import { useCommunity } from '@/stores/userCommunity'
@@ -88,6 +63,10 @@
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useSchool } from '@/stores/userSchool'
 	import { useTeacher } from '@/stores/userTeacher'
+
+	interface DynamicComponent {
+		[key: string]: Component
+	}
 
 	const registrationStore = useRegistration()
 	const performerStore = usePerformers()
@@ -98,37 +77,42 @@
 	const schoolStore = useSchool()
 	const teacherStore = useTeacher()
 
-	const currentTab = ref()
+	const currentTab = ref('')
+	let tabs = {} as DynamicComponent
 
 	switch (appStore.performerType) {
 		case 'SOLO':
 			currentTab.value = 'Contact Info'
+			tabs = {
+				'Contact Info': SoloContactInfo,
+				'Solo Classes': SoloClasses,
+				Summary: Summary,
+			}
 			break
 		case 'GROUP':
 			currentTab.value = 'Contact Info'
+			tabs = {
+				'Contact Info': GroupContactInfo,
+				'Group Classes': GroupClasses,
+				Summary: Summary,
+			}
 			break
 		case 'SCHOOL':
 			currentTab.value = 'School Info'
+			tabs = {
+				'School Info': SchoolInfo,
+				'School Classes': SchoolClasses,
+				Summary: Summary,
+			}
 			break
 		case 'COMMUNITY':
-			currentTab.value = 'Community Group Info'
+			currentTab.value = 'Community Info'
+			tabs = {
+				'Community Info': CommunityContactInfo,
+				'Community Classes': CommunityClasses,
+				Summary: Summary,
+			}
 			break
-	}
-	const soloTabs = {
-		'Contact Info': SoloContactInfo,
-		'Solo Classes': SoloClasses,
-	}
-	const groupTabs = {
-		'Contact Info': GroupContactInfo,
-		'Group Classes': GroupClasses,
-	}
-	const schoolTabs = {
-		'School Info': SchoolInfo,
-		'School Classes': SchoolClasses,
-	}
-	const communityTabs = {
-		'Community Group Info': CommunityContactInfo,
-		'Community Group Classes': CommunityClasses,
 	}
 
 	async function saveRegistration() {
@@ -152,13 +136,17 @@
 				appStore.performerType = 'SCHOOL'
 				await registrationStore.updateRegistration()
 				await schoolStore.updateSchool()
+				await communityStore.updateAllCommunities()
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
 				await registrationStore.updateRegistration()
-				await communityStore.updateCommunity()
+				await communityStore.updateCommunity(
+					0,
+					communityStore.communityInfo[0].id!
+				)
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
 				break
@@ -166,36 +154,4 @@
 	}
 </script>
 
-<style scoped>
-	.section {
-		font-family: sans-serif;
-		border: 1px solid #eee;
-		border-radius: 2px;
-		padding: 20px 30px;
-		margin-top: 1em;
-		margin-bottom: 40px;
-		user-select: none;
-		overflow-x: auto;
-	}
-
-	.tab-button {
-		padding: 6px 10px;
-		border-top-left-radius: 3px;
-		border-top-right-radius: 3px;
-		border: 1px solid #ccc;
-		cursor: pointer;
-		background: #f0f0f0;
-		margin-bottom: -1px;
-		margin-right: -1px;
-	}
-	.tab-button:hover {
-		background: #e0e0e0;
-	}
-	.tab-button.active {
-		background: #e0e0e0;
-	}
-	.tab {
-		border: 1px solid #ccc;
-		padding: 10px;
-	}
-</style>
+<style scoped></style>

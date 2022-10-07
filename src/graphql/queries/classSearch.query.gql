@@ -1,19 +1,24 @@
 query ClassSearch($classSearchArgs: ClassSearchArgs!) {
-  classSearch(classSearchArgs: $classSearchArgs) {
-    id
-    classNumber
-    maxSelection
-    minSelection
-    requiredSelection
-    SGSlabel
-    subdiscipline {
-      name
-    }
-    level {
-      name
-    }
-    category {
-      name
-    }
-  }
+	classSearch(classSearchArgs: $classSearchArgs) {
+		id
+		classNumber
+		maxSelection
+		minSelection
+		requiredSelection
+		SGSlabel
+		subdiscipline {
+			name
+		}
+		level {
+			name
+		}
+		category {
+			name
+		}
+		trophies {
+			id
+			name
+			description
+		}
+	}
 }

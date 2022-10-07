@@ -1,7 +1,8 @@
 query Categories($levelId: ID, $subdisciplineId: ID) {
-  categories(levelID: $levelId, subdisciplineID: $subdisciplineId) {
-    id
-    name
-    requiredComposer
-  }
+	categories(levelID: $levelId, subdisciplineID: $subdisciplineId) {
+		id
+		name
+		description
+		requiredComposer
+	}
 }

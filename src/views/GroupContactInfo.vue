@@ -1,46 +1,49 @@
 <template>
 	<form>
-		<div class="pb-8">
+		<div v-auto-animate class="py-8">
 			<h2 class="pb-4">Group Information</h2>
-			<div>
-				<BaseInput
-					v-model="groupStore.groupInfo.name"
-					name="groupname"
-					label="Group Name"
-					type="text" />
-			</div>
-			<div>
-				<BaseInput
-					v-model="groupStore.groupInfo.numberOfPerformers"
-					:value="
-						(groupStore.groupInfo.numberOfPerformers =
-							performerStore.numberOfPerformers)
-					"
-					disabled
-					class="off"
-					aria-disabled
-					name="numberOfPerformers"
-					label="Number of Performers"
-					type="number" />
+			<div class="grid grid-cols-4 gap-5">
+				<div class="col-span-2">
+					<BaseInput
+						v-model="groupStore.groupInfo.name"
+						name="groupname"
+						label="Group Name"
+						type="text" />
+
+					<BaseInput
+						v-model="groupStore.groupInfo.numberOfPerformers"
+						:value="
+							(groupStore.groupInfo.numberOfPerformers =
+								performerStore.numberOfPerformers)
+						"
+						disabled
+						class="off"
+						aria-disabled
+						name="numberOfPerformers"
+						label="Number of Performers"
+						type="number" />
+				</div>
+				<div
+					class="col-span-2 border border-spacing-1 border-sky-500 shadow-md rounded-lg px-6 pt-6">
+					<h3>Group Type</h3>
+					<div>
+						<BaseRadioGroup
+							v-model="groupStore.groupInfo.groupType"
+							name="groupType"
+							:options="typeOptions" />
+					</div>
+				</div>
 			</div>
 
-			<h3>Group Type</h3>
-			<div>
-				<BaseRadioGroup
-					v-model="groupStore.groupInfo.groupType"
-					name="groupType"
-					:options="typeOptions" />
-			</div>
-
-			<div class="pb-8">
-				<h3 class="pb-4">Teacher Information</h3>
+			<div class="py-8">
+				<h2 class="pb-4">Teacher Information</h2>
 				<ContactInfo v-model="teacherStore.teacherInfo" teacher />
 			</div>
-			<h3>Performer Information</h3>
+			<h2>Performer Information</h2>
 			<div
 				v-for="(person, personIndex) in performerStore.performer"
 				:key="personIndex">
-				<div class="pb-8">
+				<div class="py-4">
 					<h4 class="pb-4">Performer #{{ personIndex + 1 }}</h4>
 					<ContactInfo
 						v-model="performerStore.performer[personIndex]"
@@ -51,14 +54,14 @@
 						v-if="
 							personIndex + 1 === performerStore.performer.length ? true : false
 						"
-						class="btn btn-blue"
+						class="btn btn-blue mb-6"
 						@click="addPerformer"
 						>Add Performer
 					</BaseButton>
 					<BaseButton
 						v-if="performerStore.performer.length > 1 ? true : false"
 						id="index"
-						class="btn btn-red"
+						class="btn btn-red mb-6"
 						@click="removePerformer(personIndex)"
 						>Remove Performer</BaseButton
 					>
@@ -78,7 +81,7 @@
 	import { useGroup } from '@/stores/userGroup'
 	import { usePerformers } from '@/stores/userPerformer'
 	import { useRegistration } from '@/stores/userRegistration'
-	import { useForm, useField } from 'vee-validate'
+	import { useForm } from 'vee-validate'
 	import * as yup from 'yup'
 
 	const registrationStore = useRegistration()
@@ -124,19 +127,6 @@
 		level: yup.string().max(20).nullable().required(),
 		otherClasses: yup.string().nullable(),
 	})
-
-	// const validateGroupType = {
-	// 	groupType: (value: any) => {
-	// 		if (value) {
-	// 			return true
-	// 		}
-	// 		return 'Please select a group type'
-	// 	},
-	// }
-	// const { value: groupType, errorMessage } = useField(
-	// 	'groupStore.groupInfo.groupType',
-	// 	validateGroupType
-	// )
 
 	useForm({ validationSchema })
 </script>

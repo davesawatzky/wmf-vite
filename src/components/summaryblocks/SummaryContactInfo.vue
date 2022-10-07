@@ -1,54 +1,40 @@
 <template>
 	<div>
 		<h4>{{ fullName }}</h4>
-		<p>{{ apartment }} - {{ streetNumber }} {{ streetName }}</p>
-		<p>
-			{{ city }},
-			{{ province }}
-		</p>
-		<p>{{ postalCode }}</p>
-		<p>Phone: {{ phone }}</p>
-		<p>Email: {{ email }}</p>
+		<div v-if="contact.age">Age: {{ contact.age }}</div>
+		<div>Address:</div>
+		<div v-if="contact.apartment">
+			{{ contact.apartment }} - {{ contact?.streetNumber }}
+			{{ contact.streetName }}
+		</div>
+		<div v-else>
+			{{ contact.streetNumber }}
+			{{ contact.streetName }}
+		</div>
+		<div>
+			{{ contact.city }},
+			{{ contact.province }}
+		</div>
+		<div>{{ contact.postalCode }}</div>
+		<div>Phone: {{ contact.phone }}</div>
+		<div v-if="contact.email">Email: {{ contact.email }}</div>
+		<div v-if="contact.instrument">Instrument: {{ contact?.instrument }}</div>
+		<div v-if="contact.level">Grade Level: {{ contact.level }}</div>
+		<div v-if="contact.otherClasses">
+			Participating in other classes: {{ contact.otherClasses }}
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 	defineProps({
+		contact: {
+			type: Object,
+			required: true,
+		},
 		fullName: {
 			type: String,
-			default: '',
-		},
-		apartment: {
-			type: String,
-			default: '',
-		},
-		streetNumber: {
-			type: String,
-			default: '',
-		},
-		streetName: {
-			type: String,
-			default: '',
-		},
-		city: {
-			type: String,
-			default: '',
-		},
-		province: {
-			type: String,
-			default: '',
-		},
-		postalCode: {
-			type: String,
-			default: '',
-		},
-		phone: {
-			type: String,
-			default: '',
-		},
-		email: {
-			type: String,
-			default: '',
+			required: true,
 		},
 	})
 </script>

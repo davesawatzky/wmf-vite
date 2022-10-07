@@ -1,13 +1,13 @@
 @tailwind base;
 @tailwind components;
 .btn {
-	@apply rounded-lg h-10 w-24 m-2 text-center align-middle shadow-lg hover:ring-2;
+	@apply rounded-lg h-10 w-40 m-2 text-center align-middle hover:ring-2;
 }
 .btn-blue {
-	@apply bg-blue-700 text-white hover:ring-blue-800 shadow-blue-400;
+	@apply bg-sky-700 text-white hover:bg-sky-600 hover:ring-sky-400 active:bg-sky-500;
 }
 .btn-red {
-	@apply bg-rose-800 text-white hover:ring-rose-700 shadow-rose-400;
+	@apply bg-rose-800 text-white hover:bg-red-700 hover:ring-rose-400 active:bg-red-600;
 }
 
 @tailwind utilities;
@@ -31,6 +31,9 @@
 	h1 {
 		@apply text-5xl;
 	}
+	p {
+		@apply py-2;
+	}
 
 	input[type='text'],
 	input[type='email'],
@@ -47,20 +50,23 @@
 	select[multiple],
 	textarea,
 	select {
-		@apply rounded-lg w-full border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+		@apply rounded-lg w-full border-gray-400 shadow-md focus:border-sky-500 focus:ring-sky-500;
+	}
+
+	input[type='select'] {
 	}
 
 	input[type='checkbox'],
 	input[type='radio'] {
-		@apply rounded border-gray-300 text-blue-600 focus:ring-blue-500;
+		@apply border-gray-400 text-sky-600 focus:ring-sky-500 shadow-md;
 	}
 
 	.off {
-		@apply disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none;
+		@apply disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-400 disabled:shadow-md;
 	}
 
 	label {
-		@apply pl-3 font-medium text-gray-700 border-none;
+		@apply pl-3 font-bold text-gray-500 border-none text-sm;
 	}
 	.errorMessage {
 		@apply border-none h-5 text-xs;

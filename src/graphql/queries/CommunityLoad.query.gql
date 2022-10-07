@@ -6,6 +6,9 @@ query CommunityInfo($registrationId: ID!) {
 			groupSize
 			chaperones
 			wheelchairs
+			earliestTime
+			latestTime
+			unavailable
 			conflictPerformers
 		}
 	}

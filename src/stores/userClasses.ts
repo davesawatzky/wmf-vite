@@ -22,6 +22,8 @@ interface RegisteredClass {
 	level: string
 	category: string
 	numberOfSelections: number
+	price: number
+	schoolCommunityId?: number
 	__typename?: string
 	selections?: [Selections]
 }
@@ -44,8 +46,8 @@ export const useClasses = defineStore('registeredClasses', {
 	getters: {},
 	actions: {
 		/**
-		 * Add empty class variables to store. Used when loading
-		 * existing classes
+		 * Add empty class variables to store. Used when requiring a new
+		 * class entry existing classes
 		 */
 		addClassToStore(registeredClass: RegisteredClass | null) {
 			this.registeredClasses.push(<RegisteredClass>{
@@ -57,6 +59,8 @@ export const useClasses = defineStore('registeredClasses', {
 				level: '',
 				category: '',
 				numberOfSelections: 0,
+				price: 0,
+				schoolCommunityId: 0,
 				selections: [] as Selections[],
 			})
 			if (registeredClass) {
@@ -80,7 +84,7 @@ export const useClasses = defineStore('registeredClasses', {
 				largerWork: '',
 				movement: '',
 				composer: '',
-				duration: '3:00',
+				duration: '0:00',
 			})
 			if (classSelection) {
 				Object.assign(
