@@ -2,7 +2,7 @@
 	<form>
 		<div class="pt-8">
 			<div>
-				<h2 class="pb-4">Solo Performer Information</h2>
+				<h2 class="pb-4">Performer Information</h2>
 				<div v-if="performerStore.performer[0]">
 					<ContactInfo v-model="performerStore.performer[0]" />
 				</div>

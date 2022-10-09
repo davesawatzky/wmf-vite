@@ -6,8 +6,8 @@
 			:value="value"
 			v-bind="{ ...$attrs }"
 			@change="$emit('update:modelValue', value)" />
-		<label v-if="label">{{ label }}</label>
-		<p v-if="description">{{ description }}</p>
+		<label v-if="label" class="pl-2">{{ label }}</label>
+		<p v-if="description" class="text-sm sm:text-md">{{ description }}</p>
 	</div>
 </template>
 

@@ -1,10 +1,7 @@
 <template>
-	<label
-		v-if="label"
-		class="after:content-['*'] after:ml-0.5 after:text-red-500"
-		:for="uuid"
-		>{{ label }}</label
-	>
+	<div class="ml-2">
+		<label v-if="label" :for="uuid">{{ label }}</label>
+	</div>
 	<input
 		:id="uuid"
 		v-bind="{ ...$attrs }"

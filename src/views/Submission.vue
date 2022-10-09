@@ -20,8 +20,9 @@
 			with any communication regarding your application.
 		</p>
 		<p>
-			Payment may be made by cheque or e-transfer to the Winnipeg Music
-			Festival. Please include the confirmation number as a memo when submitting
+			Payment may be made by cheque or e-transfer to the Winnipeg Music Festival
+			(<a href="mailto:wmf@mts.net"><strong>wmf@mts.net</strong></a
+			>). Please include the confirmation number as a memo when submitting
 			payment.
 		</p>
 		<h3 class="pt-6 text-center">
@@ -41,14 +42,16 @@
 				to="Registrations"
 				>Cancel</BaseRouteButton
 			>
-			<div v-if="submissionComplete">
-				<h3 class="mx-auto">Confirmation Number</h3>
-				<h3 class="mx-auto">{{ confirmationNumber }}</h3>
-				<h4 class="mx-auto">{{ date }}</h4>
+			<div v-if="submissionComplete" class="pb-8">
+				<strong>
+					<h3 class="mx-auto">Confirmation Number</h3>
+					<h3 class="mx-auto">{{ confirmationNumber }}</h3>
+					<h4 class="mx-auto">{{ formattedDate }}</h4>
+				</strong>
 			</div>
 			<BaseRouteButton
 				v-if="submissionComplete"
-				class="btn btn-blue"
+				class="btn btn-blue h-14"
 				to="Registrations"
 				>Return to Registrations</BaseRouteButton
 			>
@@ -57,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+	import { DateTime } from 'luxon'
 	import { ref } from 'vue'
 	import { random } from 'lodash'
 	import { useRegistration } from '@/stores/userRegistration'
@@ -67,10 +71,11 @@
 	const submissionComplete = ref(false)
 
 	let date = new Date()
+	let formattedDate = DateTime.now().toLocaleString(DateTime.DATETIME_MED)
 
 	async function submitRegistration() {
 		confirmationNumber.value =
-			'WMF-' + registrationStore.registrationId + '-' + random(1000, 999)
+			'WMF-' + registrationStore.registrationId + '-' + random(1000, 9999)
 		registrationStore.registrations[0].submittedAt = date
 		registrationStore.registrations[0].confirmation = confirmationNumber.value
 		await registrationStore.updateRegistration()

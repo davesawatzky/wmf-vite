@@ -96,7 +96,10 @@
 		<h3 class="pt-8 pb-4">Class Summary</h3>
 		<SummaryTable />
 	</div>
-	<BaseButton class="btn btn-blue" @click="submitRegistration"
+	<BaseButton
+		v-if="!registrationStore.registrations[0].confirmation"
+		class="btn btn-blue"
+		@click="submitRegistration"
 		>Prepare and Submit</BaseButton
 	>
 </template>
@@ -119,6 +122,7 @@
 	const communityStore = useCommunity()
 	const classesStore = useClasses()
 	const appStore = useAppStore()
+	const registrationStore = useRegistration()
 
 	function submitRegistration() {
 		router.push('Submission')

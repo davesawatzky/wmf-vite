@@ -1,72 +1,75 @@
 <template>
 	<form>
-		<div class="grid grid-cols-12 gap-x-3 gap-y-1 items-start">
-			<div v-if="!school" class="col-span-5">
+		<div class="grid grid-cols-12 gap-x-3 gap-y-1 items-end">
+			<div v-if="!school" class="col-span-12 sm:col-span-5">
 				<BaseInput
 					v-model="contact.firstName"
+					required
 					name="firstName"
 					type="text"
 					label="First Name" />
 			</div>
-			<div v-if="!school" class="col-span-4">
+			<div v-if="!school" class="col-span-12 sm:col-span-4">
 				<BaseInput
 					v-model="contact.lastName"
 					name="lastName"
 					type="text"
 					label="Last Name" />
 			</div>
-			<div v-if="!teacher && !school && !schoolteacher" class="col-span-3">
+			<div
+				v-if="!teacher && !school && !schoolteacher"
+				class="col-span-12 sm:col-span-3">
 				<BaseInput
 					v-model.number="contact.age"
 					name="age"
 					type="number"
 					:label="'Age on Dec. 31, ' + currentYear" />
 			</div>
-			<div v-else class="col-span-3"></div>
+			<div v-else class="col-span-12 sm:col-span-3"></div>
 
-			<div v-if="!schoolteacher && !school" class="col-span-3">
+			<div v-if="!schoolteacher && !school" class="col-span-6 sm:col-span-3">
 				<BaseInput
 					v-model="contact.apartment"
 					name="apartment"
 					type="text"
 					label="Apt." />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-3">
+			<div v-if="!schoolteacher" class="col-span-6 sm:col-span-3">
 				<BaseInput
 					v-model="contact.streetNumber"
 					name="streetNumber"
 					type="text"
 					label="Street Number" />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-6">
+			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.streetName"
 					name="streetName"
 					type="text"
 					label="Street Name" />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-7">
+			<div v-if="!schoolteacher" class="col-span-8 sm:col-span-7">
 				<BaseInput
 					v-model="contact.city"
 					name="city"
 					type="text"
 					label="City/Town" />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-2">
+			<div v-if="!schoolteacher" class="col-span-4 sm:col-span-2 self-start">
 				<BaseSelect
 					v-model="contact.province"
 					name="province"
 					label="Province"
 					:options="provinces" />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-3">
+			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-3">
 				<BaseInput
 					v-model="contact.postalCode"
 					name="postalCode"
 					type="text"
 					label="Postal Code" />
 			</div>
-			<div class="col-span-5">
+			<div class="col-span-12 sm:col-span-5">
 				<BaseInput
 					v-model="contact.phone"
 					placeholder="(___) ___-____"
@@ -74,7 +77,7 @@
 					type="tel"
 					label="Phone Number" />
 			</div>
-			<div v-if="!school" class="col-span-7">
+			<div v-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
 					v-model="contact.email"
 					placeholder="@"
@@ -83,14 +86,14 @@
 					label="Email" />
 			</div>
 
-			<div v-if="groupperformer" class="col-span-6">
+			<div v-if="groupperformer" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.instrument"
 					name="instrument"
 					type="text"
 					label="Instrument" />
 			</div>
-			<div v-if="groupperformer" class="col-span-6">
+			<div v-if="groupperformer" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.level"
 					name="level"

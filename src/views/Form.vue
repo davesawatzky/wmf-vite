@@ -11,7 +11,7 @@
 
 		<div
 			v-if="!registrationStore.registrations[0].confirmation"
-			class="border border-spacing-1 shadow-md rounded-lg border-sky-500 p-6 mb-6">
+			class="border border-spacing-1 shadow-md rounded-lg border-sky-500 p-2 mb-6">
 			<div class="text-center">
 				<button
 					v-for="(_, tab, index) in tabs"
@@ -52,7 +52,7 @@
 	import GroupClasses from './GroupClasses.vue'
 	import SchoolInfo from './SchoolInfo.vue'
 	import SchoolClasses from './SchoolClasses.vue'
-	import CommunityContactInfo from './CommunityInfo.vue'
+	import CommunityInfo from './CommunityInfo.vue'
 	import CommunityClasses from './CommunityClasses.vue'
 	import Summary from './Summary.vue'
 	import { useAppStore } from '@/stores/appStore'
@@ -108,7 +108,7 @@
 		case 'COMMUNITY':
 			currentTab.value = 'Community Info'
 			tabs = {
-				'Community Info': CommunityContactInfo,
+				'Community Info': CommunityInfo,
 				'Community Classes': CommunityClasses,
 				Summary: Summary,
 			}

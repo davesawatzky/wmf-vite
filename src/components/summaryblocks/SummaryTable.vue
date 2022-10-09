@@ -1,12 +1,12 @@
 <template>
 	<div v-auto-animate class="w-full mb-4">
 		<table
-			class="table-auto border-b border-sky-500 divide-y divide-sky-600 w-full border-collapse">
+			class="table-auto border-b border-sky-500 divide-y divide-sky-600 w-full border-collapse text-xs sm:text-base">
 			<thead class="">
 				<tr class="bg-sky-500 text-white">
 					<th class="rounded-tl-lg text-left" scope="col">Class Number</th>
 					<th class="text-left" scope="col">Class Name</th>
-					<th class="text-left" scope="col">Grade/Level/Age</th>
+					<th class="text-left" scope="col">Level</th>
 					<th class="text-left" scope="col">Category</th>
 					<th class="rounded-tr-lg text-left" scope="col">Price</th>
 				</tr>
@@ -43,11 +43,11 @@
 	const total = computed(() => {
 		let cost = 0
 		for (let registeredClass of classesStore.registeredClasses) {
-			cost += registeredClass.price
+			cost += registeredClass.price ?? 0
 		}
-		return cost
+		return +cost
 	})
-	registrationStore.registrations[0].totalAmt = total.value
+	registrationStore.registrations[0].totalAmt = total.value ?? 0
 </script>
 
 <style scoped>

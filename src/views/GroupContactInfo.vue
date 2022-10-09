@@ -2,8 +2,8 @@
 	<form>
 		<div v-auto-animate class="py-8">
 			<h2 class="pb-4">Group Information</h2>
-			<div class="grid grid-cols-4 gap-5">
-				<div class="col-span-2">
+			<div class="grid grid-cols-6 gap-5">
+				<div class="col-span-6 md:col-span-3">
 					<BaseInput
 						v-model="groupStore.groupInfo.name"
 						name="groupname"
@@ -24,7 +24,7 @@
 						type="number" />
 				</div>
 				<div
-					class="col-span-2 border border-spacing-1 border-sky-500 shadow-md rounded-lg px-6 pt-6">
+					class="col-span-6 md:col-span-3 border border-spacing-1 border-sky-500 shadow-md rounded-lg px-6 pt-6">
 					<h3>Group Type</h3>
 					<div>
 						<BaseRadioGroup

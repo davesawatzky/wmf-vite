@@ -3,7 +3,7 @@
 		<h2 class="text-center">Welcome to the Registration Website</h2>
 		<form
 			v-auto-animate
-			class="max-w-md w-1/2 border rounded-lg border-sky-500 p-4 mx-auto mt-8">
+			class="w-full sm:w-3/4 max-w-sm border rounded-lg border-sky-500 p-4 mx-auto mt-8">
 			<h3 class="loginheading">Sign in</h3>
 			<!-- <BaseInput v-if="!isLogin" v-model></BaseInput> -->
 
@@ -34,7 +34,7 @@
 				<BaseButton
 					class="w-full my-4 p-3 rounded-lg btn-blue"
 					@click="signin()"
-					>Log In Account
+					>Log In
 				</BaseButton>
 				<br />
 				<p class="text-center">

@@ -1,52 +1,57 @@
 <template>
 	<form>
-		<div class="pb-8">
+		<div v-auto-animate class="pt-8">
 			<h2 class="pb-4">Community Group Information</h2>
-			<div>
-				<BaseInput
-					v-model="communityStore.communityInfo[0].name"
-					name="name"
-					type="text"
-					label="Community Group Name" />
+			<div class="grid grid-cols-12 gap-x-3 gap-y-2">
+				<div class="col-span-12">
+					<BaseInput
+						v-model="communityStore.communityInfo[0].name"
+						name="name"
+						type="text"
+						label="Community Group Name" />
+				</div>
+				<div class="col-span-12 sm:col-span-4">
+					<BaseInput
+						v-model.number="communityStore.communityInfo[0].groupSize"
+						name="groupSize"
+						type="number"
+						label="Group Size" />
+				</div>
+				<div class="col-span-12 sm:col-span-4">
+					<BaseInput
+						v-model.number="communityStore.communityInfo[0].chaperones"
+						name="numberOfChaperones"
+						type="number"
+						label="Number of chaperones" />
+				</div>
+				<div class="col-span-12 sm:col-span-4">
+					<BaseInput
+						v-model.number="communityStore.communityInfo[0].wheelchairs"
+						name="numberOfWheelchairs"
+						type="number"
+						label="Number of wheelchairs" />
+				</div>
 			</div>
-			<div>
-				<BaseInput
-					v-model.number="communityStore.communityInfo[0].groupSize"
-					name="groupSize"
-					type="number"
-					label="Group Size" />
-			</div>
-			<div>
-				<BaseInput
-					v-model.number="communityStore.communityInfo[0].chaperones"
-					name="numberOfChaperones"
-					type="number"
-					label="Number of chaperones" />
-			</div>
-			<div>
-				<BaseInput
-					v-model.number="communityStore.communityInfo[0].wheelchairs"
-					name="numberOfWheelchairs"
-					type="number"
-					label="Number of wheelchairs" />
-			</div>
+		</div>
+		<div class="pt-8">
 			<h2 class="pb-4">Conductor/Contact Information</h2>
 			<div>
 				<contact-info v-model="teacherStore.teacherInfo" teacher />
 			</div>
-		</div>
-		<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2 items-start">
-			<div class="col-span-12">
-				<p>
-					If there are any performers in the group participating in other
-					festival classes, list the performers' names so that we can do our
-					best to avoid scheduling conflicts:
-				</p>
-				<BaseTextarea
-					v-model="communityStore.communityInfo[0].conflictPerformers"
-					name="conflictPerformers"
-					label="Performers participating in other classes."
-					rows="5"></BaseTextarea>
+
+			<div class="grid grid-rows-1 grid-cols-12 gap-x-3 gap-y-2 items-start">
+				<div class="col-span-12">
+					<p>
+						If there are any performers in the group participating in other
+						festival classes, list the performers' names so that we can do our
+						best to avoid scheduling conflicts:
+					</p>
+					<BaseTextarea
+						v-model="communityStore.communityInfo[0].conflictPerformers"
+						name="conflictPerformers"
+						label="Performers participating in other classes."
+						rows="5"></BaseTextarea>
+				</div>
 			</div>
 		</div>
 	</form>

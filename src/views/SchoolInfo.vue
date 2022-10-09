@@ -1,16 +1,16 @@
 <template>
 	<form>
-		<div class="pt-8">
+		<div v-auto-animate class="pt-8">
 			<h2 class="pb-4">School Information</h2>
 			<div class="grid grid-cols-12 gap-x-3 gap-y-2">
-				<div class="col-span-6">
+				<div class="col-span-12 sm:col-span-6">
 					<BaseInput
 						v-model="schoolStore.schoolInfo.name"
 						name="schoolName"
 						type="text"
 						label="School Name" />
 				</div>
-				<div class="col-span-6">
+				<div class="col-span-12 sm:col-span-6">
 					<BaseSelect
 						v-model="schoolStore.schoolInfo.division"
 						name="schoolDivision"

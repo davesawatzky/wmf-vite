@@ -1,9 +1,6 @@
 <template>
-	<div
-		v-auto-animate
-		class="grid grid-rows-2 grid-cols-12 gap-x-3 gap-y-5 items-start">
-		<div class="col-span-3">
-			<!-- <div v-if="discError">{{ discError.message }}</div> -->
+	<div v-auto-animate class="grid grid-cols-12 gap-x-3 gap-y-5 items-end">
+		<div class="col-span-6 lg:col-span-2">
 			<BaseSelect
 				id=""
 				v-model="selectedClasses.discipline"
@@ -11,8 +8,7 @@
 				:options="disciplines"
 				@change="changeSubdisciplineDropdown()" />
 		</div>
-		<div class="col-span-3">
-			<!-- <div v-if="subdiscError">{{ subdiscError.message }}</div> -->
+		<div class="col-span-6 lg:col-span-3">
 			<BaseSelect
 				v-model="selectedClasses.subdiscipline"
 				:class="selectedClasses.discipline ? '' : 'off'"
@@ -21,8 +17,7 @@
 				:disabled="!selectedClasses.discipline"
 				@change="changeGradeLevelDropdown()" />
 		</div>
-		<div class="col-span-3">
-			<!-- <div v-if="levelError">{{ levelError.message }}</div> -->
+		<div class="col-span-6 lg:col-span-3">
 			<BaseSelect
 				v-model="selectedClasses.level"
 				:class="selectedClasses.subdiscipline ? '' : 'off'"
@@ -31,8 +26,7 @@
 				:disabled="!selectedClasses.subdiscipline"
 				@change="changeCategoryDropdown()" />
 		</div>
-		<div class="col-span-3">
-			<!-- <div v-if="catError">{{ catError.message }}</div> -->
+		<div class="col-span-6 lg:col-span-4">
 			<BaseSelect
 				v-model="selectedClasses.category"
 				:class="selectedClasses.level ? '' : 'off'"
@@ -41,7 +35,15 @@
 				:disabled="!selectedClasses.level"
 				@change="changeClass()" />
 		</div>
-		<div class="col-span-2">
+		<div class="col-span-6 md:col-span-2">
+			<BaseSelect
+				v-model.number="selectedClasses.numberOfSelections"
+				:class="selectedClasses.category ? '' : 'off'"
+				label="Selections"
+				:options="numberOfAllowedWorks"
+				:disabled="!selectedClasses.category" />
+		</div>
+		<div class="col-span-6 md:col-span-2">
 			<label for="classNumber">Class Number</label>
 			<input
 				id="classNumber"
@@ -53,8 +55,7 @@
 				disabled
 				aria-disabled="true" />
 		</div>
-		<div class="col-span-8">
-			<!-- <div v-if="classError">{{ classError.message }}</div> -->
+		<div class="col-span-12 md:col-span-8">
 			<label for="className">Class Name</label>
 			<input
 				id="className"
@@ -65,15 +66,7 @@
 				type="text"
 				disabled />
 		</div>
-		<div class="col-span-2">
-			<BaseSelect
-				v-model.number="selectedClasses.numberOfSelections"
-				:class="selectedClasses.category ? '' : 'off'"
-				label="Selections"
-				:options="numberOfAllowedWorks"
-				:disabled="!selectedClasses.category" />
-			<!-- @change="changeSelectionNumber(selectedClasses.numberOfSelections)" -->
-		</div>
+
 		<div class="col-span-12">
 			<h4 class="pb-2">Notes</h4>
 			<div v-if="chosenSubdiscipline.description" v-auto-animate>

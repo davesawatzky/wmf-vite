@@ -1,6 +1,6 @@
 <template>
 	<div v-auto-animate>
-		<div class="border border-sky-500 rounded-lg text-center mt-20">
+		<div class="border border-sky-500 rounded-lg text-center mt-5 md:mt-20">
 			<h3>Create new Registration Form</h3>
 			<BaseButton class="btn btn-blue" @click="newRegistration('SOLO')"
 				>Solo</BaseButton
@@ -16,25 +16,27 @@
 			>
 		</div>
 		<br /><br />
-		<table v-auto-animate class="bg-white table-auto border-collapse w-full">
+		<table
+			v-auto-animate
+			class="bg-white table_auto border-collapse w-full text-xs sm:text-base">
 			<thead class="bg-sky-500 text-white">
 				<tr class="py-2 px-4">
 					<th class="rounded-tl-lg">Edit</th>
-					<th>ID</th>
+					<th v-if="sm">ID</th>
 					<th>Label</th>
-					<th>Created</th>
+					<th v-if="lg">Created</th>
 					<th>Type</th>
-					<th>Submitted</th>
+					<th v-if="md">Submitted</th>
 					<th>Total</th>
-					<th>Confirmation#</th>
-					<th class="rounded-tr-lg">Delete</th>
+					<th>Conf. #</th>
+					<th class="rounded-tr-lg">Del</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="(registration, index) in registrations" :key="index">
 					<td>
 						<BaseButton
-							class="text-sky-600 ml-4"
+							class="text-sky-600 sm:ml-4 ml-3"
 							@click="
 								loadRegistration(
 									registration.id,
@@ -48,11 +50,15 @@
 							<font-awesome-icon v-else icon="fa-solid fa-eye"
 						/></BaseButton>
 					</td>
-					<td>{{ registration.id }}</td>
+					<td v-if="sm">{{ registration.id }}</td>
 					<td>{{ registration.label }}</td>
-					<td>{{ registration.createdAt }}</td>
+					<td v-if="lg">
+						{{ dateFunction(registration.createdAt) }}
+					</td>
 					<td>{{ registration.performerType }}</td>
-					<td>{{ registration.submittedAt }}</td>
+					<td v-if="md">
+						{{ dateFunction(registration.submittedAt) }}
+					</td>
 					<td>${{ registration.totalAmt }}.00</td>
 					<td>{{ registration.confirmation }}</td>
 					<td>
@@ -70,6 +76,8 @@
 </template>
 
 <script lang="ts" setup>
+	import { DateTime } from 'luxon'
+	import { useMediaQuery } from '@vueuse/core'
 	import { onBeforeMount, ref } from 'vue'
 	import { useQuery } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
@@ -96,12 +104,12 @@
 		id: string
 		label: string
 		performerType: keyof typeof EnumPerformerType
-		submittedAt: Date
+		submittedAt?: string
 		totalAmt: number
 		payedAmt: number
 		transactionInfo: string
 		confirmation: string
-		createdAt?: string
+		createdAt: string
 		__typename?: string
 	}
 
@@ -115,6 +123,16 @@
 	const classesStore = useClasses()
 	const registrationId = ref('')
 	const registrations = ref({} as Registration[])
+
+	const sm = useMediaQuery('(min-width: 640px)')
+	const md = useMediaQuery('(min-width: 768px)')
+	const lg = useMediaQuery('(min-width: 1024px)')
+
+	function dateFunction(date: string) {
+		if (date) {
+			return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)
+		}
+	}
 
 	onBeforeMount(() => {
 		registrationStore.$reset()
