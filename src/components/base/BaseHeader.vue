@@ -1,7 +1,8 @@
 <template>
 	<header class="bg-sky-800 py-2 text-white">
-		<nav
-			class="container px-3 mx-auto lg:max-w-5xl flex justify-between items-center">
+		<section
+			class="px-3 mx-auto lg:max-w-5xl flex justify-between items-center">
+			<!--Music Festival Logo-->
 			<div class="flex">
 				<img
 					class="inline h-16"
@@ -9,35 +10,60 @@
 					alt="Winnipeg Music Festival Logo" />
 				<div class="ml-4 font-semibold">Winnipeg<br />Music<br />Festival</div>
 			</div>
+
+			<!-- Centered Title -->
 			<div class="font-bold text-2xl invisible md:visible">
 				Festival Registration
 			</div>
-			<div class="sm:hidden pr-3" @click="toggleNav">
-				<button
-					type="button"
-					class="text-gray-100 hover:text-gray-400 focus:outline-none focus:text-gray-400">
-					<svg viewBox="0 0 24 24" class="w8 h-8 fill-current">
-						<path
-							fill-rule="evenodd"
-							d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
-					</svg>
-				</button>
-			</div>
 
-			<ul
-				v-auto-animate
-				:class="showMenu ? 'flex' : 'hidden'"
-				class="flex-col sm:flex sm:flex-row sm:items-center">
-				<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
-					<router-link to="Registrations" class=""
-						>Registration Forms</router-link
-					>
-				</li>
-				<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
-					<base-logout></base-logout>
-				</li>
-			</ul>
-		</nav>
+			<!-- Toggle Button -->
+			<div v-if="$route.name !== 'Login'">
+				<button
+					id="hamburger-button"
+					type="button"
+					class="relative w-8 h-8 md:hidden text-3xl cursor-pointer"
+					:class="showMenu ? 'toggle-btn' : ''"
+					@click="toggleNav">
+					<div
+						class="absolute top-4 -mt-0.5 h-1 w-8 rounded bg-white transition-all duration-500 before:absolute before:h-1 before:w-8 before:-translate-x-4 before:-translate-y-3 before:rounded before:bg-white before:transition-all before:duration-500 before:content-[''] after:absolute after:h-1 after:w-8 after:-translate-x-4 after:translate-y-3 after:rounded after:bg-white after:transition-all after:duration-500 after:content-['']"></div>
+				</button>
+
+				<nav class="hidden md:block" aria-label="main">
+					<ul class="md:flex">
+						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
+							<router-link to="Registrations" class=""
+								>Registration Forms</router-link
+							>
+						</li>
+						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
+							<base-logout></base-logout>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</section>
+		<section
+			v-if="$route.name !== 'Login'"
+			id="mobile-menu"
+			:class="showMenu ? 'flex' : 'hidden'"
+			class="absolute top-84 bg-sky-800 z-10 w-full text-4xl flex-col justify-content-center origin-top animate-open-menu">
+			<nav
+				class="flex flex-col min-h-screen items-center py-16"
+				aria-label="mobile">
+				<ul>
+					<li
+						class="px-3 py-4 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md text-center">
+						<router-link to="Registrations" class=""
+							>Registration Forms</router-link
+						>
+					</li>
+					<li
+						class="px-3 py-4 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md text-center">
+						<base-logout></base-logout>
+					</li>
+				</ul>
+			</nav>
+		</section>
 	</header>
 </template>
 
@@ -45,7 +71,10 @@
 	import { ref } from 'vue'
 	import BaseLogout from './BaseLogout.vue'
 	const showMenu = ref(false)
-	const toggleNav = () => (showMenu.value = !showMenu.value)
+
+	function toggleNav() {
+		showMenu.value = !showMenu.value
+	}
 </script>
 
 <style></style>

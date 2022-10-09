@@ -1,7 +1,18 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  theme: {
-    extend: {},
-  },
-  plugins: [require('@tailwindcss/forms')],
+	content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+	theme: {
+		extend: {
+			keyframes: {
+				'open-menu': {
+					'0%': { transform: 'scaleY(0)' },
+					'80%': { transform: 'scaleY(1.2)' },
+					'100%': { transform: 'scaleY(1)' },
+				},
+			},
+			animation: {
+				'open-menu': 'open-menu 0.5s ease-in-out forwards',
+			},
+		},
+	},
+	plugins: [require('@tailwindcss/forms')],
 }

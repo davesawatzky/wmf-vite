@@ -104,12 +104,12 @@
 		id: string
 		label: string
 		performerType: keyof typeof EnumPerformerType
-		submittedAt?: string
+		submittedAt?: Date
 		totalAmt: number
 		payedAmt: number
 		transactionInfo: string
 		confirmation: string
-		createdAt: string
+		createdAt: Date
 		__typename?: string
 	}
 
@@ -128,9 +128,10 @@
 	const md = useMediaQuery('(min-width: 768px)')
 	const lg = useMediaQuery('(min-width: 1024px)')
 
-	function dateFunction(date: string) {
+	function dateFunction(date: Date | undefined) {
 		if (date) {
-			return DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED)
+			let dateString = date.toString()
+			return DateTime.fromISO(dateString).toLocaleString(DateTime.DATETIME_MED)
 		}
 	}
 
