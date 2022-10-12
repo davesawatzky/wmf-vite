@@ -130,6 +130,13 @@ export const useClasses = defineStore('registeredClasses', {
 					{ fetchPolicy: 'network-only' }
 				)
 				resultLoadClasses((result) => {
+					if (
+						!result.data.registration.registeredClasses ||
+						result.data.registration.registeredClasses.length === 0
+					) {
+						this.createClass(registrationId)
+						return
+					}
 					this.registeredClasses = structuredClone(
 						result.data.registration.registeredClasses
 					)

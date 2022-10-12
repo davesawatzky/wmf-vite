@@ -82,7 +82,6 @@
 		for (let group of communityStore.communityInfo) {
 			newArray.push({ id: group.id, name: group.name })
 		}
-		console.log(newArray)
 		return newArray
 	})
 </script>

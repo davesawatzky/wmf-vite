@@ -66,8 +66,7 @@
 				type="text"
 				disabled />
 		</div>
-
-		<div class="col-span-12">
+		<div v-if="notes" class="col-span-12">
 			<h4 class="pb-2">Notes</h4>
 			<div v-if="chosenSubdiscipline.description" v-auto-animate>
 				<div class="font-bold">Subdiscipline</div>
@@ -81,7 +80,7 @@
 				<div class="font-bold">Category</div>
 				<p class="text-sm pb-2">{{ chosenCategory.description }}</p>
 			</div>
-			<div v-if="classSelection.trophies" v-auto-animate>
+			<div v-if="(classSelection.trophies ?? []).length > 0" v-auto-animate>
 				<div class="font-bold">Trophy Eligibility</div>
 				<div v-for="trophy in classSelection.trophies" :key="trophy.id">
 					<div class="font-semibold text-sm">{{ trophy.name }}:</div>
@@ -89,13 +88,18 @@
 				</div>
 			</div>
 		</div>
-		<div v-auto-animate class="col-span-12">
-			<WorksSelection
-				v-for="(selection, selectionIndex) in selectedClasses.selections"
-				:key="selection.id"
-				v-model="selectedClasses.selections[selectionIndex]"
-				v-auto-animate
-				:work-number="selectionIndex" />
+		<div v-if="selectedClasses.category" v-auto-animate class="col-span-12">
+			<div v-if="!selectedClasses.numberOfSelections">
+				<h4>Please choose the number of selections above.</h4>
+			</div>
+			<div v-else>
+				<WorksSelection
+					v-for="(selection, selectionIndex) in selectedClasses.selections"
+					:key="selection.id"
+					v-model="selectedClasses.selections[selectionIndex]"
+					v-auto-animate
+					:work-number="selectionIndex" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -113,7 +117,6 @@
 	import BaseSelect from '../base/BaseSelect.vue'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
-	import BaseSelect1 from '../base/BaseSelect.vue'
 
 	const props = defineProps({
 		modelValue: {
@@ -139,6 +142,18 @@
 		gradeLevelLoad()
 		catLoad()
 		classNumberLoad()
+	})
+
+	const notes = computed(() => {
+		if (
+			chosenSubdiscipline.value.description ||
+			chosenGradeLevel.value.description ||
+			chosenCategory.value.description ||
+			(classSelection.value.trophies ?? []).length > 0
+		) {
+			return true
+		}
+		return false
 	})
 
 	/**
@@ -320,6 +335,7 @@
 	/**
 	 * Class Search for details incl. Number
 	 */
+
 	const {
 		result: classSearch,
 		load: classNumberLoad,
@@ -342,9 +358,9 @@
 				chosenGradeLevel.value.id &&
 				chosenCategory.value.id
 			) {
-				return classSearch.value?.classSearch[0] ?? []
+				return classSearch?.value?.classSearch[0] ?? []
 			} else {
-				return ''
+				return []
 			}
 		},
 		set: (newValue) => newValue,

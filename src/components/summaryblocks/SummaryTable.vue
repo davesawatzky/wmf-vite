@@ -3,7 +3,7 @@
 		<table
 			class="table-auto border-b border-sky-500 divide-y divide-sky-600 w-full border-collapse text-xs sm:text-base">
 			<thead class="">
-				<tr class="bg-sky-500 text-white">
+				<tr class="bg-sky-500 text-white print:text-xs">
 					<th class="rounded-tl-lg text-left" scope="col">Class Number</th>
 					<th class="text-left" scope="col">Class Name</th>
 					<th class="text-left" scope="col">Level</th>
@@ -17,7 +17,7 @@
 				<tr
 					v-for="registeredClass in classesStore.registeredClasses"
 					:key="registeredClass.classNumber"
-					class="border-b border-r border-l border-sky-500">
+					class="border-b border-r border-l border-sky-500 print:text-xs">
 					<td class="p-8">{{ registeredClass.classNumber }}</td>
 					<td class="p-8">{{ registeredClass.subdiscipline }}</td>
 					<td class="p-8">{{ registeredClass.level }}</td>

@@ -21,7 +21,7 @@
 			class="bg-white table_auto border-collapse w-full text-xs sm:text-base">
 			<thead class="bg-sky-500 text-white">
 				<tr class="py-2 px-4">
-					<th class="rounded-tl-lg">Edit</th>
+					<th class="rounded-tl-lg">View</th>
 					<th v-if="sm">ID</th>
 					<th>Label</th>
 					<th v-if="lg">Created</th>

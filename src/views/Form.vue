@@ -9,25 +9,26 @@
 			:disabled="registrationStore.registrations[0].confirmation"
 			type="text" />
 
-		<div
-			v-if="!registrationStore.registrations[0].confirmation"
-			class="border border-spacing-1 shadow-md rounded-lg border-sky-500 p-2 mb-6">
-			<div class="text-center">
+		<div v-if="!registrationStore.registrations[0].confirmation">
+			<div class="text-left">
 				<button
 					v-for="(_, tab, index) in tabs"
 					:key="tab"
-					class="btn btn-blue mx-5"
+					class="btn-blue py-1 px-3 mr-1 rounded-t-lg"
 					:class="[
 						{ active: currentTab === tab },
 						currentTab === tab ? 'bg-sky-600' : '',
 					]"
 					@click="currentTab = String(tab)">
-					{{ index! + 1 }}. {{ tab }}
+					{{ tab }}
 				</button>
 			</div>
-			<KeepAlive>
-				<component :is="tabs[currentTab]"></component>
-			</KeepAlive>
+			<div
+				class="border border-spacing-1 shadow-md rounded-b-lg rounded-tr-lg border-sky-500 p-2 mb-6">
+				<KeepAlive>
+					<component :is="tabs[currentTab]"></component>
+				</KeepAlive>
+			</div>
 		</div>
 		<div
 			v-else

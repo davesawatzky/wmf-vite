@@ -9,6 +9,7 @@
 
 			<BaseInput
 				v-model="email"
+				autofocus
 				name="email"
 				type="email"
 				label="Email"

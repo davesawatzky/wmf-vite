@@ -4,35 +4,38 @@
 	@apply rounded-lg h-10 w-40 m-2 text-center align-middle hover:ring-2;
 }
 .btn-blue {
-	@apply bg-sky-700 text-white hover:bg-sky-600 hover:ring-sky-400 active:bg-sky-500;
+	@apply bg-sky-700 text-white hover:bg-sky-500 hover:ring-sky-400 active:bg-sky-400 print:bg-white print:border print:border-slate-500 print:active:bg-slate-100;
 }
 .btn-red {
-	@apply bg-rose-800 text-white hover:bg-red-700 hover:ring-rose-400 active:bg-red-600;
+	@apply bg-rose-800 text-white hover:bg-red-700 hover:ring-rose-400 active:bg-red-600 print:bg-white;
 }
 
 @tailwind utilities;
 
 @layer base {
 	h6 {
-		@apply text-lg;
+		@apply text-lg print:text-base;
 	}
 	h5 {
-		@apply text-xl;
+		@apply text-xl print:text-lg;
 	}
 	h4 {
-		@apply text-2xl;
+		@apply text-2xl print:text-xl;
 	}
 	h3 {
-		@apply text-3xl;
+		@apply text-3xl print:text-2xl;
 	}
 	h2 {
-		@apply text-4xl;
+		@apply text-4xl print:text-3xl;
 	}
 	h1 {
-		@apply text-5xl;
+		@apply text-5xl print:text-4xl;
 	}
 	p {
-		@apply py-2;
+		@apply py-2 print:text-sm;
+	}
+	div {
+		@apply print:text-sm;
 	}
 
 	input[type='text'],
@@ -50,7 +53,7 @@
 	select[multiple],
 	textarea,
 	select {
-		@apply rounded-lg w-full border-gray-400 shadow-md focus:border-sky-500 focus:ring-sky-500;
+		@apply rounded-lg w-full border-gray-400 shadow-md focus:border-sky-500 focus:ring-sky-500 print:text-sm;
 	}
 
 	input[type='select'] {
@@ -66,7 +69,7 @@
 	}
 
 	label {
-		@apply font-bold text-gray-500 text-sm leading-3;
+		@apply font-bold text-gray-500 text-sm leading-3 print:text-xs;
 	}
 	.errorMessage {
 		@apply border-none h-5 text-xs;

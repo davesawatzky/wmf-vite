@@ -102,6 +102,9 @@
 		@click="submitRegistration"
 		>Prepare and Submit</BaseButton
 	>
+	<BaseButton class="btn btn-blue" @click="printWindow"
+		>Print this page</BaseButton
+	>
 </template>
 
 <script setup lang="ts">
@@ -126,6 +129,10 @@
 
 	function submitRegistration() {
 		router.push('Submission')
+	}
+
+	function printWindow() {
+		window.print()
 	}
 </script>
 
