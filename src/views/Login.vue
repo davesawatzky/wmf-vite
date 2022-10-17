@@ -83,6 +83,7 @@
 	import YupPassword from 'yup-password'
 	import SIGN_IN_MUTATION from '../graphql/mutations/signin.mutation.gql'
 	import SIGN_UP_MUTATION from '../graphql/mutations/signup.mutation.gql'
+
 	YupPassword(yup)
 
 	const error = ref('')
@@ -90,8 +91,8 @@
 	const router = useRouter()
 
 	const validationSchema = yup.object({
-		firstName: yup.string().trim().required().label('First Name'),
-		lastName: yup.string().trim().required().label('Last Name'),
+		firstName: yup.string().trim().label('First Name'),
+		lastName: yup.string().trim().label('Last Name'),
 		email: yup.string().trim().email().required().label('Email'),
 		password: yup.string().trim().password().required().label('Password'),
 		password2: yup
@@ -116,10 +117,9 @@
 	/**
 	 * Sign in and retrieve Token after authenticating
 	 */
+	const { mutate: signinMutation, onDone: doneSignin } =
+		useMutation(SIGN_IN_MUTATION)
 	const signin = handleSubmit((values) => {
-		const { mutate: signinMutation, onDone: doneSignin } =
-			useMutation(SIGN_IN_MUTATION)
-		// const signin = handleSubmit((values) => {
 		signinMutation({
 			credentials: { email: values.email, password: values.password },
 		})
@@ -137,10 +137,9 @@
 	/**
 	 * Register new account and receive Token
 	 */
+	const { mutate: signupMutation, onDone: doneSignup } =
+		useMutation(SIGN_UP_MUTATION)
 	const signup = handleSubmit((values) => {
-		const { mutate: signupMutation, onDone: doneSignup } =
-			useMutation(SIGN_UP_MUTATION)
-		// const signup = handleSubmit((values) => {
 		signupMutation({
 			credentials: {
 				firstName: values.firstName,
@@ -165,12 +164,12 @@
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			firstName.value = ''
-			lastName.value = ''
+			// firstName.value = ''
+			// lastName.value = ''
 			error.value = ''
-			email.value = ''
-			password.value = ''
-			password2.value = ''
+			// email.value = ''
+			// password.value = ''
+			// password2.value = ''
 		}, 2500)
 	}
 </script>

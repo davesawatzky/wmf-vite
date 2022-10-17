@@ -1,5 +1,8 @@
 <template>
 	<base-spinner v-if="queryLoading || mutationLoading"></base-spinner>
+	<!-- <div>
+		Query Loading: {{ queryLoading }}, Mutation Loading: {{ mutationLoading }}
+	</div> -->
 	<base-header></base-header>
 	<div class="bg-sky-600 pt-5 pb-8 section-min-height">
 		<div
