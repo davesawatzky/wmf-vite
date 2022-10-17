@@ -1,8 +1,8 @@
-mutation SignUp($credentials: CredentialsInput!) {
-  signup(credentials: $credentials) {
-    userErrors {
-      message
-    }
-    token
-  }
+mutation SignUp($credentials: CredentialsSignup!) {
+	signup(credentials: $credentials) {
+		userErrors {
+			message
+		}
+		token
+	}
 }

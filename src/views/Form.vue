@@ -14,7 +14,7 @@
 				<button
 					v-for="(_, tab, index) in tabs"
 					:key="tab"
-					class="btn-blue py-1 px-3 mr-1 rounded-t-lg"
+					class="btn-blue py-1 px-2 mr-1 rounded-t-lg text-sm md:text-base"
 					:class="[
 						{ active: currentTab === tab },
 						currentTab === tab ? 'bg-sky-600' : '',

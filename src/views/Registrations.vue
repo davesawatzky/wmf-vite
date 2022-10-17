@@ -20,7 +20,7 @@
 			v-auto-animate
 			class="bg-white table_auto border-collapse w-full text-xs sm:text-base">
 			<thead class="bg-sky-500 text-white">
-				<tr class="py-2 px-4">
+				<tr class="py-2 px-2">
 					<th class="rounded-tl-lg">View</th>
 					<th v-if="sm">ID</th>
 					<th>Label</th>
@@ -36,7 +36,7 @@
 				<tr v-for="(registration, index) in registrations" :key="index">
 					<td>
 						<BaseButton
-							class="text-sky-600 sm:ml-4 ml-3"
+							class="text-sky-600 md:ml-4 ml-3"
 							@click="
 								loadRegistration(
 									registration.id,
@@ -64,7 +64,7 @@
 					<td>
 						<BaseButton
 							v-if="!registration.confirmation"
-							class="text-red-600 ml-4"
+							class="text-red-600 md:ml-4 ml-3"
 							@click="deleteRegistration(registration.id)"
 							><font-awesome-icon icon="fa-regular fa-trash-can"
 						/></BaseButton>

@@ -116,6 +116,7 @@
 	import { textAreaLabel } from '@/composables/formData'
 	import { useForm } from 'vee-validate'
 	import * as yup from 'yup'
+	import 'yup-phone-lite'
 
 	const currentYear = new Date().getFullYear()
 
@@ -198,16 +199,13 @@
 		phone: yup
 			.string()
 			.nullable()
-			.matches(
-				/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/i,
-				'Enter a valid phone number'
-			)
-			.required('Enter a valid phone number'),
+			.phone('CA', 'Please enter a valid phone number')
+			.required('A phone number is required'),
 		email: yup
 			.string()
 			.email('Must be a valid email address')
 			.nullable()
-			.required('Enter a valid email address'),
+			.required('Email address is required'),
 	})
 
 	useForm({

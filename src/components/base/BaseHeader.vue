@@ -31,9 +31,7 @@
 				<nav class="hidden md:block" aria-label="main">
 					<ul class="md:flex">
 						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
-							<router-link to="Registrations" class=""
-								>Registration Forms</router-link
-							>
+							<router-link to="Registrations">Registration Forms</router-link>
 						</li>
 						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
 							<base-logout></base-logout>

@@ -4,9 +4,22 @@
 		<form
 			v-auto-animate
 			class="w-full sm:w-3/4 max-w-sm border rounded-lg border-sky-500 p-4 mx-auto mt-8">
-			<h3 class="loginheading">Sign in</h3>
-			<!-- <BaseInput v-if="!isLogin" v-model></BaseInput> -->
-
+			<div v-if="!isLogin">
+				<h3 class="loginheading">Sign up</h3>
+				<BaseInput
+					v-model="firstName"
+					name="firstName"
+					type="text"
+					label="First Name">
+				</BaseInput>
+				<BaseInput
+					v-model="lastName"
+					name="lastName"
+					type="text"
+					label="Last Name">
+				</BaseInput>
+			</div>
+			<h3 v-else class="loginheading">Sign in</h3>
 			<BaseInput
 				v-model="email"
 				autofocus
@@ -77,18 +90,22 @@
 	const router = useRouter()
 
 	const validationSchema = yup.object({
+		firstName: yup.string().trim().required().label('First Name'),
+		lastName: yup.string().trim().required().label('Last Name'),
 		email: yup.string().trim().email().required().label('Email'),
 		password: yup.string().trim().password().required().label('Password'),
 		password2: yup
 			.string()
 			.trim()
 			.password()
-			.label('Password Check')
+			.label('Password 2')
 			.oneOf([yup.ref('password')]),
 	})
 	const { setFieldValue, handleSubmit } = useForm({
 		validationSchema,
 	})
+	const { value: firstName } = useField('firstName')
+	const { value: lastName } = useField('lastName')
 	const { value: email } = useField('email')
 	const { value: password } = useField('password')
 	const { value: password2 } = useField('password2')
@@ -125,7 +142,12 @@
 			useMutation(SIGN_UP_MUTATION)
 		// const signup = handleSubmit((values) => {
 		signupMutation({
-			credentials: { email: values.email, password: values.password },
+			credentials: {
+				firstName: values.firstName,
+				lastName: values.lastName,
+				email: values.email,
+				password: values.password,
+			},
 		})
 		doneSignup((result) => {
 			if (result.data.signup.token) {
@@ -143,6 +165,8 @@
 	 */
 	function resetFields() {
 		setTimeout(() => {
+			firstName.value = ''
+			lastName.value = ''
 			error.value = ''
 			email.value = ''
 			password.value = ''
