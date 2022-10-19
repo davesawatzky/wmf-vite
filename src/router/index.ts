@@ -25,7 +25,11 @@ const routes = [
 		component: Submission,
 	},
 
-	{ path: '/:pathMatch(.*)*', name: 'NotFound', component: Registrations },
+	{
+		path: '/:pathMatch(.*)*',
+		name: 'NotFound',
+		redirect: { name: 'Registrations' },
+	},
 ]
 
 const router = createRouter({

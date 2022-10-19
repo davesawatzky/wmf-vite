@@ -1,6 +1,13 @@
 <template>
 	<div v-auto-animate>
-		<h2 class="text-center">Winnipeg Music Festival Registrations</h2>
+		<div class="w-full sm:w-2/3 lg:w-1/2 mx-auto">
+			<h2 class="text-center">Winnipeg Music Festival Registrations</h2>
+			<P class="text-left"
+				>Begin registration by creating an account (account can be for an
+				individual; a teacher for all their individual students, or for all
+				their choirs; a parent for their family etc.)</P
+			>
+		</div>
 		<form
 			v-auto-animate
 			class="w-full sm:w-3/4 max-w-sm border rounded-lg border-sky-500 p-4 mx-auto mt-8">
@@ -43,6 +50,16 @@
 				@keyup.enter="signup()"></BaseInput>
 
 			<div v-if="error" class="text-red-600 text-center">{{ error }}</div>
+
+			<div class="text-xs text-gray-500">
+				Password must:
+				<ul class="list-disc pl-4">
+					<li>be at least 8 characters</li>
+					<li>contain at least 1 uppercase letter</li>
+					<li>contain at least 1 number</li>
+					<li>contain at least 1 symbol</li>
+				</ul>
+			</div>
 
 			<div v-if="isLogin">
 				<BaseButton

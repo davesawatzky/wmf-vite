@@ -4,8 +4,25 @@
 		<h2>Registration Forms</h2>
 		<div class="border border-sky-500 rounded-lg text-left mt-10 md:mt-15">
 			<div class="p-4">
-				<h3>Create new Registration Form</h3>
-				<p>
+				<h3 class="pb-3">Registering for the Winnipeg Music Festival</h3>
+				<ul class="list-disc pl-5">
+					<li>
+						Begin registration by creating an account (account can be for an
+						individual; a teacher for all their individual students, or for all
+						their choirs; a parent for their family etc.)
+					</li>
+					<li>
+						Applications can be saved and completed/edited later before
+						submission. Once submitted, applications can no longer be edited.
+					</li>
+					<li>
+						You can view submitted entries by clicking on the 'eye' link to the
+						left of the table.
+					</li>
+					<li>A copy can be printed for your records.</li>
+				</ul>
+
+				<!-- <p>
 					You can create many different festival applications. To create the
 					registration form, you will need the complete participant and teacher
 					information, as well as provide the appropriate information for each
@@ -15,7 +32,7 @@
 					example, if you're a private teacher who will be submitting
 					applications for your students, you can create several applications
 					and submit them once all required information is complete.
-				</p>
+				</p> -->
 			</div>
 			<div class="grid grid-cols-2 lg:grid-cols-4">
 				<BaseCard
