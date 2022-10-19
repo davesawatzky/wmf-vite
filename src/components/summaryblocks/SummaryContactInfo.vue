@@ -17,7 +17,7 @@
 		</div>
 		<div>{{ contact.postalCode }}</div>
 		<div>Phone: {{ contact.phone }}</div>
-		<div v-if="contact.email">Email: {{ contact.email }}</div>
+		<div>Email: {{ contact.email }}</div>
 		<div v-if="contact.instrument">Instrument: {{ contact?.instrument }}</div>
 		<div v-if="contact.level">Grade Level: {{ contact.level }}</div>
 		<div v-if="contact.otherClasses">

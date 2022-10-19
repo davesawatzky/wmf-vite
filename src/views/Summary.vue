@@ -12,13 +12,13 @@
 			<div>
 				Community Group Size: {{ communityStore.communityInfo[0].groupSize }}
 			</div>
-			<div>
+			<div v-if="communityStore.communityInfo[0].chaperones">
 				Number of Chaperones: {{ communityStore.communityInfo[0].chaperones }}
 			</div>
-			<div>
+			<div v-if="communityStore.communityInfo[0].wheelchairs">
 				Number of Wheelchairs: {{ communityStore.communityInfo[0].wheelchairs }}
 			</div>
-			<div>
+			<div v-if="communityStore.communityInfo[0].conflictPerformers">
 				Performers participating in other classes
 				{{ communityStore.communityInfo[0].conflictPerformers }}
 			</div>
