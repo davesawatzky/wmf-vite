@@ -9,7 +9,16 @@
 					type="text"
 					label="First Name" />
 			</div>
-			<div v-if="!school" class="col-span-12 sm:col-span-4">
+			<div
+				v-if="!school && !schoolteacher && !teacher"
+				class="col-span-12 sm:col-span-4">
+				<BaseInput
+					v-model="contact.lastName"
+					name="lastName"
+					type="text"
+					label="Last Name" />
+			</div>
+			<div v-else-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
 					v-model="contact.lastName"
 					name="lastName"
@@ -25,7 +34,7 @@
 					type="number"
 					:label="'Age on Dec. 31, ' + currentYear" />
 			</div>
-			<div v-else class="col-span-12 sm:col-span-3"></div>
+			<!-- <div v-else class="col-span-12 sm:col-span-3"></div> -->
 
 			<div v-if="!schoolteacher && !school" class="col-span-6 sm:col-span-3">
 				<BaseInput
@@ -34,14 +43,31 @@
 					type="text"
 					label="Apt." />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-6 sm:col-span-3">
+			<div
+				v-else-if="school && !schoolteacher"
+				class="col-span-12 sm:col-span-4 mt-6 sm:mt-0">
 				<BaseInput
 					v-model="contact.streetNumber"
 					name="streetNumber"
 					type="text"
 					label="Street Number" />
 			</div>
-			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-6">
+			<div v-if="!schoolteacher && !school" class="col-span-6 sm:col-span-3">
+				<BaseInput
+					v-model="contact.streetNumber"
+					name="streetNumber"
+					type="text"
+					label="Street Number" />
+			</div>
+
+			<div v-if="school && !schoolteacher" class="col-span-12 sm:col-span-8">
+				<BaseInput
+					v-model="contact.streetName"
+					name="streetName"
+					type="text"
+					label="Street Name" />
+			</div>
+			<div v-if="!school && !schoolteacher" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.streetName"
 					name="streetName"
@@ -65,6 +91,7 @@
 			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-3">
 				<BaseInput
 					v-model="contact.postalCode"
+					mask="A#A #A#"
 					name="postalCode"
 					type="text"
 					label="Postal Code" />
@@ -72,7 +99,7 @@
 			<div class="col-span-12 sm:col-span-5">
 				<BaseInput
 					v-model="contact.phone"
-					placeholder="(___) ___-____"
+					mask="(###) ###-####"
 					name="phone"
 					type="tel"
 					label="Phone Number" />
@@ -80,12 +107,10 @@
 			<div v-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
 					v-model="contact.email"
-					placeholder="@"
 					name="email"
 					type="email"
 					label="Email" />
 			</div>
-
 			<div v-if="groupperformer" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.instrument"

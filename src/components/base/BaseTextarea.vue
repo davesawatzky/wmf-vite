@@ -9,7 +9,7 @@
 		@input="handleChange"
 		@blur="handleBlur"></textarea>
 
-	<BaseErrorMessage>
+	<BaseErrorMessage v-if="errorMessage">
 		{{ errorMessage }}
 	</BaseErrorMessage>
 </template>

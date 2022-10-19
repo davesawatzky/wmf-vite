@@ -30,7 +30,9 @@
 
 				<nav class="hidden md:block" aria-label="main">
 					<ul class="md:flex">
-						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
+						<li
+							v-if="$route.name !== 'Registrations'"
+							class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
 							<router-link to="Registrations">Registration Forms</router-link>
 						</li>
 						<li class="px-3 py-1 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md">
@@ -50,14 +52,15 @@
 				aria-label="mobile">
 				<ul>
 					<li
+						v-if="$route.name !== 'Registrations'"
 						class="px-3 py-4 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md text-center">
-						<router-link to="Registrations" class=""
+						<router-link to="Registrations" @click="toggleNav"
 							>Registration Forms</router-link
 						>
 					</li>
 					<li
 						class="px-3 py-4 mx-1 hover:bg-sky-500 hover:ring-2 rounded-md text-center">
-						<base-logout></base-logout>
+						<base-logout @click="toggleNav"></base-logout>
 					</li>
 				</ul>
 			</nav>

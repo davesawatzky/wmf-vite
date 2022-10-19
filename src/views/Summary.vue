@@ -37,6 +37,26 @@
 			</div>
 			<div>{{ schoolStore.schoolInfo.postalCode }}</div>
 			<div>Phone: {{ schoolStore.schoolInfo.phone }}</div>
+			<h3 class="pt-6 pb-2">School Group(s)</h3>
+			<div
+				v-for="(group, index) in communityStore.communityInfo"
+				:key="group.id">
+				<h4>Group {{ index + 1 }}:</h4>
+				<div>Name: {{ group.name }}</div>
+				<div>Size: {{ group.groupSize }}</div>
+				<div v-if="group.chaperones">Chaperones: {{ group.chaperones }}</div>
+				<div v-if="group.wheelchairs">Wheelchairs: {{ group.wheelchairs }}</div>
+				<div v-if="group.earliestTime">
+					Earliest Time: {{ group.earliestTime }}
+				</div>
+				<div v-if="group.latestTime">Latest Time: {{ group.latestTime }}</div>
+				<div v-if="group.unavailable">
+					Unavailable Times: {{ group.unavailable }}
+				</div>
+				<div v-if="group.conflictPerformers">
+					Multiple Class Participants: {{ group.conflictPerformers }}
+				</div>
+			</div>
 		</div>
 
 		<!-- Registered Classes -->
@@ -44,8 +64,13 @@
 		<div
 			v-for="registeredClass in classesStore.registeredClasses"
 			:key="registeredClass.id">
-			<h4 class="py-2">Class Number: {{ registeredClass.classNumber }}</h4>
-			<div>Class Name: {{ registeredClass.className }}</div>
+			<h4 class="py-2">
+				Festival Class Number: {{ registeredClass.classNumber }}
+			</h4>
+			<h5 v-if="appStore.performerType === 'SCHOOL'">
+				{{ schoolClassGroup(registeredClass.schoolCommunityId!)!.name }}
+			</h5>
+			<div>Festival Class: {{ registeredClass.className }}</div>
 			<div>Number of Selections: {{ registeredClass.numberOfSelections }}</div>
 			<div
 				v-for="(selection, index) in registeredClass.selections"
@@ -129,6 +154,10 @@
 
 	function submitRegistration() {
 		router.push('Submission')
+	}
+
+	const schoolClassGroup = (id: number) => {
+		return communityStore.communityInfo.find((item) => item.id === String(id))
 	}
 
 	function printWindow() {

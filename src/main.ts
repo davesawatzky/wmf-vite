@@ -9,6 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faFilePen, faEye } from '@fortawesome/free-solid-svg-icons'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import Maska from 'maska'
 import './assets/css/index.css'
 
 library.add(faFilePen, faTrashCan, faEye)
@@ -24,6 +25,7 @@ const app = createApp({
 
 app
 	.use(createPinia())
+	.use(Maska)
 	.use(routes)
 	.use(autoAnimatePlugin)
 	.component('font-awesome-icon', FontAwesomeIcon)

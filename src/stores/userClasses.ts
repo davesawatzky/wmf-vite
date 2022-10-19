@@ -39,6 +39,18 @@ interface Selections {
 
 provideApolloClient(apolloClient)
 
+const {
+	mutate: classCreate,
+	onDone: doneClassCreate,
+	onError: errorClassCreate,
+} = useMutation(CLASS_CREATE_MUTATION)
+
+const {
+	mutate: selectionCreate,
+	onDone: doneSelectionCreate,
+	onError: errorSelectionCreate,
+} = useMutation(SELECTION_CREATE_MUTATION)
+
 export const useClasses = defineStore('registeredClasses', {
 	state: () => ({
 		registeredClasses: [] as RegisteredClass[],
@@ -98,25 +110,19 @@ export const useClasses = defineStore('registeredClasses', {
 
 		async createClass(registrationId: string) {
 			return new Promise((resolve, reject) => {
-				const {
-					mutate: classCreate,
-					onDone: doneClassCreate,
-					onError,
-				} = useMutation(CLASS_CREATE_MUTATION)
 				this.addClassToStore(null)
 				let classLastIndex = this.registeredClasses.length - 1
 				let clone = Object.assign({}, this.registeredClasses[classLastIndex])
 				delete clone.id
 				delete clone.className
 				delete clone.selections
-
 				classCreate({ registrationId, registeredClass: clone })
 				doneClassCreate((result) => {
 					this.registeredClasses[classLastIndex].id =
 						result.data.registeredClassCreate.registeredClass.id
 					resolve(result)
 				})
-				onError((error) => {
+				errorClassCreate((error) => {
 					reject(error)
 				})
 			})
@@ -203,11 +209,6 @@ export const useClasses = defineStore('registeredClasses', {
 
 		async createSelection(classIndex: number) {
 			return new Promise((resolve, reject) => {
-				const {
-					mutate: selectionCreate,
-					onDone: doneSelectionCreate,
-					onError,
-				} = useMutation(SELECTION_CREATE_MUTATION)
 				this.addSelectionToStore(null, classIndex)
 				let classId = this.registeredClasses[classIndex].id
 				let selectionsLastIndex =
@@ -224,7 +225,7 @@ export const useClasses = defineStore('registeredClasses', {
 					].id = result.data.selectionCreate.selection.id
 					resolve(result)
 				})
-				onError((error) => {
+				errorSelectionCreate((error) => {
 					reject(error)
 				})
 			})

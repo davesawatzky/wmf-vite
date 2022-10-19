@@ -56,27 +56,27 @@
 				</div>
 			</div>
 			<div class="col-span-12 lg:col-span-5">
-				<p class="text-sm">
-					List any date/time when you are unavailable for performance, including
-					school in-service days, using <strong>calendar dates</strong>, not
-					school cycle days, between February 23 and March 20, 2023.
-				</p>
 				<BaseTextarea
 					v-model="group.unavailable"
 					name="unavailable"
 					label="Unavailable Dates/Times"
 					rows="3"></BaseTextarea>
-
-				<p class="text-sm">
-					If there are any students in your group participating in other
-					festival classes, list the students' names so that we can do our best
-					to avoid scheduling conflicts:
+				<p class="text-sm mb-2">
+					List any date/time when you are unavailable for performance, including
+					school in-service days, using <strong>calendar dates</strong>, not
+					school cycle days, between February 23 and March 20, 2023.
 				</p>
+
 				<BaseTextarea
 					v-model="group.conflictPerformers"
 					name="conflictPerformers"
 					label="Performers participating in other classes."
 					rows="3"></BaseTextarea>
+				<p class="text-sm mb-2">
+					If there are any students in your group participating in other
+					festival classes, list the students' names so that we can do our best
+					to avoid scheduling conflicts:
+				</p>
 			</div>
 		</div>
 	</form>

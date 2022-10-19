@@ -1,25 +1,59 @@
 <template>
 	<div v-auto-animate>
-		<div class="border border-sky-500 rounded-lg text-center mt-5 md:mt-20">
-			<h3>Create new Registration Form</h3>
-			<BaseButton class="btn btn-blue" @click="newRegistration('SOLO')"
-				>Solo</BaseButton
-			>
-			<BaseButton class="btn btn-blue" @click="newRegistration('GROUP')"
-				>Group</BaseButton
-			>
-			<BaseButton class="btn btn-blue" @click="newRegistration('SCHOOL')"
-				>School</BaseButton
-			>
-			<BaseButton class="btn btn-blue" @click="newRegistration('COMMUNITY')"
-				>Community</BaseButton
-			>
+		<h1 class="mt-3 mb-2">Winnipeg Music Festival</h1>
+		<h2>Registration Forms</h2>
+		<div class="border border-sky-500 rounded-lg text-left mt-10 md:mt-15">
+			<div class="p-4">
+				<h3>Create new Registration Form</h3>
+				<p>
+					You can create many different festival applications. To create the
+					registration form, you will need the complete participant and teacher
+					information, as well as provide the appropriate information for each
+					class. Applications can be saved and edited at a later time before
+					submission. Once submitted, applications can no longer be edited,
+					although you will be able to return and view the summary page. For
+					example, if you're a private teacher who will be submitting
+					applications for your students, you can create several applications
+					and submit them once all required information is complete.
+				</p>
+			</div>
+			<div class="grid grid-cols-2 lg:grid-cols-4">
+				<BaseCard
+					label="Solo"
+					:photo="soloPhoto"
+					alt-text="Opera Singer on stage"
+					@click="newRegistration('SOLO')">
+					Solo
+				</BaseCard>
+				<BaseCard
+					label="Group"
+					:photo="groupPhoto"
+					alt-text="String Instruments"
+					@click="newRegistration('GROUP')">
+					Solo
+				</BaseCard>
+				<BaseCard
+					label="School"
+					:photo="schoolPhoto"
+					alt-text="Orff Instruments"
+					@click="newRegistration('SCHOOL')">
+					Solo
+				</BaseCard>
+				<BaseCard
+					label="Community"
+					:photo="communityPhoto"
+					alt-text="Community Choir"
+					@click="newRegistration('COMMUNITY')">
+					Solo
+				</BaseCard>
+			</div>
 		</div>
-		<br /><br />
+		<br />
+		<h3>Submitted and In-Process Applications</h3>
 		<table
 			v-auto-animate
-			class="bg-white table_auto border-collapse w-full text-xs sm:text-base">
-			<thead class="bg-sky-500 text-white">
+			class="bg-white table_auto border-collapse w-full text-xs sm:text-base mt-3">
+			<thead class="bg-sky-600 text-white">
 				<tr class="py-2 px-2">
 					<th class="rounded-tl-lg">View</th>
 					<th v-if="sm">ID</th>
@@ -33,10 +67,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(registration, index) in registrations" :key="index">
-					<td>
+				<tr
+					v-for="(registration, index) in registrations"
+					:key="index"
+					class="">
+					<td class="">
 						<BaseButton
-							class="text-sky-600 md:ml-4 ml-3"
+							class="text-sky-600 text-xl md:ml-4 ml-3"
 							@click="
 								loadRegistration(
 									registration.id,
@@ -50,12 +87,12 @@
 							<font-awesome-icon v-else icon="fa-solid fa-eye"
 						/></BaseButton>
 					</td>
-					<td v-if="sm">{{ registration.id }}</td>
-					<td>{{ registration.label }}</td>
-					<td v-if="lg">
+					<td v-if="sm" class="">{{ registration.id }}</td>
+					<td class="">{{ registration.label }}</td>
+					<td v-if="lg" class="">
 						{{ dateFunction(registration.createdAt) }}
 					</td>
-					<td>{{ registration.performerType }}</td>
+					<td class="">{{ registration.performerType }}</td>
 					<td v-if="md">
 						{{ dateFunction(registration.submittedAt) }}
 					</td>
@@ -64,7 +101,7 @@
 					<td>
 						<BaseButton
 							v-if="!registration.confirmation"
-							class="text-red-600 md:ml-4 ml-3"
+							class="text-red-600 text-xl md:ml-4 ml-3 my-3"
 							@click="deleteRegistration(registration.id)"
 							><font-awesome-icon icon="fa-regular fa-trash-can"
 						/></BaseButton>
@@ -91,6 +128,10 @@
 	import { useSchool } from '@/stores/userSchool'
 	import { useCommunity } from '@/stores/userCommunity'
 	import BaseButton from '@/components/base/BaseButton.vue'
+	import soloPhoto from '@/assets/images/opera-singer-on-stage.png'
+	import groupPhoto from '@/assets/images/strings.png'
+	import schoolPhoto from '@/assets/images/orff-instruments.png'
+	import communityPhoto from '@/assets/images/community_choir.png'
 
 	enum EnumPerformerType {
 		'SOLO',

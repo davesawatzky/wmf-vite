@@ -12,6 +12,7 @@
 					v-model.number="
 						classesStore.registeredClasses[classIndex].schoolCommunityId
 					"
+					class="mb-6"
 					name="schoolGroup">
 					<option
 						v-for="group in schoolGroups"

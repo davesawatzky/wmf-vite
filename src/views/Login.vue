@@ -1,6 +1,6 @@
 <template>
 	<div v-auto-animate>
-		<h2 class="text-center">Welcome to the Registration Website</h2>
+		<h2 class="text-center">Winnipeg Music Festival Registrations</h2>
 		<form
 			v-auto-animate
 			class="w-full sm:w-3/4 max-w-sm border rounded-lg border-sky-500 p-4 mx-auto mt-8">
