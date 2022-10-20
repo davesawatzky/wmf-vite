@@ -63,7 +63,7 @@ export const useGroup = defineStore('group', {
 				const { onError, onResult: resultLoadGroup } = useQuery(
 					GROUP_LOAD_QUERY,
 					{ registrationId },
-					{ fetchPolicy: 'network-only' }
+					{ fetchPolicy: 'no-cache' }
 				)
 				resultLoadGroup((result) => {
 					let clone = Object.assign({}, result.data.registration.groups[0])

@@ -39,18 +39,6 @@ export interface Selections {
 
 provideApolloClient(apolloClient)
 
-const {
-	mutate: classCreate,
-	onDone: doneClassCreate,
-	onError: errorClassCreate,
-} = useMutation(CLASS_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
-
-const {
-	mutate: selectionCreate,
-	onDone: doneSelectionCreate,
-	onError: errorSelectionCreate,
-} = useMutation(SELECTION_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
-
 export const useClasses = defineStore('registeredClasses', {
 	state: () => ({
 		registeredClasses: [] as RegisteredClass[],
@@ -89,10 +77,7 @@ export const useClasses = defineStore('registeredClasses', {
 		 *
 		 * @param index Index of specific class in array
 		 */
-		async addSelectionToStore(
-			classSelection: Selections | null,
-			classIndex: number
-		) {
+		addSelectionToStore(classSelection: Selections | null, classIndex: number) {
 			this.registeredClasses[classIndex].selections!.push({
 				id: '',
 				title: '',
@@ -109,10 +94,19 @@ export const useClasses = defineStore('registeredClasses', {
 					classSelection
 				)
 			}
+			console.log(
+				'Selections Length: ' +
+					this.registeredClasses[classIndex].selections!.length
+			)
 		},
 
 		async createClass(registrationId: string) {
 			return new Promise((resolve, reject) => {
+				const {
+					mutate: classCreate,
+					onDone: doneClassCreate,
+					onError: errorClassCreate,
+				} = useMutation(CLASS_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 				this.addClassToStore(null)
 				let classLastIndex = this.registeredClasses.length - 1
 				let clone = Object.assign({}, this.registeredClasses[classLastIndex])
@@ -121,8 +115,9 @@ export const useClasses = defineStore('registeredClasses', {
 				delete clone.selections
 				classCreate({ registrationId, registeredClass: clone })
 				doneClassCreate((result) => {
-					this.registeredClasses[classLastIndex].id =
-						result.data.registeredClassCreate.registeredClass.id
+					let lastIndex = this.registeredClasses.length - 1
+					let returnedId = result.data.registeredClassCreate.registeredClass.id
+					this.registeredClasses[lastIndex].id = returnedId
 					resolve(result)
 				})
 				errorClassCreate((error) => {
@@ -188,7 +183,7 @@ export const useClasses = defineStore('registeredClasses', {
 				if (this.registeredClasses[classIndex].selections![0]) {
 					await this.updateAllSelections(classIndex)
 				}
-				classIndex++
+				classIndex += 1
 			}
 		},
 
@@ -212,6 +207,11 @@ export const useClasses = defineStore('registeredClasses', {
 
 		async createSelection(classIndex: number) {
 			return new Promise((resolve, reject) => {
+				const {
+					mutate: selectionCreate,
+					onDone: doneSelectionCreate,
+					onError: errorSelectionCreate,
+				} = useMutation(SELECTION_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 				this.addSelectionToStore(null, classIndex)
 				let classId = this.registeredClasses[classIndex].id
 				const selectionsLastIndex =
@@ -223,14 +223,15 @@ export const useClasses = defineStore('registeredClasses', {
 				delete clone.id
 				selectionCreate({ registeredClassId: classId, selection: clone })
 				doneSelectionCreate((result) => {
-					this.registeredClasses[classIndex].selections![
-						selectionsLastIndex
-					].id = result.data.selectionCreate.selection.id
-
-					resolve(result)
+					let lastIndex =
+						this.registeredClasses[classIndex].selections!.length - 1
+					let returnedId = result.data.selectionCreate.selection.id
+					this.registeredClasses[classIndex].selections![lastIndex].id =
+						returnedId
+					resolve(returnedId)
 				})
 				errorSelectionCreate((error) => {
-					reject(console.log(error))
+					reject(error)
 				})
 			})
 		},
@@ -266,7 +267,7 @@ export const useClasses = defineStore('registeredClasses', {
 			let selectionIndex = 0
 			for (let selection of this.registeredClasses[classIndex].selections!) {
 				await this.updateSelection(classIndex, selectionIndex, selection.id!)
-				selectionIndex++
+				selectionIndex += 1
 			}
 		},
 

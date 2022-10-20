@@ -58,7 +58,7 @@ export const useCommunity = defineStore('community', {
 					mutate: communityCreate,
 					onDone: doneCommunityCreate,
 					onError,
-				} = useMutation(COMMUNITY_CREATE_MUTATION)
+				} = useMutation(COMMUNITY_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 				this.addToStore(null)
 				let clone = Object.assign(
 					{},

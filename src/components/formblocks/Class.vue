@@ -396,26 +396,23 @@
 			let oldNumber =
 				(await classesStore.registeredClasses[props.classIndex].selections
 					?.length) ?? 0
-
-			console.log('Old Number: ' + oldNumber)
-			console.log('New Number: ' + newNumber)
-			console.log('classIndex: ' + props.classIndex)
-
 			switch (oldNumber < newNumber) {
 				case true:
 					while (oldNumber < newNumber) {
-						await classesStore.createSelection(props.classIndex)
+						await classesStore
+							.createSelection(props.classIndex)
+							.catch((error) => console.log('There was an error!' + error))
 						oldNumber += 1
 					}
 					break
 				case false:
 					while (oldNumber > newNumber) {
-						await classesStore.deleteSelection(props.classIndex, oldNumber - 1)
+						classesStore.deleteSelection(props.classIndex, oldNumber - 1)
 						oldNumber -= 1
 					}
 					break
 			}
-			// await classesStore.updateClass(props.classIndex)
+			await classesStore.updateClass(props.classIndex)
 		}
 	)
 </script>
