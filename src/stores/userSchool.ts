@@ -129,6 +129,6 @@ export const useSchool = defineStore('school', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(useSchool, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(useSchool, import.meta.hot))
+// }

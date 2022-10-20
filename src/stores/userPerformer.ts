@@ -169,6 +169,6 @@ export const usePerformers = defineStore('performers', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(usePerformers, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(usePerformers, import.meta.hot))
+// }

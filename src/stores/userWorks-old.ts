@@ -32,6 +32,6 @@ export const useWorks = defineStore('works', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(useWorks, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(useWorks, import.meta.hot))
+// }

@@ -118,6 +118,6 @@ export const useGroup = defineStore('group', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(useGroup, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(useGroup, import.meta.hot))
+// }

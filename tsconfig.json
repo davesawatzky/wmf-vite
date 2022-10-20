@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
+		"target": "ES6",
 		"useDefineForClassFields": true,
-		"module": "esnext",
+		"module": "es6",
 		"moduleResolution": "node",
 		"strict": true,
 		"jsx": "preserve",
@@ -10,7 +10,7 @@
 		"baseUrl": ".",
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
-		"lib": ["esnext", "dom"],
+		"lib": ["es6", "dom"],
 		"paths": {
 			"@/*": ["src/*"]
 		}

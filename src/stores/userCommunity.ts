@@ -155,6 +155,6 @@ export const useCommunity = defineStore('community', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(useCommunity, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(useCommunity, import.meta.hot))
+// }

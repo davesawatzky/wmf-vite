@@ -1,7 +1,7 @@
 <template>
 	<div v-auto-animate>
 		<div class="w-full sm:w-2/3 lg:w-1/2 mx-auto">
-			<h2 class="text-center">Winnipeg Music Festival Registrations</h2>
+			<h2 class="text-center">Winnipeg Music Festival Registration</h2>
 			<P class="text-left"
 				>Begin registration by creating an account (account can be for an
 				individual; a teacher for all their individual students, or for all

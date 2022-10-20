@@ -13,7 +13,7 @@ import SELECTION_CREATE_MUTATION from '@/graphql/mutations/SelectionCreate.mutat
 import SELECTION_DELETE_MUTATION from '@/graphql/mutations/SelectionDelete.mutation.gql'
 import SELECTION_UPDATE_MUTATION from '@/graphql/mutations/SelectionUpdate.mutation.gql'
 
-interface RegisteredClass {
+export interface RegisteredClass {
 	id?: string
 	classNumber: string
 	className?: string
@@ -27,7 +27,7 @@ interface RegisteredClass {
 	__typename?: string
 	selections?: [Selections]
 }
-interface Selections {
+export interface Selections {
 	id?: string
 	title: string
 	largerWork: string
@@ -43,13 +43,13 @@ const {
 	mutate: classCreate,
 	onDone: doneClassCreate,
 	onError: errorClassCreate,
-} = useMutation(CLASS_CREATE_MUTATION)
+} = useMutation(CLASS_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 
 const {
 	mutate: selectionCreate,
 	onDone: doneSelectionCreate,
 	onError: errorSelectionCreate,
-} = useMutation(SELECTION_CREATE_MUTATION)
+} = useMutation(SELECTION_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 
 export const useClasses = defineStore('registeredClasses', {
 	state: () => ({
@@ -89,8 +89,11 @@ export const useClasses = defineStore('registeredClasses', {
 		 *
 		 * @param index Index of specific class in array
 		 */
-		addSelectionToStore(classSelection: Selections | null, classIndex: number) {
-			this.registeredClasses[classIndex].selections!.push(<Selections>{
+		async addSelectionToStore(
+			classSelection: Selections | null,
+			classIndex: number
+		) {
+			this.registeredClasses[classIndex].selections!.push({
 				id: '',
 				title: '',
 				largerWork: '',
@@ -133,7 +136,7 @@ export const useClasses = defineStore('registeredClasses', {
 				const { onResult: resultLoadClasses, onError } = useQuery(
 					REGISTERED_CLASSES_QUERY,
 					{ registrationId },
-					{ fetchPolicy: 'network-only' }
+					{ fetchPolicy: 'no-cache' }
 				)
 				resultLoadClasses((result) => {
 					if (
@@ -160,7 +163,7 @@ export const useClasses = defineStore('registeredClasses', {
 					mutate: classUpdate,
 					onDone,
 					onError,
-				} = useMutation(CLASS_UPDATE_MUTATION)
+				} = useMutation(CLASS_UPDATE_MUTATION, { fetchPolicy: 'no-cache' })
 				let clone = Object.assign({}, this.registeredClasses[classIndex])
 				let classId = clone.id!
 				delete clone.id
@@ -211,9 +214,9 @@ export const useClasses = defineStore('registeredClasses', {
 			return new Promise((resolve, reject) => {
 				this.addSelectionToStore(null, classIndex)
 				let classId = this.registeredClasses[classIndex].id
-				let selectionsLastIndex =
+				const selectionsLastIndex =
 					this.registeredClasses[classIndex].selections!.length - 1
-				let clone = Object.assign(
+				const clone = Object.assign(
 					{},
 					this.registeredClasses[classIndex].selections![selectionsLastIndex]
 				)
@@ -223,10 +226,11 @@ export const useClasses = defineStore('registeredClasses', {
 					this.registeredClasses[classIndex].selections![
 						selectionsLastIndex
 					].id = result.data.selectionCreate.selection.id
+
 					resolve(result)
 				})
 				errorSelectionCreate((error) => {
-					reject(error)
+					reject(console.log(error))
 				})
 			})
 		},
@@ -241,7 +245,7 @@ export const useClasses = defineStore('registeredClasses', {
 					mutate: selectionUpdate,
 					onDone,
 					onError,
-				} = useMutation(SELECTION_UPDATE_MUTATION)
+				} = useMutation(SELECTION_UPDATE_MUTATION, { fetchPolicy: 'no-cache' })
 				let clone = Object.assign(
 					{},
 					this.registeredClasses[classIndex].selections![selectionIndex]
@@ -291,6 +295,6 @@ export const useClasses = defineStore('registeredClasses', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(useClasses, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(useClasses, import.meta.hot))
+// }

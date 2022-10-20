@@ -35,6 +35,6 @@ export const festivalClasses = defineStore('festivalClasses', {
 	},
 })
 
-if (import.meta.hot) {
-	import.meta.hot.accept(acceptHMRUpdate(festivalClasses, import.meta.hot))
-}
+// if (import.meta.hot) {
+// 	import.meta.hot.accept(acceptHMRUpdate(festivalClasses, import.meta.hot))
+// }

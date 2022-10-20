@@ -95,7 +95,7 @@
 			<div v-else>
 				<WorksSelection
 					v-for="(selection, selectionIndex) in selectedClasses.selections"
-					:key="selection.id"
+					:key="selectionIndex"
 					v-model="selectedClasses.selections[selectionIndex]"
 					v-auto-animate
 					:work-number="selectionIndex" />
@@ -394,21 +394,28 @@
 		() => selectedClasses.value.numberOfSelections,
 		async (newNumber) => {
 			let oldNumber =
-				classesStore.registeredClasses[props.classIndex].selections?.length ?? 0
-			if (oldNumber < newNumber) {
-				while (oldNumber < newNumber) {
-					await classesStore.createSelection(props.classIndex)
-					oldNumber++
-				}
-			}
+				(await classesStore.registeredClasses[props.classIndex].selections
+					?.length) ?? 0
 
-			if (oldNumber > newNumber) {
-				while (oldNumber > newNumber) {
-					await classesStore.deleteSelection(props.classIndex, oldNumber - 1)
-					oldNumber--
-				}
+			console.log('Old Number: ' + oldNumber)
+			console.log('New Number: ' + newNumber)
+			console.log('classIndex: ' + props.classIndex)
+
+			switch (oldNumber < newNumber) {
+				case true:
+					while (oldNumber < newNumber) {
+						await classesStore.createSelection(props.classIndex)
+						oldNumber += 1
+					}
+					break
+				case false:
+					while (oldNumber > newNumber) {
+						await classesStore.deleteSelection(props.classIndex, oldNumber - 1)
+						oldNumber -= 1
+					}
+					break
 			}
-			await classesStore.updateClass(props.classIndex)
+			// await classesStore.updateClass(props.classIndex)
 		}
 	)
 </script>
