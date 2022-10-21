@@ -96,11 +96,11 @@ export const useClasses = defineStore('registeredClasses', {
 			}
 			console.log(
 				'Selections Length: ' +
-					this.registeredClasses[classIndex].selections!.length
+					this.registeredClasses[classIndex].selections?.length ?? 0
 			)
 		},
 
-		async createClass(registrationId: string) {
+		createClass(registrationId: string) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: classCreate,
@@ -126,7 +126,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		async loadClasses(registrationId: string) {
+		loadClasses(registrationId: string) {
 			return new Promise((resolve, reject) => {
 				const { onResult: resultLoadClasses, onError } = useQuery(
 					REGISTERED_CLASSES_QUERY,
@@ -152,7 +152,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		async updateClass(classIndex: number) {
+		updateClass(classIndex: number) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: classUpdate,
@@ -187,7 +187,7 @@ export const useClasses = defineStore('registeredClasses', {
 			}
 		},
 
-		async deleteClass(classIndex: number, registeredClassId: string) {
+		deleteClass(classIndex: number, registeredClassId: string) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: classDelete,
@@ -205,7 +205,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		async createSelection(classIndex: number) {
+		createSelection(classIndex: number) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: selectionCreate,
@@ -213,7 +213,7 @@ export const useClasses = defineStore('registeredClasses', {
 					onError: errorSelectionCreate,
 				} = useMutation(SELECTION_CREATE_MUTATION, { fetchPolicy: 'no-cache' })
 				this.addSelectionToStore(null, classIndex)
-				let classId = this.registeredClasses[classIndex].id
+				let classId: string = this.registeredClasses[classIndex].id!
 				const selectionsLastIndex =
 					this.registeredClasses[classIndex].selections!.length - 1
 				const clone = Object.assign(
@@ -223,9 +223,15 @@ export const useClasses = defineStore('registeredClasses', {
 				delete clone.id
 				selectionCreate({ registeredClassId: classId, selection: clone })
 				doneSelectionCreate((result) => {
+					console.log('Result: ', result)
+
 					let lastIndex =
 						this.registeredClasses[classIndex].selections!.length - 1
-					let returnedId = result.data.selectionCreate.selection.id
+					console.log('lastIndex: ' + lastIndex)
+
+					let returnedId: string = result.data.selectionCreate.selection.id
+					console.log('returnedId: ' + returnedId)
+
 					this.registeredClasses[classIndex].selections![lastIndex].id =
 						returnedId
 					resolve(returnedId)
@@ -236,7 +242,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		async updateSelection(
+		updateSelection(
 			classIndex: number,
 			selectionIndex: number,
 			selectionId: string
@@ -271,7 +277,7 @@ export const useClasses = defineStore('registeredClasses', {
 			}
 		},
 
-		async deleteSelection(classIndex: number, selectionIndex: number) {
+		deleteSelection(classIndex: number, selectionIndex: number) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: selectionDelete,

@@ -394,12 +394,11 @@
 		() => selectedClasses.value.numberOfSelections,
 		async (newNumber) => {
 			let oldNumber =
-				(await classesStore.registeredClasses[props.classIndex].selections
-					?.length) ?? 0
+				classesStore.registeredClasses[props.classIndex].selections!.length
 			switch (oldNumber < newNumber) {
 				case true:
 					while (oldNumber < newNumber) {
-						await classesStore
+						classesStore
 							.createSelection(props.classIndex)
 							.catch((error) => console.log('There was an error!' + error))
 						oldNumber += 1

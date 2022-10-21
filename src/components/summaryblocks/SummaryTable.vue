@@ -43,11 +43,11 @@
 	const total = computed(() => {
 		let cost = 0
 		for (let registeredClass of classesStore.registeredClasses) {
-			cost += registeredClass.price ?? 0
+			cost += registeredClass.price
 		}
 		return +cost
 	})
-	registrationStore.registrations[0].totalAmt = total.value ?? 0
+	registrationStore.registrations[0].totalAmt = total.value ?? 0.0
 </script>
 
 <style scoped>
