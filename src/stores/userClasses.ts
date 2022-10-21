@@ -126,7 +126,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		loadClasses(registrationId: string) {
+		async loadClasses(registrationId: string) {
 			return new Promise((resolve, reject) => {
 				const { onResult: resultLoadClasses, onError } = useQuery(
 					REGISTERED_CLASSES_QUERY,
@@ -144,10 +144,53 @@ export const useClasses = defineStore('registeredClasses', {
 					this.registeredClasses = structuredClone(
 						result.data.registration.registeredClasses
 					)
+					this.checkForExistingSelections()
 					resolve(result)
 				})
 				onError((error) => {
 					reject(error)
+				})
+			})
+		},
+
+		async checkForExistingSelections() {
+			return new Promise((resolve, reject) => {
+				let classIndex = 0
+				this.registeredClasses.forEach((item) => {
+					if (
+						item.numberOfSelections &&
+						(!item.selections ||
+							item.selections!.length < 1 ||
+							(item.numberOfSelections > 0 &&
+								item.selections!.length != item.numberOfSelections))
+					) {
+						if (!item.selections || item.selections!.length < 1) {
+							for (let i = 0; i < item.numberOfSelections; i++) {
+								this.createSelection(classIndex)
+							}
+						} else if (
+							item.selections!.length > 0 &&
+							item.selections!.length < item.numberOfSelections
+						) {
+							for (
+								let i = 1; //item.selections!.length;
+								i < 2; //item.numberOfSelections;
+								i++
+							) {
+								this.createSelection(classIndex)
+								console.log('This just ran.')
+							}
+						} else if (item.selections!.length > item.numberOfSelections) {
+							for (
+								let i = item.selections!.length;
+								i > item.numberOfSelections;
+								i--
+							) {
+								this.deleteSelection(classIndex, i)
+							}
+						}
+					}
+					classIndex++
 				})
 			})
 		},
@@ -205,7 +248,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 
-		async createSelection(classIndex: number) {
+		createSelection(classIndex: number) {
 			return new Promise((resolve, reject) => {
 				const {
 					mutate: selectionCreate,
