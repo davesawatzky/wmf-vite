@@ -398,7 +398,8 @@
 			switch (oldNumber < newNumber) {
 				case true:
 					while (oldNumber < newNumber) {
-						classesStore
+						console.log('OldNumber: ' + oldNumber)
+						await classesStore
 							.createSelection(props.classIndex)
 							.catch((error) => console.log('There was an error!' + error))
 						oldNumber += 1
@@ -406,7 +407,7 @@
 					break
 				case false:
 					while (oldNumber > newNumber) {
-						classesStore.deleteSelection(props.classIndex, oldNumber - 1)
+						await classesStore.deleteSelection(props.classIndex, oldNumber - 1)
 						oldNumber -= 1
 					}
 					break
