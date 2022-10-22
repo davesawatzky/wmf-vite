@@ -66,6 +66,13 @@
 				type="text"
 				disabled />
 		</div>
+		<div v-if="instrumentRequired" class="col-span-12">
+			<BaseInput
+				id="instrument"
+				v-model="performerStore.performer[0].instrument"
+				label="Instrument"
+				type="text"></BaseInput>
+		</div>
 		<div v-if="notes" class="col-span-12">
 			<h4 class="pb-2">Notes</h4>
 			<div v-if="chosenSubdiscipline.description" v-auto-animate>
@@ -105,7 +112,7 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, onMounted, watch } from 'vue'
+	import { computed, onMounted, watch, ref } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 	import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
@@ -117,6 +124,8 @@
 	import BaseSelect from '../base/BaseSelect.vue'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
+	import { usePerformers } from '@/stores/userPerformer'
+	import BaseInput from '../base/BaseInput.vue'
 
 	const props = defineProps({
 		modelValue: {
@@ -129,7 +138,9 @@
 		},
 	})
 
+	const instrumentRequired = ref(false)
 	const appStore = useAppStore()
+	const performerStore = usePerformers()
 	const classesStore = useClasses()
 	const emits = defineEmits(['update:modelValue'])
 	const selectedClasses = computed({
@@ -156,6 +167,19 @@
 		return false
 	})
 
+	// const instrumentRequired = computed(() => {
+	// 	return classesStore.mozartClasses.includes(
+	// 		selectedClasses.value.classNumber
+	// 	)
+	// })
+
+	watch(
+		() => selectedClasses.value.classNumber,
+		(classNumber) => {
+			instrumentRequired.value =
+				classesStore.mozartClasses.includes(classNumber)
+		}
+	)
 	/**
 	 * Disciplines
 	 */

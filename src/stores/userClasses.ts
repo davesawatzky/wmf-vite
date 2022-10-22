@@ -42,6 +42,7 @@ provideApolloClient(apolloClient)
 export const useClasses = defineStore('registeredClasses', {
 	state: () => ({
 		registeredClasses: [] as RegisteredClass[],
+		mozartClasses: ['7700', '7701', '7702', '7703', '7704'], // Multi-Disciplinary
 	}),
 	getters: {},
 	actions: {
@@ -158,13 +159,11 @@ export const useClasses = defineStore('registeredClasses', {
 				let classIndex = 0
 				this.registeredClasses.forEach((item) => {
 					if (
-						item.numberOfSelections &&
-						(!item.selections ||
-							item.selections!.length < 1 ||
-							(item.numberOfSelections > 0 &&
-								item.selections!.length != item.numberOfSelections))
+						item.selections!.length < 1 ||
+						(item.numberOfSelections > 0 &&
+							item.selections!.length != item.numberOfSelections)
 					) {
-						if (!item.selections || item.selections!.length < 1) {
+						if (item.selections!.length < 1) {
 							for (let i = 0; i < item.numberOfSelections; i++) {
 								this.createSelection(classIndex)
 							}
