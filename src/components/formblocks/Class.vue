@@ -67,11 +67,11 @@
 				disabled />
 		</div>
 		<div v-if="instrumentRequired" class="col-span-12">
-			<BaseInput
+			<BaseSelect
 				id="instrument"
 				v-model="performerStore.performer[0].instrument"
-				label="Instrument"
-				type="text"></BaseInput>
+				:options="instruments"
+				label="Instrument"></BaseSelect>
 		</div>
 		<div v-if="notes" class="col-span-12">
 			<h4 class="pb-2">Notes</h4>
@@ -119,13 +119,13 @@
 	import LEVELS_QUERY from '@/graphql/queries/levels.query.gql'
 	import CATEGORIES_QUERY from '@/graphql/queries/categories.query.gql'
 	import CLASS_SEARCH_QUERY from '@/graphql/queries/classSearch.query.gql'
+	import INSTRUMENTS_QUERY from '@/graphql/queries/instruments.query.gql'
 
 	import WorksSelection from './WorksSelection.vue'
 	import BaseSelect from '../base/BaseSelect.vue'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
 	import { usePerformers } from '@/stores/userPerformer'
-	import BaseInput from '../base/BaseInput.vue'
 
 	const props = defineProps({
 		modelValue: {
@@ -167,11 +167,9 @@
 		return false
 	})
 
-	// const instrumentRequired = computed(() => {
-	// 	return classesStore.mozartClasses.includes(
-	// 		selectedClasses.value.classNumber
-	// 	)
-	// })
+	const { result: instrumentQuery, error: instrumentsError } =
+		useQuery(INSTRUMENTS_QUERY)
+	const instruments = computed(() => instrumentQuery.value.instruments ?? [])
 
 	watch(
 		() => selectedClasses.value.classNumber,
@@ -422,7 +420,6 @@
 			switch (oldNumber < newNumber) {
 				case true:
 					while (oldNumber < newNumber) {
-						console.log('OldNumber: ' + oldNumber)
 						await classesStore
 							.createSelection(props.classIndex)
 							.catch((error) => console.log('There was an error!' + error))

@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { Component } from 'vue'
+	import type { Component, onBeforeUnmount } from 'vue'
 	import { ref } from 'vue'
 	import SoloContactInfo from './SoloContactInfo.vue'
 	import SoloClasses from './SoloClasses.vue'
@@ -115,6 +115,10 @@
 			}
 			break
 	}
+
+	// function onBeforeUnmount(() => {
+	// 	saveRegistration()
+	// })
 
 	async function saveRegistration() {
 		switch (appStore.performerType) {

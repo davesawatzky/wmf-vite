@@ -95,10 +95,6 @@ export const useClasses = defineStore('registeredClasses', {
 					classSelection
 				)
 			}
-			console.log(
-				'Selections Length: ' +
-					this.registeredClasses[classIndex].selections?.length
-			)
 		},
 
 		createClass(registrationId: string) {
@@ -177,7 +173,6 @@ export const useClasses = defineStore('registeredClasses', {
 								i++
 							) {
 								this.createSelection(classIndex)
-								console.log('This just ran.')
 							}
 						} else if (item.selections!.length > item.numberOfSelections) {
 							for (
@@ -265,12 +260,9 @@ export const useClasses = defineStore('registeredClasses', {
 				delete clone.id
 				selectionCreate({ registeredClassId: classId, selection: clone })
 				doneSelectionCreate((result) => {
-					console.log('Result: ', result)
 					let lastIndex =
 						this.registeredClasses[classIndex].selections!.length - 1
-					console.log('lastIndex: ' + lastIndex)
 					let returnedId: string = result.data.selectionCreate.selection.id
-					console.log('returnedId: ' + returnedId)
 					this.registeredClasses[classIndex].selections![lastIndex].id =
 						returnedId
 					resolve(returnedId)
