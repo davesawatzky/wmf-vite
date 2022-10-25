@@ -12,6 +12,10 @@
 						their choirs; a parent for their family etc.)
 					</li>
 					<li>
+						Only one teacher/discipline allowed per form. Performers with
+						multiple disciplines and/or teachers require separate forms.
+					</li>
+					<li>
 						Applications can be saved and completed/edited later before
 						submission. Once submitted, applications can no longer be edited.
 					</li>
