@@ -11,11 +11,11 @@
 						label="School Name" />
 				</div>
 				<div class="col-span-12 sm:col-span-6">
-					<BaseSelect
+					<BaseInput
 						v-model="schoolStore.schoolInfo.division"
 						name="schoolDivision"
 						label="School Division"
-						:options="divisions" />
+						type="text" />
 				</div>
 			</div>
 			<contact-info v-model="schoolStore.schoolInfo" school> </contact-info>
@@ -68,7 +68,6 @@
 </template>
 
 <script lang="ts" setup>
-	import { ref } from 'vue'
 	import { useSchool } from '@/stores/userSchool'
 	import { useTeacher } from '@/stores/userTeacher'
 	import { useCommunity } from '@/stores/userCommunity'
@@ -81,15 +80,6 @@
 	const schoolStore = useSchool()
 	const communityStore = useCommunity()
 	const registrationStore = useRegistration()
-
-	const divisions = ref([
-		{ name: 'Pembina Trails School Division', id: '1' },
-		{ name: 'Winnipeg School Division', id: '2' },
-		{ name: 'Louis Riel School Division', id: '3' },
-		{ name: 'St. James-Assiniboia School Division', id: '4' },
-		{ name: 'Seven Oaks School Division', id: '5' },
-		{ name: 'River East-Transcona School Division', id: '6' },
-	])
 
 	async function addSchoolGroup() {
 		await communityStore.createCommunity(registrationStore.registrationId)
