@@ -14,7 +14,8 @@
 					<BaseInput
 						v-model="schoolStore.schoolInfo.division"
 						name="schoolDivision"
-						label="School Division" />
+						label="School Division"
+						type="text" />
 				</div>
 			</div>
 			<contact-info v-model="schoolStore.schoolInfo" school> </contact-info>
