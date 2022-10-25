@@ -6,8 +6,7 @@
 			<BaseSelect
 				v-model="appStore.disciplineName"
 				label="Discipline"
-				:options="disciplines"
-				@change="changeDiscipline"></BaseSelect>
+				:options="disciplines"></BaseSelect>
 		</div>
 
 		<div
@@ -52,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-	import { computed, watch } from 'vue'
+	import { computed, onBeforeMount } from 'vue'
 	import { useQuery } from '@vue/apollo-composable'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
@@ -62,6 +61,10 @@
 	const classesStore = useClasses()
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
+
+	onBeforeMount(() => {
+		appStore.disciplineName = classesStore.registeredClasses[0].discipline
+	})
 
 	function addClass(registrationId: string) {
 		classesStore.createClass(registrationId)

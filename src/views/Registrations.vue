@@ -136,7 +136,7 @@
 <script lang="ts" setup>
 	import { DateTime } from 'luxon'
 	import { useMediaQuery } from '@vueuse/core'
-	import { onBeforeMount, ref } from 'vue'
+	import { onBeforeMount, ref, computed } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
 	import DISCIPLINES_BY_NAME_QUERY from '@/graphql/queries/disciplinesByName.query.gql'
@@ -220,11 +220,7 @@
 		let clone = Object.assign({}, result.data.registrations)
 		registrations.value = clone
 	})
-	const { onResult: disciplineIdQuery, load: disciplineIdQueryLoad } =
-		useLazyQuery(DISCIPLINES_BY_NAME_QUERY, { name: appStore.disciplineName })
-	disciplineIdQuery((result) => {
-		appStore.disciplineId = result.data.disciplinesByName.id ?? ''
-	})
+
 	/**
 	 * Load and Edit Existing Registration
 	 *
@@ -245,10 +241,6 @@
 				await performerStore.loadPerformers(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
-				// .then(() => {
-				// 	appStore.disciplineName = classesStore.registeredClasses[0].discipline
-				// 	disciplineIdQueryLoad()
-				// })
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'

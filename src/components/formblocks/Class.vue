@@ -112,7 +112,7 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, onMounted, watch, ref } from 'vue'
+	import { computed, onMounted, watch, watchEffect, ref } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 	// import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
@@ -196,18 +196,19 @@
 	// 	},
 	// 	set: (newValue) => newValue,
 	// })
-	watch(
-		() => appStore.disciplineName,
-		() => {
-			chosenSubdiscipline.value = { id: '', name: '' }
-			chosenGradeLevel.value = { id: '', name: '' }
-			chosenCategory.value = { id: '', name: '' }
-			className.value = ''
-			classSelection.value = null
 
-			subdiscLoad()
-		}
-	)
+	// watch(
+	// 	() => appStore.disciplineName,
+	// 	() => {
+	// 		chosenSubdiscipline.value = { id: '', name: '' }
+	// 		chosenGradeLevel.value = { id: '', name: '' }
+	// 		chosenCategory.value = { id: '', name: '' }
+	// 		className.value = ''
+	// 		classSelection.value = null
+
+	// 		subdiscLoad()
+	// 	}
+	// )
 
 	/**
 	 * Subdisciplines
