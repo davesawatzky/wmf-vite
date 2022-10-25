@@ -1,20 +1,20 @@
 <template>
 	<div v-auto-animate class="grid grid-cols-12 gap-x-3 gap-y-5 items-end">
-		<div class="col-span-6 lg:col-span-2">
+		<!-- <div class="col-span-6 lg:col-span-2">
 			<BaseSelect
 				id=""
 				v-model="selectedClasses.discipline"
 				label="Discipline"
 				:options="disciplines"
 				@change="changeSubdisciplineDropdown()" />
-		</div>
+		</div> -->
 		<div class="col-span-6 lg:col-span-3">
 			<BaseSelect
 				v-model="selectedClasses.subdiscipline"
 				:class="selectedClasses.discipline ? '' : 'off'"
 				label="Subdiscipline"
 				:options="subdisciplines"
-				:disabled="!selectedClasses.discipline"
+				:disabled="!appStore.disciplineName"
 				@change="changeGradeLevelDropdown()" />
 		</div>
 		<div class="col-span-6 lg:col-span-3">
@@ -43,7 +43,7 @@
 				:options="numberOfAllowedWorks"
 				:disabled="!selectedClasses.category" />
 		</div>
-		<div class="col-span-6 md:col-span-2">
+		<div class="col-span-6 md:col-span-3">
 			<label for="classNumber">Class Number</label>
 			<input
 				id="classNumber"
@@ -55,7 +55,7 @@
 				disabled
 				aria-disabled="true" />
 		</div>
-		<div class="col-span-12 md:col-span-8">
+		<div class="col-span-12 md:col-span-9">
 			<label for="className">Class Name</label>
 			<input
 				id="className"
@@ -114,7 +114,7 @@
 <script lang="ts" setup>
 	import { computed, onMounted, watch, ref } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
-	import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
+	// import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
 	import LEVELS_QUERY from '@/graphql/queries/levels.query.gql'
 	import CATEGORIES_QUERY from '@/graphql/queries/categories.query.gql'
@@ -181,36 +181,33 @@
 	/**
 	 * Disciplines
 	 */
-	const { result: disc, error: discError } = useQuery(
-		DISCIPLINES_BY_TYPE_QUERY,
-		() => ({ sgSlabel: appStore.performerType })
-	)
-	const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
-	const chosenDiscipline = computed({
-		get: () => {
-			return (
-				disciplines.value.find((item: any) => {
-					return item.name === selectedClasses.value.discipline
-				}) ?? {}
-			)
-		},
-		set: (newValue) => newValue,
-	})
-	function changeSubdisciplineDropdown() {
-		selectedClasses.value.subdiscipline = null
-		selectedClasses.value.level = null
-		selectedClasses.value.category = null
-		selectedClasses.value.numberOfSelections = null
-		selectedClasses.value.className = null
-		selectedClasses.value.classNumber = null
-		chosenSubdiscipline.value = { id: '', name: '' }
-		chosenGradeLevel.value = { id: '', name: '' }
-		chosenCategory.value = { id: '', name: '' }
-		className.value = ''
-		classSelection.value = null
+	// const { result: disc, error: discError } = useQuery(
+	// 	DISCIPLINES_BY_TYPE_QUERY,
+	// 	() => ({ sgSlabel: appStore.performerType })
+	// )
+	// const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
+	// const chosenDiscipline = computed({
+	// 	get: () => {
+	// 		return (
+	// 			disciplines.value.find((item: any) => {
+	// 				return item.name === selectedClasses.value.discipline
+	// 			}) ?? {}
+	// 		)
+	// 	},
+	// 	set: (newValue) => newValue,
+	// })
+	watch(
+		() => appStore.disciplineName,
+		() => {
+			chosenSubdiscipline.value = { id: '', name: '' }
+			chosenGradeLevel.value = { id: '', name: '' }
+			chosenCategory.value = { id: '', name: '' }
+			className.value = ''
+			classSelection.value = null
 
-		subdiscLoad()
-	}
+			subdiscLoad()
+		}
+	)
 
 	/**
 	 * Subdisciplines
@@ -222,7 +219,7 @@
 	} = useLazyQuery(
 		SUBDISCIPLINES_BY_TYPE_QUERY,
 		() => ({
-			disciplineId: chosenDiscipline.value.id,
+			disciplineId: appStore.disciplineId,
 			sgSlabel: appStore.performerType,
 		}),
 		{ fetchPolicy: 'network-only' }
@@ -244,7 +241,10 @@
 	watch(chosenSubdiscipline, (newSubdiscipline) => {
 		classesStore.registeredClasses[props.classIndex].price =
 			newSubdiscipline.price
+		classesStore.registeredClasses[props.classIndex].discipline =
+			appStore.disciplineName
 	})
+
 	function changeGradeLevelDropdown() {
 		selectedClasses.value.level = null
 		selectedClasses.value.category = null

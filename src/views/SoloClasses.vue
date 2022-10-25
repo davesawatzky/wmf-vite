@@ -2,6 +2,14 @@
 	<!-- Solo Class Information Page -->
 	<div v-auto-animate>
 		<h2 class="pt-8">Solo Class Information</h2>
+		<div>
+			<BaseSelect
+				v-model="appStore.disciplineName"
+				label="Discipline"
+				:options="disciplines"
+				@change="changeDiscipline"></BaseSelect>
+		</div>
+
 		<div
 			v-for="(selectedClass, classIndex) in classesStore.registeredClasses"
 			:key="classIndex">
@@ -44,17 +52,58 @@
 </template>
 
 <script setup lang="ts">
+	import { computed, watch } from 'vue'
+	import { useQuery } from '@vue/apollo-composable'
 	import { useClasses } from '@/stores/userClasses'
+	import { useAppStore } from '@/stores/appStore'
 	import { useRegistration } from '@/stores/userRegistration'
+	import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 
 	const classesStore = useClasses()
 	const registrationStore = useRegistration()
+	const appStore = useAppStore()
 
 	function addClass(registrationId: string) {
 		classesStore.createClass(registrationId)
 	}
 	function removeClass(classIndex: number, classId: string) {
 		classesStore.deleteClass(classIndex, classId)
+	}
+
+	/**
+	 * Disciplines
+	 */
+	const { result: disc, error: discError } = useQuery(
+		DISCIPLINES_BY_TYPE_QUERY,
+		() => ({ sgSlabel: appStore.performerType })
+	)
+	const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
+	const chosenDiscipline = computed(() => {
+		return (
+			disciplines.value.find((item: any) => {
+				return item.name === appStore.disciplineName
+			}) ?? {}
+		)
+	})
+	function changeDiscipline() {
+		appStore.disciplineId = chosenDiscipline.value.id
+		async function deleteAllClassesButOne() {
+			let numberOfClasses = classesStore.registeredClasses.length
+			let registeredClassId = ''
+			for (let i = 1; i < numberOfClasses; i++) {
+				registeredClassId = classesStore.registeredClasses[0].id!
+				await classesStore.deleteClass(0, registeredClassId)
+			}
+			// await classesStore.createClass()
+		}
+		deleteAllClassesButOne().then(() => {
+			classesStore.registeredClasses[0].subdiscipline = ''
+			classesStore.registeredClasses[0].level = ''
+			classesStore.registeredClasses[0].category = ''
+			classesStore.registeredClasses[0].numberOfSelections = 0
+			classesStore.registeredClasses[0].className = ''
+			classesStore.registeredClasses[0].classNumber = ''
+		})
 	}
 </script>
 

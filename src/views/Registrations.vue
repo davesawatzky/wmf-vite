@@ -12,6 +12,10 @@
 						their choirs; a parent for their family etc.)
 					</li>
 					<li>
+						Only one teacher/discipline allowed per form. Performers with
+						multiple disciplines and/or teachers require separate forms.
+					</li>
+					<li>
 						Applications can be saved and completed/edited later before
 						submission. Once submitted, applications can no longer be edited.
 					</li>
@@ -133,8 +137,9 @@
 	import { DateTime } from 'luxon'
 	import { useMediaQuery } from '@vueuse/core'
 	import { onBeforeMount, ref } from 'vue'
-	import { useQuery } from '@vue/apollo-composable'
+	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
+	import DISCIPLINES_BY_NAME_QUERY from '@/graphql/queries/disciplinesByName.query.gql'
 	import { useRouter } from 'vue-router'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
@@ -215,7 +220,11 @@
 		let clone = Object.assign({}, result.data.registrations)
 		registrations.value = clone
 	})
-
+	const { onResult: disciplineIdQuery, load: disciplineIdQueryLoad } =
+		useLazyQuery(DISCIPLINES_BY_NAME_QUERY, { name: appStore.disciplineName })
+	disciplineIdQuery((result) => {
+		appStore.disciplineId = result.data.disciplinesByName.id ?? ''
+	})
 	/**
 	 * Load and Edit Existing Registration
 	 *
@@ -236,6 +245,10 @@
 				await performerStore.loadPerformers(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
+				// .then(() => {
+				// 	appStore.disciplineName = classesStore.registeredClasses[0].discipline
+				// 	disciplineIdQueryLoad()
+				// })
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'

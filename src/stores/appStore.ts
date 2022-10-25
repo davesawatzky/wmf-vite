@@ -19,7 +19,7 @@ interface AppFlags {
 	selectionExists: boolean
 	classContentLoaded: boolean
 	disciplineName: string
-	disciplineId: string
+	disciplineId: number
 }
 
 export const useAppStore = defineStore(
@@ -39,8 +39,9 @@ export const useAppStore = defineStore(
 				selectionExists: false, // registered selection is fully loaded into class form
 				classContentLoaded: false, // Existing class content is loaded from db
 				disciplineName: '',
-				disciplineId: '',
+				disciplineId: 0,
 			},
+		actions: {},
 	}
 	// {
 	// 	persist: true,

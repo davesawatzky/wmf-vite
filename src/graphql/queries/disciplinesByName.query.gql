@@ -1,0 +1,6 @@
+query DisciplinesByName($name: String!) {
+	disciplinesByName(name: $name) {
+		id
+		name
+	}
+}

@@ -12,6 +12,7 @@ import CLASS_DELETE_MUTATION from '@/graphql/mutations/ClassDelete.mutation.gql'
 import SELECTION_CREATE_MUTATION from '@/graphql/mutations/SelectionCreate.mutation.gql'
 import SELECTION_DELETE_MUTATION from '@/graphql/mutations/SelectionDelete.mutation.gql'
 import SELECTION_UPDATE_MUTATION from '@/graphql/mutations/SelectionUpdate.mutation.gql'
+import { useAppStore } from './appStore'
 
 export interface RegisteredClass {
 	id?: string
@@ -99,6 +100,7 @@ export const useClasses = defineStore('registeredClasses', {
 
 		createClass(registrationId: string) {
 			return new Promise((resolve, reject) => {
+				const appStore = useAppStore()
 				const {
 					mutate: classCreate,
 					onDone: doneClassCreate,
