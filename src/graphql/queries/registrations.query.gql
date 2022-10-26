@@ -9,5 +9,6 @@ query Registrations {
 		totalAmt
 		transactionInfo
 		confirmation
+		discipline
 	}
 }

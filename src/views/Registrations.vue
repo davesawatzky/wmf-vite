@@ -97,7 +97,7 @@
 							class="text-sky-600 text-xl md:ml-4 ml-3"
 							@click="
 								loadRegistration(
-									registration.id,
+									registration.id!,
 									registration.performerType,
 									index
 								)
@@ -123,7 +123,7 @@
 						<BaseButton
 							v-if="!registration.confirmation"
 							class="text-red-600 text-xl md:ml-4 ml-3 my-3"
-							@click="deleteRegistration(registration.id)"
+							@click="deleteRegistration(registration.id!)"
 							><font-awesome-icon icon="fa-regular fa-trash-can"
 						/></BaseButton>
 					</td>
@@ -136,10 +136,9 @@
 <script lang="ts" setup>
 	import { DateTime } from 'luxon'
 	import { useMediaQuery } from '@vueuse/core'
-	import { onBeforeMount, ref, computed } from 'vue'
-	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
+	import { onBeforeMount, ref } from 'vue'
+	import { useQuery } from '@vue/apollo-composable'
 	import REGISTRATION_QUERY from '@/graphql/queries/Registrations.query.gql'
-	import DISCIPLINES_BY_NAME_QUERY from '@/graphql/queries/disciplinesByName.query.gql'
 	import { useRouter } from 'vue-router'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
@@ -154,27 +153,9 @@
 	import groupPhoto from '@/assets/images/strings.png'
 	import schoolPhoto from '@/assets/images/orff-instruments.png'
 	import communityPhoto from '@/assets/images/community_choir.png'
+	import { Registration, EnumPerformerType } from '@/stores/userRegistration'
 
-	enum EnumPerformerType {
-		'SOLO',
-		'GROUP',
-		'SCHOOL',
-		'COMMUNITY',
-	}
 	type PerformerType = keyof typeof EnumPerformerType
-
-	interface Registration {
-		id: string
-		label: string
-		performerType: keyof typeof EnumPerformerType
-		submittedAt?: Date
-		totalAmt: number
-		payedAmt: number
-		transactionInfo: string
-		confirmation: string
-		createdAt: Date
-		__typename?: string
-	}
 
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()

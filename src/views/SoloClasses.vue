@@ -4,11 +4,13 @@
 		<h2 class="pt-8">Solo Class Information</h2>
 		<div>
 			<BaseSelect
-				v-model="appStore.disciplineName"
+				v-model="registrationStore.registrations[0].discipline"
 				label="Discipline"
-				:options="disciplines"></BaseSelect>
+				:options="disciplines"
+				@change="changeDiscipline"></BaseSelect>
 		</div>
-
+		{{ registrationStore.registrations[0].discipline }}
+		{{ chosenDiscipline.id }}
 		<div
 			v-for="(selectedClass, classIndex) in classesStore.registeredClasses"
 			:key="classIndex">
@@ -51,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-	import { computed, onBeforeMount } from 'vue'
+	import { computed, watch } from 'vue'
 	import { useQuery } from '@vue/apollo-composable'
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
@@ -62,10 +64,6 @@
 	const registrationStore = useRegistration()
 	const appStore = useAppStore()
 
-	onBeforeMount(() => {
-		appStore.disciplineName = classesStore.registeredClasses[0].discipline
-	})
-
 	function addClass(registrationId: string) {
 		classesStore.createClass(registrationId)
 	}
@@ -75,6 +73,7 @@
 
 	/**
 	 * Disciplines
+	 * Drop Down Menu selections
 	 */
 	const { result: disc, error: discError } = useQuery(
 		DISCIPLINES_BY_TYPE_QUERY,
@@ -82,31 +81,22 @@
 	)
 	const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
 	const chosenDiscipline = computed(() => {
-		return (
-			disciplines.value.find((item: any) => {
-				return item.name === appStore.disciplineName
-			}) ?? {}
-		)
-	})
-	function changeDiscipline() {
-		appStore.disciplineId = chosenDiscipline.value.id
-		async function deleteAllClassesButOne() {
-			let numberOfClasses = classesStore.registeredClasses.length
-			let registeredClassId = ''
-			for (let i = 1; i < numberOfClasses; i++) {
-				registeredClassId = classesStore.registeredClasses[0].id!
-				await classesStore.deleteClass(0, registeredClassId)
-			}
-			// await classesStore.createClass()
-		}
-		deleteAllClassesButOne().then(() => {
-			classesStore.registeredClasses[0].subdiscipline = ''
-			classesStore.registeredClasses[0].level = ''
-			classesStore.registeredClasses[0].category = ''
-			classesStore.registeredClasses[0].numberOfSelections = 0
-			classesStore.registeredClasses[0].className = ''
-			classesStore.registeredClasses[0].classNumber = ''
+		return disciplines.value.find((item: any) => {
+			// Sets the discipline name in the registration store
+			return item.name === registrationStore.registrations[0].discipline ?? []
 		})
+	})
+	watch(chosenDiscipline, (newValue) => {
+		appStore.disciplineId = newValue.id
+		console.log('newValue: ' + newValue.name, newValue.id)
+	})
+
+	// Sets the discipline id in the appStore
+	/**
+	 * Adds the chosen discipline id to the appStore for use.
+	 */
+	function changeDiscipline() {
+		appStore.disciplineId = chosenDiscipline.value?.id ?? ''
 	}
 </script>
 

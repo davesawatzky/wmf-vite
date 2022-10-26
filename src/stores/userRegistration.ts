@@ -12,13 +12,13 @@ import REGISTRATION_UPDATE_MUTATION from '@/graphql/mutations/RegistrationUpdate
  * only one registration should be in the store at any one time.
  */
 
-enum EnumPerformerType {
+export enum EnumPerformerType {
 	'SOLO',
 	'GROUP',
 	'SCHOOL',
 	'COMMUNITY',
 }
-interface Registration {
+export interface Registration {
 	id?: string
 	label: string
 	performerType: keyof typeof EnumPerformerType
@@ -26,6 +26,7 @@ interface Registration {
 	totalAmt: number
 	payedAmt: number
 	transactionInfo: string
+	discipline: string
 	confirmation: string
 	createdAt?: Date
 	__typename?: string

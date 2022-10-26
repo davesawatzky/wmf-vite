@@ -18,7 +18,6 @@ interface AppFlags {
 	classExists: boolean
 	selectionExists: boolean
 	classContentLoaded: boolean
-	disciplineName: string
 	disciplineId: number
 }
 
@@ -38,7 +37,6 @@ export const useAppStore = defineStore(
 				classExists: false, // registered class is fully loaded into class form
 				selectionExists: false, // registered selection is fully loaded into class form
 				classContentLoaded: false, // Existing class content is loaded from db
-				disciplineName: '',
 				disciplineId: 0,
 			},
 		actions: {},

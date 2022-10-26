@@ -14,7 +14,7 @@
 				:class="selectedClasses.discipline ? '' : 'off'"
 				label="Subdiscipline"
 				:options="subdisciplines"
-				:disabled="!appStore.disciplineName"
+				:disabled="!registrationStore.registrations[0].discipline"
 				@change="changeGradeLevelDropdown()" />
 		</div>
 		<div class="col-span-6 lg:col-span-3">
@@ -112,9 +112,8 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, onMounted, watch, watchEffect, ref } from 'vue'
+	import { computed, onMounted, watch, ref } from 'vue'
 	import { useQuery, useLazyQuery } from '@vue/apollo-composable'
-	// import DISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/DisciplinesByType.query.gql'
 	import SUBDISCIPLINES_BY_TYPE_QUERY from '@/graphql/queries/subdisciplinesByType.query.gql'
 	import LEVELS_QUERY from '@/graphql/queries/levels.query.gql'
 	import CATEGORIES_QUERY from '@/graphql/queries/categories.query.gql'
@@ -126,6 +125,7 @@
 	import { useClasses } from '@/stores/userClasses'
 	import { useAppStore } from '@/stores/appStore'
 	import { usePerformers } from '@/stores/userPerformer'
+	import { useRegistration } from '@/stores/userRegistration'
 
 	const props = defineProps({
 		modelValue: {
@@ -140,6 +140,7 @@
 
 	const instrumentRequired = ref(false)
 	const appStore = useAppStore()
+	const registrationStore = useRegistration()
 	const performerStore = usePerformers()
 	const classesStore = useClasses()
 	const emits = defineEmits(['update:modelValue'])
@@ -179,36 +180,39 @@
 		}
 	)
 	/**
-	 * Disciplines
+	 * Setup according to Disciplines
+	 * Subdisciplines dropdown changes when disciplineId changes
 	 */
-	// const { result: disc, error: discError } = useQuery(
-	// 	DISCIPLINES_BY_TYPE_QUERY,
-	// 	() => ({ sgSlabel: appStore.performerType })
-	// )
-	// const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
-	// const chosenDiscipline = computed({
-	// 	get: () => {
-	// 		return (
-	// 			disciplines.value.find((item: any) => {
-	// 				return item.name === selectedClasses.value.discipline
-	// 			}) ?? {}
-	// 		)
-	// 	},
-	// 	set: (newValue) => newValue,
-	// })
+	watch(
+		() => appStore.disciplineId,
+		() => {
+			async function deleteAllClassesButOne() {
+				let numberOfClasses = classesStore.registeredClasses.length
+				console.log('Number of Classes: ' + numberOfClasses)
 
-	// watch(
-	// 	() => appStore.disciplineName,
-	// 	() => {
-	// 		chosenSubdiscipline.value = { id: '', name: '' }
-	// 		chosenGradeLevel.value = { id: '', name: '' }
-	// 		chosenCategory.value = { id: '', name: '' }
-	// 		className.value = ''
-	// 		classSelection.value = null
+				let registeredClassId = ''
+				for (let i = 1; i < numberOfClasses; i++) {
+					registeredClassId = classesStore.registeredClasses[0].id!
+					await classesStore.deleteClass(0, registeredClassId)
+				}
+			}
+			deleteAllClassesButOne().then(() => {
+				classesStore.registeredClasses[0].subdiscipline = ''
+				classesStore.registeredClasses[0].level = ''
+				classesStore.registeredClasses[0].category = ''
+				classesStore.registeredClasses[0].numberOfSelections = 0
+				classesStore.registeredClasses[0].className = ''
+				classesStore.registeredClasses[0].classNumber = ''
+				chosenSubdiscipline.value = { id: '', name: '' }
+				chosenGradeLevel.value = { id: '', name: '' }
+				chosenCategory.value = { id: '', name: '' }
+				className.value = ''
+				classSelection.value = null
 
-	// 		subdiscLoad()
-	// 	}
-	// )
+				subdiscLoad()
+			})
+		}
+	)
 
 	/**
 	 * Subdisciplines
@@ -243,7 +247,7 @@
 		classesStore.registeredClasses[props.classIndex].price =
 			newSubdiscipline.price
 		classesStore.registeredClasses[props.classIndex].discipline =
-			appStore.disciplineName
+			registrationStore.registrations[0].discipline
 	})
 
 	function changeGradeLevelDropdown() {
@@ -256,9 +260,10 @@
 		chosenCategory.value = { id: '', name: '' }
 		className.value = ''
 		classSelection.value = null
-
 		gradeLevelLoad()
 	}
+
+	console.log('disciplineId: ' + appStore.disciplineId)
 
 	/**
 	 * Grades / Levels
