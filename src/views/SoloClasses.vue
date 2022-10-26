@@ -8,8 +8,6 @@
 				label="Discipline"
 				:options="disciplines"></BaseSelect>
 		</div>
-		{{ registrationStore.registrations[0].discipline }}
-		{{ chosenDiscipline.id }}
 		<div
 			v-for="(selectedClass, classIndex) in classesStore.registeredClasses"
 			:key="classIndex">
@@ -87,7 +85,6 @@
 	})
 	watch(chosenDiscipline, (newValue) => {
 		appStore.disciplineId = newValue.id
-		console.log('newValue: ' + newValue.name, newValue.id)
 	})
 
 	// Sets the discipline id in the appStore

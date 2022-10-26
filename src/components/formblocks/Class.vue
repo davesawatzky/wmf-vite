@@ -184,16 +184,25 @@
 	 * Subdisciplines dropdown changes when disciplineId changes
 	 */
 	watch(
-		() => appStore.disciplineId,
+		() => registrationStore.registrations[0].discipline,
 		() => {
 			async function deleteAllClassesButOne() {
 				let numberOfClasses = classesStore.registeredClasses.length
-				console.log('Number of Classes: ' + numberOfClasses)
+				console.log('Number of Classes to Remove: ' + numberOfClasses)
 
 				let registeredClassId = ''
-				for (let i = 1; i < numberOfClasses; i++) {
+				for (let i = numberOfClasses; numberOfClasses > 1; i--) {
+					console.log('Removing class: ' + i)
 					registeredClassId = classesStore.registeredClasses[0].id!
-					await classesStore.deleteClass(0, registeredClassId)
+					await classesStore
+						.deleteClass(0, registeredClassId)
+						.then(() => console.log('Number of Classes remaining: ' + i))
+						.then(() =>
+							console.log(
+								'Length of Array: ' + classesStore.registeredClasses.length
+							)
+						)
+						.catch((err) => console.log(err))
 				}
 			}
 			deleteAllClassesButOne().then(() => {
@@ -262,8 +271,6 @@
 		classSelection.value = null
 		gradeLevelLoad()
 	}
-
-	console.log('disciplineId: ' + appStore.disciplineId)
 
 	/**
 	 * Grades / Levels

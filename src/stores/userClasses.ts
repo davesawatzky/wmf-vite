@@ -100,7 +100,6 @@ export const useClasses = defineStore('registeredClasses', {
 
 		createClass(registrationId: string) {
 			return new Promise((resolve, reject) => {
-				const appStore = useAppStore()
 				const {
 					mutate: classCreate,
 					onDone: doneClassCreate,
@@ -143,7 +142,7 @@ export const useClasses = defineStore('registeredClasses', {
 					this.registeredClasses = structuredClone(
 						result.data.registration.registeredClasses
 					)
-					this.checkForExistingSelections()
+					this.checkForExistingSelections().catch((err) => console.log(err))
 					resolve(result)
 				})
 				onError((error) => {
@@ -188,6 +187,8 @@ export const useClasses = defineStore('registeredClasses', {
 					}
 					classIndex++
 				})
+				// resolve('Selection check successful')
+				// reject('Error in existing selection check')
 			})
 		},
 
