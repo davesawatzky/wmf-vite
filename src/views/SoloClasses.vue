@@ -6,8 +6,7 @@
 			<BaseSelect
 				v-model="registrationStore.registrations[0].discipline"
 				label="Discipline"
-				:options="disciplines"
-				@change="changeDiscipline"></BaseSelect>
+				:options="disciplines"></BaseSelect>
 		</div>
 		{{ registrationStore.registrations[0].discipline }}
 		{{ chosenDiscipline.id }}
@@ -95,9 +94,9 @@
 	/**
 	 * Adds the chosen discipline id to the appStore for use.
 	 */
-	function changeDiscipline() {
-		appStore.disciplineId = chosenDiscipline.value?.id ?? ''
-	}
+	// function changeDiscipline() {
+	// 	appStore.disciplineId = chosenDiscipline.value?.id ?? ''
+	// }
 </script>
 
 <style scoped></style>

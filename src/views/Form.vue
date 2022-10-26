@@ -116,9 +116,10 @@
 			break
 	}
 
-	onBeforeUnmount(() => {
-		saveRegistration()
-	})
+	// onBeforeUnmount(() => {
+	// 	console.log('just called onBeforeUnmount in Form')
+	// 	saveRegistration()
+	// })
 
 	async function saveRegistration() {
 		switch (appStore.performerType) {
