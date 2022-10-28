@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+	import apolloClient from '@/utilities/apolloClient'
 	import { removeToken } from '@/composables/setTokens'
 	import { useAppStore } from '@/stores/appStore'
 	import { useRegistration } from '@/stores/userRegistration'

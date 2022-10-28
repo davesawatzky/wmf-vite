@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 import {
 	useQuery,
 	useMutation,
@@ -44,6 +44,7 @@ export const useClasses = defineStore('registeredClasses', {
 		registeredClasses: [] as RegisteredClass[],
 		mozartClasses: ['7700', '7701', '7702', '7703', '7704'], // Multi-Disciplinary
 	}),
+
 	getters: {},
 	actions: {
 		/**
@@ -331,6 +332,7 @@ export const useClasses = defineStore('registeredClasses', {
 			})
 		},
 	},
+	persist: true,
 })
 
 // if (import.meta.hot) {

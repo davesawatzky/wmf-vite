@@ -109,10 +109,18 @@
 	})
 
 	const validationSchema = yup.object({
+		groupName: yup
+			.string()
+			.trim()
+			.nullable()
+			.required('Enter a name for your group'),
 		earliestTime: yup.string().nullable().required('Enter a time'),
 		latestTime: yup.string().nullable().required('Enter a time'),
+		groupSize: yup.number().required('Enter the numer of performers'),
+		chaperones: yup.number(),
+		wheelchaires: yup.number(),
 		unavailable: yup.string().trim().nullable(),
-		conflictStudents: yup.string().trim().nullable(),
+		conflictPerformers: yup.string().trim().nullable(),
 	})
 
 	useForm({ validationSchema })

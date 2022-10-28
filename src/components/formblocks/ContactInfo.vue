@@ -14,6 +14,7 @@
 				class="col-span-12 sm:col-span-4">
 				<BaseInput
 					v-model="contact.lastName"
+					required
 					name="lastName"
 					type="text"
 					label="Last Name" />
@@ -21,6 +22,7 @@
 			<div v-else-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
 					v-model="contact.lastName"
+					required
 					name="lastName"
 					type="text"
 					label="Last Name" />
@@ -30,6 +32,7 @@
 				class="col-span-12 sm:col-span-3">
 				<BaseInput
 					v-model.number="contact.age"
+					required
 					name="age"
 					type="number"
 					:label="'Age on Dec. 31, ' + currentYear" />
@@ -48,6 +51,7 @@
 				class="col-span-12 sm:col-span-4 mt-6 sm:mt-0">
 				<BaseInput
 					v-model="contact.streetNumber"
+					required
 					name="streetNumber"
 					type="text"
 					label="Street Number" />
@@ -55,6 +59,7 @@
 			<div v-if="!schoolteacher && !school" class="col-span-6 sm:col-span-3">
 				<BaseInput
 					v-model="contact.streetNumber"
+					required
 					name="streetNumber"
 					type="text"
 					label="Street Number" />
@@ -63,6 +68,7 @@
 			<div v-if="school && !schoolteacher" class="col-span-12 sm:col-span-8">
 				<BaseInput
 					v-model="contact.streetName"
+					requried
 					name="streetName"
 					type="text"
 					label="Street Name" />
@@ -70,6 +76,7 @@
 			<div v-if="!school && !schoolteacher" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.streetName"
+					required
 					name="streetName"
 					type="text"
 					label="Street Name" />
@@ -77,6 +84,7 @@
 			<div v-if="!schoolteacher" class="col-span-8 sm:col-span-7">
 				<BaseInput
 					v-model="contact.city"
+					required
 					name="city"
 					type="text"
 					label="City/Town" />
@@ -84,6 +92,7 @@
 			<div v-if="!schoolteacher" class="col-span-4 sm:col-span-2 self-start">
 				<BaseSelect
 					v-model="contact.province"
+					required
 					name="province"
 					label="Province"
 					:options="provinces" />
@@ -91,6 +100,7 @@
 			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-3">
 				<BaseInput
 					v-model="contact.postalCode"
+					required
 					mask="A#A #A#"
 					name="postalCode"
 					type="text"
@@ -99,6 +109,7 @@
 			<div class="col-span-12 sm:col-span-5">
 				<BaseInput
 					v-model="contact.phone"
+					required
 					mask="(###) ###-####"
 					name="phone"
 					type="tel"
@@ -107,6 +118,7 @@
 			<div v-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
 					v-model="contact.email"
+					required
 					name="email"
 					type="email"
 					label="Email" />
@@ -114,6 +126,7 @@
 			<div v-if="groupperformer" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.instrument"
+					required
 					name="instrument"
 					type="text"
 					label="Instrument" />
@@ -121,6 +134,7 @@
 			<div v-if="groupperformer" class="col-span-12 sm:col-span-6">
 				<BaseInput
 					v-model="contact.level"
+					required
 					name="level"
 					type="text"
 					label="Level" />
@@ -128,6 +142,7 @@
 			<div v-if="groupperformer" class="col-span-12">
 				<BaseTextarea
 					v-model="contact.otherClasses"
+					required
 					name="otherClasses"
 					:label="textAreaLabel" />
 			</div>

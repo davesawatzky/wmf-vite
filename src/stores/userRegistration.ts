@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 import { provideApolloClient, useMutation } from '@vue/apollo-composable'
 import apolloClient from '@/utilities/apolloClient'
 import REGISTRATION_CREATE_MUTATION from '@/graphql/mutations/RegistrationCreate.mutation.gql'
@@ -107,6 +107,7 @@ export const useRegistration = defineStore('registrations', {
 			await registrationDelete({ registrationDeleteId: registrationId })
 		},
 	},
+	persist: true,
 })
 
 // if (import.meta.hot) {

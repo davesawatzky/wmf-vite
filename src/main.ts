@@ -4,7 +4,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable'
 import App from './App.vue'
 import routes from './router'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -25,7 +25,7 @@ const app = createApp({
 })
 
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+pinia.use(createPersistedState({ storage: sessionStorage }))
 
 app
 	.use(pinia)

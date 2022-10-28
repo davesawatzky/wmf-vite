@@ -9,14 +9,13 @@
 		:value="inputValue"
 		:aria-describedby="errorMessage ? `${uuid}-error` : ''"
 		:aria-invalid="errorMessage ? true : false"
-		@change="handleChange"
-		@blur="handleBlur" />
+		v-on="validationListeners" />
 	<BaseErrorMessage> {{ errorMessage }}</BaseErrorMessage>
 </template>
 
 <script setup lang="ts">
 	// 	@input ="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-	import { toRef } from 'vue'
+	import { toRef, computed } from 'vue'
 	import { useField } from 'vee-validate'
 	import UniqueID from '@/composables/UniqueID'
 	const uuid = UniqueID().getID()
@@ -28,7 +27,7 @@
 		},
 		name: {
 			type: String,
-			required: false,
+			required: true,
 			default: '',
 		},
 		mask: {
@@ -43,15 +42,35 @@
 	})
 	defineEmits(['update:modelValue'])
 
-	const name = toRef(props, 'name')
+	const nameRef = toRef(props, 'name')
+
+	const validationListeners = computed(() => {
+		// If the field is valid or have not been validated yet
+		// lazy
+		if (!errorMessage.value) {
+			return {
+				blur: handleChange,
+				change: handleChange,
+				// disable `shouldValidate` to avoid validating on input
+				input: (e: string | number) => handleChange(e, false),
+			}
+		}
+
+		// Aggressive
+		return {
+			blur: handleChange,
+			change: handleChange,
+			input: handleChange, // only switched this
+		}
+	})
 
 	const {
 		value: inputValue,
 		errorMessage,
-		handleBlur,
 		handleChange,
 		meta,
-	} = useField(name, undefined, {
+	} = useField(nameRef, undefined, {
+		validateOnValueUpdate: false,
 		initialValue: props.modelValue,
 	})
 </script>

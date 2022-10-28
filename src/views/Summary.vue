@@ -152,7 +152,8 @@
 	const appStore = useAppStore()
 	const registrationStore = useRegistration()
 
-	function submitRegistration() {
+	async function submitRegistration() {
+		await saveRegistration()
 		router.push('Submission')
 	}
 
@@ -162,6 +163,44 @@
 
 	function printWindow() {
 		window.print()
+	}
+
+	async function saveRegistration() {
+		switch (appStore.performerType) {
+			case 'SOLO':
+				appStore.performerType = 'SOLO'
+				await registrationStore.updateRegistration()
+				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+			case 'GROUP':
+				appStore.performerType = 'GROUP'
+				await registrationStore.updateRegistration()
+				await groupStore.updateGroup()
+				await teacherStore.updateTeacher()
+				await performerStore.updateAllPerformers()
+				await classesStore.updateAllClasses()
+				break
+			case 'SCHOOL':
+				appStore.performerType = 'SCHOOL'
+				await registrationStore.updateRegistration()
+				await schoolStore.updateSchool()
+				await communityStore.updateAllCommunities()
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+			case 'COMMUNITY':
+				appStore.performerType = 'COMMUNITY'
+				await registrationStore.updateRegistration()
+				await communityStore.updateCommunity(
+					0,
+					communityStore.communityInfo[0].id!
+				)
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+		}
 	}
 </script>
 

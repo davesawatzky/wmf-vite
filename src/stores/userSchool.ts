@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 import {
 	useQuery,
 	useMutation,
@@ -127,6 +127,7 @@ export const useSchool = defineStore('school', {
 			})
 		},
 	},
+	persist: true,
 })
 
 // if (import.meta.hot) {

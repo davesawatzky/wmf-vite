@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 
 enum EnumPerformerType {
 	'SOLO',
@@ -20,29 +20,23 @@ interface AppFlags {
 	classContentLoaded: boolean
 }
 
-export const useAppStore = defineStore(
-	'appStore',
-	{
-		state: () =>
-			<AppFlags>{
-				editExisting: false, // edits an existing registration from the db
-				performerType: 'SOLO', // default performertype - just in case.
-				registrationExists: false, // registration exists in the db
-				performerContactLoaded: false, // performer contact already exists and is loaded
-				groupInfoLoaded: false,
-				schoolInfoLoaded: false,
-				communityInfoLoaded: false,
-				teacherLoaded: false, // teacher contact already exists and is loaded
-				classExists: false, // registered class is fully loaded into class form
-				selectionExists: false, // registered selection is fully loaded into class form
-				classContentLoaded: false, // Existing class content is loaded from db
-			},
-	}
-	// {
-	// 	persist: true,
-	// }
-)
-
+export const useAppStore = defineStore('appStore', {
+	state: () =>
+		<AppFlags>{
+			editExisting: false, // edits an existing registration from the db
+			performerType: 'SOLO', // default performertype - just in case.
+			registrationExists: false, // registration exists in the db
+			performerContactLoaded: false, // performer contact already exists and is loaded
+			groupInfoLoaded: false,
+			schoolInfoLoaded: false,
+			communityInfoLoaded: false,
+			teacherLoaded: false, // teacher contact already exists and is loaded
+			classExists: false, // registered class is fully loaded into class form
+			selectionExists: false, // registered selection is fully loaded into class form
+			classContentLoaded: false, // Existing class content is loaded from db
+		},
+	persist: true,
+})
 // if (import.meta.hot) {
 // 	import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot))
 // }

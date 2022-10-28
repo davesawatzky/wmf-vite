@@ -1,4 +1,4 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore } from 'pinia'
 import {
 	useQuery,
 	useMutation,
@@ -167,6 +167,7 @@ export const usePerformers = defineStore('performers', {
 			})
 		},
 	},
+	persist: true,
 })
 
 // if (import.meta.hot) {
