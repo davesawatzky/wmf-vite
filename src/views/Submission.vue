@@ -52,6 +52,7 @@
 				v-if="!submissionComplete"
 				class="btn btn-blue"
 				to="Registrations"
+				@click="saveRegistration"
 				>Cancel</BaseRouteButton
 			>
 			<div v-if="submissionComplete" class="pb-8">
@@ -65,6 +66,7 @@
 				v-if="submissionComplete"
 				class="btn btn-blue w-24"
 				to="Registrations"
+				@click="saveRegistration"
 				>Return to Registrations</BaseRouteButton
 			>
 			<BaseButton
@@ -82,9 +84,25 @@
 	import { ref } from 'vue'
 	import { random } from 'lodash'
 	import { useRegistration } from '@/stores/userRegistration'
+	import { usePerformers } from '@/stores/userPerformer'
+	import { useAppStore } from '@/stores/appStore'
+	import { useTeacher } from '@/stores/userTeacher'
+	import { useClasses } from '@/stores/userClasses'
+	import { useGroup } from '@/stores/userGroup'
+	import { useCommunity } from '@/stores/userCommunity'
+	import { useSchool } from '@/stores/userSchool'
+
 	import SummaryTable from '@/components/summaryblocks/SummaryTable.vue'
 
 	const registrationStore = useRegistration()
+	const performerStore = usePerformers()
+	const teacherStore = useTeacher()
+	const classesStore = useClasses()
+	const groupStore = useGroup()
+	const appStore = useAppStore()
+	const communityStore = useCommunity()
+	const schoolStore = useSchool()
+
 	const confirmationNumber = ref('')
 	const submissionComplete = ref(false)
 
@@ -96,12 +114,51 @@
 	let formattedDate = DateTime.now().toLocaleString(DateTime.DATETIME_MED)
 
 	async function submitRegistration() {
+		await saveRegistration()
 		confirmationNumber.value =
 			'WMF-' + registrationStore.registrationId + '-' + random(1000, 9999)
 		registrationStore.registrations[0].submittedAt = date
 		registrationStore.registrations[0].confirmation = confirmationNumber.value
 		await registrationStore.updateRegistration()
 		submissionComplete.value = true
+	}
+
+	async function saveRegistration() {
+		switch (appStore.performerType) {
+			case 'SOLO':
+				appStore.performerType = 'SOLO'
+				await registrationStore.updateRegistration()
+				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+			case 'GROUP':
+				appStore.performerType = 'GROUP'
+				await registrationStore.updateRegistration()
+				await groupStore.updateGroup()
+				await teacherStore.updateTeacher()
+				await performerStore.updateAllPerformers()
+				await classesStore.updateAllClasses()
+				break
+			case 'SCHOOL':
+				appStore.performerType = 'SCHOOL'
+				await registrationStore.updateRegistration()
+				await schoolStore.updateSchool()
+				await communityStore.updateAllCommunities()
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+			case 'COMMUNITY':
+				appStore.performerType = 'COMMUNITY'
+				await registrationStore.updateRegistration()
+				await communityStore.updateCommunity(
+					0,
+					communityStore.communityInfo[0].id!
+				)
+				await teacherStore.updateTeacher()
+				await classesStore.updateAllClasses()
+				break
+		}
 	}
 </script>
 

@@ -1,8 +1,8 @@
 query Classes($SGSlabel: SGSlabel) {
-  classes(SGSlabel: $SGSlabel) {
-    subdiscipline {
-      id
-      name
-    }
-  }
+	classes(SGSlabel: $SGSlabel) {
+		subdiscipline {
+			id
+			name
+		}
+	}
 }

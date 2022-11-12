@@ -5,7 +5,6 @@ query SubdisciplinesByType($disciplineId: ID, $sgSlabel: SGSlabel!) {
 		description
 		maxPerformers
 		minPerformers
-		price
 		SGSlabel
 	}
 }

@@ -6,6 +6,7 @@ query ClassSearch($classSearchArgs: ClassSearchArgs!) {
 		minSelection
 		requiredSelection
 		SGSlabel
+		price
 		subdiscipline {
 			name
 		}

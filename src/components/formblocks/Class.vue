@@ -241,10 +241,10 @@
 		set: (newValue) => newValue,
 	})
 
-	watch(chosenSubdiscipline, (newSubdiscipline) => {
-		classesStore.registeredClasses[props.classIndex].price =
-			newSubdiscipline.price
-	})
+	// watch(chosenSubdiscipline, (newSubdiscipline) => {
+	// 	classesStore.registeredClasses[props.classIndex].price =
+	// 		newSubdiscipline.price
+	// })
 	function changeGradeLevelDropdown() {
 		selectedClasses.value.level = null
 		selectedClasses.value.category = null
@@ -386,6 +386,11 @@
 			}
 		},
 		set: (newValue) => newValue,
+	})
+
+	watch(classSelection, (newClassSelection) => {
+		classesStore.registeredClasses[props.classIndex].price =
+			newClassSelection.price
 	})
 
 	/**
