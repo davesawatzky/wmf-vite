@@ -7,8 +7,8 @@ import {
 } from '@apollo/client/core'
 
 const httpLink = new HttpLink({
-	// uri: 'https://wmf-registration-38bfy.ondigitalocean.app/graphql',
-	uri: 'http://localhost:4000/graphql',
+	uri: 'https://wmf-registration-38bfy.ondigitalocean.app/graphql',
+	// uri: 'http://localhost:4000/graphql',
 })
 
 const authLink = new ApolloLink((operation, forward) => {
