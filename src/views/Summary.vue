@@ -158,7 +158,7 @@
 	}
 
 	async function prepareRegistration() {
-		saveRegistration()
+		await saveRegistration()
 		router.push('Submission')
 	}
 
