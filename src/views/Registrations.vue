@@ -237,32 +237,42 @@
 		switch (performerType) {
 			case 'SOLO':
 				appStore.performerType = 'SOLO'
+				appStore.dataLoading = true
 				await performerStore.loadPerformers(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
+				appStore.dataLoading = false
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
+				appStore.dataLoading = true
 				await groupStore.loadGroup(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await performerStore.loadPerformers(registrationId)
 				await classesStore.loadClasses(registrationId)
+				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
+				appStore.dataLoading = true
 				await schoolStore.loadSchool(registrationId)
 				await communityStore.loadCommunities(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
+				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
+				appStore.dataLoading = true
 				await communityStore.loadCommunities(registrationId)
 				await teacherStore.loadTeacher(registrationId)
 				await classesStore.loadClasses(registrationId)
+				appStore.dataLoading = false
 				break
 		}
+		appStore.dataLoading = true
 		classesStore.loadClasses(registrationId)
+		appStore.dataLoading = false
 		router.push({ name: 'Form' })
 	}
 
@@ -274,6 +284,7 @@
 	 */
 	async function newRegistration(performerType: PerformerType, label?: string) {
 		if (!label || label.length == 0) label = 'Registration Form'
+
 		await registrationStore.createRegistration(performerType, label)
 		registrationId.value = registrationStore.registrationId
 
@@ -285,37 +296,47 @@
 		switch (performerType) {
 			case 'SOLO':
 				appStore.performerType = 'SOLO'
+				appStore.dataLoading = true
 				await performerStore.createPerformer(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
+				appStore.dataLoading = false
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
+				appStore.dataLoading = true
 				await groupStore.createGroup(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
 				await performerStore.createPerformer(registrationId.value)
 				await classesStore.createClass(registrationId.value)
+				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
+				appStore.dataLoading = true
 				await schoolStore.createSchool(registrationId.value)
 				await communityStore.createCommunity(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
+				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
+				appStore.dataLoading = true
 				await communityStore.createCommunity(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
+				appStore.dataLoading = false
 		}
 
 		router.push({ name: 'Form' })
 	}
 
 	async function deleteRegistration(regId: string) {
+		appStore.dataLoading = true
 		await registrationStore.deleteRegistration(regId)
 		refetchRegistrations()
+		appStore.dataLoading = false
 	}
 </script>
 

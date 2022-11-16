@@ -64,14 +64,14 @@
 			</div>
 			<BaseRouteButton
 				v-if="submissionComplete"
-				class="btn btn-blue w-24"
+				class="btn btn-blue h-14"
 				to="Registrations"
 				@click="saveRegistration"
 				>Return to Registrations</BaseRouteButton
 			>
 			<BaseButton
 				v-if="submissionComplete"
-				class="btn btn-blue"
+				class="btn btn-blue h-14"
 				@click="printWindow"
 				>Print this page</BaseButton
 			>
@@ -127,29 +127,36 @@
 		switch (appStore.performerType) {
 			case 'SOLO':
 				appStore.performerType = 'SOLO'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await groupStore.updateGroup()
 				await teacherStore.updateTeacher()
 				await performerStore.updateAllPerformers()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await schoolStore.updateSchool()
 				await communityStore.updateAllCommunities()
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await communityStore.updateCommunity(
 					0,
@@ -157,6 +164,7 @@
 				)
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 		}
 	}

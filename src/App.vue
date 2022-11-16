@@ -1,8 +1,9 @@
 <template>
-	<base-spinner v-if="queryLoading || mutationLoading"></base-spinner>
-	<!-- <div>
-		Query Loading: {{ queryLoading }}, Mutation Loading: {{ mutationLoading }}
-	</div> -->
+	<base-spinner
+		v-if="
+			queryLoading || mutationLoading || appStore.dataLoading
+		"></base-spinner>
+
 	<base-header></base-header>
 
 	<!-- <h1>Down for Maintenance. Will return shortly</h1> -->
@@ -39,7 +40,9 @@
 		useGlobalQueryLoading,
 	} from '@vue/apollo-composable'
 	import BaseHeader from './components/base/BaseHeader.vue'
+	import { useAppStore } from './stores/appStore'
 
+	const appStore = useAppStore()
 	const mutationLoading = useGlobalMutationLoading()
 	const queryLoading = useGlobalQueryLoading()
 </script>

@@ -68,7 +68,7 @@
 				Festival Class Number: {{ registeredClass.classNumber }}
 			</h4>
 			<h5 v-if="appStore.performerType === 'SCHOOL'">
-				{{ schoolClassGroup(registeredClass.schoolCommunityId!)!.name }}
+				{{ schoolClassGroup(registeredClass.schoolCommunityId!)?.name }}
 			</h5>
 			<div>Festival Class: {{ registeredClass.className }}</div>
 			<div>Number of Selections: {{ registeredClass.numberOfSelections }}</div>
@@ -124,8 +124,8 @@
 	<BaseButton
 		v-if="!registrationStore.registrations[0].confirmation"
 		class="btn btn-blue"
-		@click="submitRegistration"
-		>Prepare and Submit</BaseButton
+		@click="prepareRegistration"
+		>Prepare to Submit</BaseButton
 	>
 	<BaseButton class="btn btn-blue" @click="printWindow"
 		>Print this page</BaseButton
@@ -141,6 +141,7 @@
 	import { useClasses } from '@/stores/userClasses'
 	import { useRegistration } from '@/stores/userRegistration'
 	import { useAppStore } from '@/stores/appStore'
+	import { useForm } from 'vee-validate'
 	import router from '@/router'
 
 	const performerStore = usePerformers()
@@ -152,13 +153,13 @@
 	const appStore = useAppStore()
 	const registrationStore = useRegistration()
 
-	async function submitRegistration() {
-		await saveRegistration()
-		router.push('Submission')
-	}
-
 	const schoolClassGroup = (id: number) => {
 		return communityStore.communityInfo.find((item) => item.id === String(id))
+	}
+
+	async function prepareRegistration() {
+		saveRegistration()
+		router.push('Submission')
 	}
 
 	function printWindow() {
@@ -169,29 +170,36 @@
 		switch (appStore.performerType) {
 			case 'SOLO':
 				appStore.performerType = 'SOLO'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await groupStore.updateGroup()
 				await teacherStore.updateTeacher()
 				await performerStore.updateAllPerformers()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await schoolStore.updateSchool()
 				await communityStore.updateAllCommunities()
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'
+				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await communityStore.updateCommunity(
 					0,
@@ -199,6 +207,7 @@
 				)
 				await teacherStore.updateTeacher()
 				await classesStore.updateAllClasses()
+				appStore.dataLoading = false
 				break
 		}
 	}

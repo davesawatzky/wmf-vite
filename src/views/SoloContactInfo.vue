@@ -22,7 +22,6 @@
 
 <script lang="ts" setup>
 	import { textAreaLabel } from '@/composables/formData'
-
 	import { usePerformers } from '@/stores/userPerformer'
 	import { useTeacher } from '@/stores/userTeacher'
 

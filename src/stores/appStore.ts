@@ -18,6 +18,7 @@ interface AppFlags {
 	classExists: boolean
 	selectionExists: boolean
 	classContentLoaded: boolean
+	dataLoading: boolean
 }
 
 export const useAppStore = defineStore('appStore', {
@@ -34,6 +35,7 @@ export const useAppStore = defineStore('appStore', {
 			classExists: false, // registered class is fully loaded into class form
 			selectionExists: false, // registered selection is fully loaded into class form
 			classContentLoaded: false, // Existing class content is loaded from db
+			dataLoading: false,
 		},
 	persist: true,
 })
