@@ -157,10 +157,24 @@
 		return communityStore.communityInfo.find((item) => item.id === String(id))
 	}
 
-	async function prepareRegistration() {
-		await saveRegistration()
-		router.push('Submission')
+	// async function prepareRegistration() {
+	// 	await saveRegistration()
+	// 	router.push('Submission')
+	// }
+
+	// Trying to get validations to work
+	const { handleSubmit } = useForm()
+
+	function onInvalidSubmit({ values, errors, results }: any) {
+		console.log(values)
+		console.log(errors)
+		console.log(results)
 	}
+
+	const prepareRegistration = handleSubmit((values) => {
+		alert(JSON.stringify(values, null, 2))
+		router.push('Submission')
+	}, onInvalidSubmit)
 
 	function printWindow() {
 		window.print()

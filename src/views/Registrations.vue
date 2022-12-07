@@ -25,47 +25,31 @@
 					</li>
 					<li>A copy can be printed for your records.</li>
 				</ul>
-
-				<!-- <p>
-					You can create many different festival applications. To create the
-					registration form, you will need the complete participant and teacher
-					information, as well as provide the appropriate information for each
-					class. Applications can be saved and edited at a later time before
-					submission. Once submitted, applications can no longer be edited,
-					although you will be able to return and view the summary page. For
-					example, if you're a private teacher who will be submitting
-					applications for your students, you can create several applications
-					and submit them once all required information is complete.
-				</p> -->
 			</div>
 			<div class="grid grid-cols-2 lg:grid-cols-4">
 				<BaseCard
-					label="Solo"
-					:photo="soloPhoto"
+					:label="soloOpen ? 'Solo' : 'Solo - Closed'"
+					:photo="soloOpen ? soloPhoto : soloPhotoBW"
 					alt-text="Opera Singer on stage"
-					@click="newRegistration('SOLO')">
-					Solo
+					@click="soloOpen ? newRegistration('SOLO') : ''">
 				</BaseCard>
 				<BaseCard
-					label="Group"
-					:photo="groupPhoto"
+					:label="groupOpen ? 'Group' : 'Group - Closed'"
+					:photo="groupOpen ? groupPhoto : groupPhotoBW"
 					alt-text="String Instruments"
-					@click="newRegistration('GROUP')">
-					Solo
+					@click="groupOpen ? newRegistration('GROUP') : ''">
 				</BaseCard>
 				<BaseCard
-					label="School"
-					:photo="schoolPhoto"
+					:label="schoolOpen ? 'School' : 'School - Closed'"
+					:photo="schoolOpen ? schoolPhoto : schoolPhotoBW"
 					alt-text="Orff Instruments"
-					@click="newRegistration('SCHOOL')">
-					Solo
+					@click="schoolOpen ? newRegistration('SCHOOL') : ''">
 				</BaseCard>
 				<BaseCard
-					label="Community"
-					:photo="communityPhoto"
+					:label="communityOpen ? 'Community' : 'Community - Closed'"
+					:photo="communityOpen ? communityPhoto : communityPhotoBW"
 					alt-text="Community Choir"
-					@click="newRegistration('COMMUNITY')">
-					Solo
+					@click="communityOpen ? newRegistration('COMMUNITY') : ''">
 				</BaseCard>
 			</div>
 		</div>
@@ -96,15 +80,27 @@
 						<BaseButton
 							class="text-sky-600 text-xl md:ml-4 ml-3"
 							@click="
-								loadRegistration(
-									registration.id,
-									registration.performerType,
-									index
-								)
+								registration.confirmation ||
+								openEditor(registration.performerType)
+									? loadRegistration(
+											registration.id,
+											registration.performerType,
+											index
+									  )
+									: ''
 							"
 							><font-awesome-icon
-								v-if="!registration.confirmation"
+								v-if="
+									!registration.confirmation &&
+									openEditor(registration.performerType)
+								"
 								icon="fa-solid fa-file-pen" />
+							<font-awesome-icon
+								v-else-if="
+									!registration.confirmation &&
+									!openEditor(registration.performerType)
+								"
+								icon="fa-solid fa-ban" />
 							<font-awesome-icon v-else icon="fa-solid fa-eye"
 						/></BaseButton>
 					</td>
@@ -150,9 +146,19 @@
 	import { useCommunity } from '@/stores/userCommunity'
 	import BaseButton from '@/components/base/BaseButton.vue'
 	import soloPhoto from '@/assets/images/opera-singer-on-stage.png'
+	import soloPhotoBW from '@/assets/images/opera-singer-on-stage-BW.png'
 	import groupPhoto from '@/assets/images/strings.png'
+	import groupPhotoBW from '@/assets/images/strings-BW.png'
 	import schoolPhoto from '@/assets/images/orff-instruments.png'
+	import schoolPhotoBW from '@/assets/images/orff-instruments-BW.png'
 	import communityPhoto from '@/assets/images/community_choir.png'
+	import communityPhotoBW from '@/assets/images/community_choir-BW.png'
+	import {
+		soloOpen,
+		groupOpen,
+		schoolOpen,
+		communityOpen,
+	} from '@/composables/openClosed'
 
 	enum EnumPerformerType {
 		'SOLO',
@@ -219,6 +225,10 @@
 		let clone = Object.assign({}, result.data.registrations)
 		registrations.value = clone
 	})
+
+	function openEditor(performerType: string): boolean {
+		return eval(performerType.toLowerCase() + 'Open')
+	}
 
 	/**
 	 * Load and Edit Existing Registration
@@ -301,6 +311,7 @@
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
 				appStore.dataLoading = false
+
 				break
 			case 'GROUP':
 				appStore.performerType = 'GROUP'
@@ -310,6 +321,7 @@
 				await performerStore.createPerformer(registrationId.value)
 				await classesStore.createClass(registrationId.value)
 				appStore.dataLoading = false
+
 				break
 			case 'SCHOOL':
 				appStore.performerType = 'SCHOOL'
@@ -319,6 +331,7 @@
 				await teacherStore.createTeacher(registrationId.value)
 				await classesStore.createClass(registrationId.value)
 				appStore.dataLoading = false
+
 				break
 			case 'COMMUNITY':
 				appStore.performerType = 'COMMUNITY'

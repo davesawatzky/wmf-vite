@@ -8,12 +8,12 @@ import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilePen, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faFilePen, faEye, faBan } from '@fortawesome/free-solid-svg-icons'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import Maska from 'maska'
 import './assets/css/index.css'
 
-library.add(faFilePen, faTrashCan, faEye)
+library.add(faFilePen, faTrashCan, faEye, faBan)
 
 const app = createApp({
 	setup() {
