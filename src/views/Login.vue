@@ -2,11 +2,21 @@
 	<div v-auto-animate>
 		<div class="w-full sm:w-2/3 lg:w-1/2 mx-auto">
 			<h2 class="text-center">Winnipeg Music Festival Registration</h2>
-			<P class="text-left"
+			<!-- <P class="text-left"
 				>Begin registration by creating an account (account can be for an
 				individual; a teacher for all their individual students, or for all
 				their choirs; a parent for their family etc.)</P
-			>
+			> -->
+			<div
+				class="mx-auto text-center border-4 border-red-700 rounded-lg mt-4 p-4">
+				<h3>Registration for the 2023 music festival is now closed.</h3>
+				<p>Please see the Winnipeg Music Festival homepage for information.</p>
+				<BaseButton class="btn btn-blue w-[150px] h-16"
+					><a href="https://www.winnipegmusicfestival.org"
+						>Winnipeg Music Festival</a
+					></BaseButton
+				>
+			</div>
 		</div>
 		<form
 			v-auto-animate
@@ -68,14 +78,14 @@
 					>Log In
 				</BaseButton>
 				<br />
-				<p class="text-center">
+				<!-- <p class="text-center">
 					<a class="hover:text-blue-600" href="#" @click="isLogin = !isLogin"
 						>Need to register for an account?</a
 					>
-				</p>
+				</p> -->
 			</div>
 			<div v-else>
-				<BaseButton
+				<!-- <BaseButton
 					class="w-full my-4 p-3 rounded-lg btn-blue"
 					@click="signup()"
 					>Register New Account
@@ -84,7 +94,7 @@
 					<a class="hover:text-blue-600" href="#" @click="isLogin = !isLogin"
 						>Already have an account?</a
 					>
-				</p>
+				</p> -->
 			</div>
 		</form>
 	</div>

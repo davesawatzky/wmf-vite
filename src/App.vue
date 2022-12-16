@@ -6,7 +6,6 @@
 
 	<base-header></base-header>
 
-	<!-- <h1>Down for Maintenance. Will return shortly</h1> -->
 	<div class="bg-sky-600 pt-5 pb-8 section-min-height">
 		<div
 			class="container bg-sky-100 py-8 px-4 sm:px-10 lg:max-w-5xl sm:mx-auto rounded-lg shadow-xl">
@@ -39,6 +38,7 @@
 		useGlobalMutationLoading,
 		useGlobalQueryLoading,
 	} from '@vue/apollo-composable'
+	import BaseButton from './components/base/BaseButton.vue'
 	import BaseHeader from './components/base/BaseHeader.vue'
 	import { useAppStore } from './stores/appStore'
 
