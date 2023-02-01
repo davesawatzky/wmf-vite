@@ -2,12 +2,12 @@
 	<div v-auto-animate>
 		<div class="w-full sm:w-2/3 lg:w-1/2 mx-auto">
 			<h2 class="text-center">Winnipeg Music Festival Registration</h2>
-			<!-- <P class="text-left"
+			<p class="text-left"
 				>Begin registration by creating an account (account can be for an
 				individual; a teacher for all their individual students, or for all
-				their choirs; a parent for their family etc.)</P
-			> -->
-			<div
+				their choirs; a parent for their family etc.)</p
+			>
+			<!-- <div
 				class="mx-auto text-center border-4 border-red-700 rounded-lg mt-4 p-4">
 				<h3>Registration for the 2023 music festival is now closed.</h3>
 				<p>Please see the Winnipeg Music Festival homepage for information.</p>
@@ -16,7 +16,7 @@
 						>Winnipeg Music Festival</a
 					></BaseButton
 				>
-			</div>
+			</div> -->
 		</div>
 		<form
 			v-auto-animate
