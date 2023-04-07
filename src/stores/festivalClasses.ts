@@ -5,7 +5,7 @@ interface Descriptions {
 	categoryDescription: string
 	levelDescription: string
 	trophyDescriptions: TrophyDescriptions[]
-	requiredSelection: string
+	required_selection: string
 }
 interface TrophyDescriptions {
 	name: string
@@ -20,7 +20,7 @@ export const festivalClasses = defineStore('festivalClasses', {
 				categoryDescription: '',
 				levelDescription: '',
 				trophyDescriptions: [{ name: '', description: '' }],
-				requiredSelection: '',
+				required_selection: '',
 			},
 		] as Descriptions[],
 	}),

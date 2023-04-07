@@ -12,8 +12,8 @@
 				</div>
 				<div class="col-span-12 sm:col-span-4">
 					<BaseInput
-						v-model.number="communityStore.communityInfo[0].groupSize"
-						name="groupSize"
+						v-model.number="communityStore.communityInfo[0].group_size"
+						name="group_size"
 						type="number"
 						label="Group Size" />
 				</div>
@@ -47,8 +47,8 @@
 						best to avoid scheduling conflicts:
 					</p>
 					<BaseTextarea
-						v-model="communityStore.communityInfo[0].conflictPerformers"
-						name="conflictPerformers"
+						v-model="communityStore.communityInfo[0].conflict_performers"
+						name="conflict_performers"
 						label="Performers participating in other classes."
 						rows="5"></BaseTextarea>
 				</div>
@@ -69,7 +69,7 @@
 
 	const validationSchema = yup.object({
 		name: yup.string().trim().required('Enter a name for the community group'),
-		groupSize: yup
+		group_size: yup
 			.number()
 			.integer()
 			.nullable()
@@ -84,7 +84,7 @@
 			.integer()
 			.nullable()
 			.required('Indicate the number of wheelchairs'),
-		conflictPerformers: yup.string().trim().nullable(),
+		conflict_performers: yup.string().trim().nullable(),
 	})
 
 	useForm({

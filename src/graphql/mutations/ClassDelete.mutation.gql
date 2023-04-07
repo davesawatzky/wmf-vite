@@ -1,4 +1,4 @@
-mutation ClassDelete($registeredClassId: ID!) {
+mutation ClassDelete($registeredClassId: Int!) {
 	registeredClassDelete(registeredClassID: $registeredClassId) {
 		registeredClass {
 			id

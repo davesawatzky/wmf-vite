@@ -44,12 +44,12 @@
 				:disabled="!selectedClasses.category" />
 		</div>
 		<div class="col-span-6 md:col-span-2">
-			<label for="classNumber">Class Number</label>
+			<label for="class_number">Class Number</label>
 			<input
-				id="classNumber"
+				id="class_number"
 				class="off"
-				:v-model="selectedClasses.classNumber"
-				:value="(selectedClasses.classNumber = classSelection.classNumber)"
+				:v-model="selectedClasses.class_number"
+				:value="(selectedClasses.class_number = classSelection.class_number)"
 				label="Class Number"
 				type="text"
 				disabled
@@ -172,10 +172,10 @@
 	const instruments = computed(() => instrumentQuery.value.instruments ?? [])
 
 	watch(
-		() => selectedClasses.value.classNumber,
-		(classNumber) => {
+		() => selectedClasses.value.class_number,
+		(class_number) => {
 			instrumentRequired.value =
-				classesStore.mozartClasses.includes(classNumber)
+				classesStore.mozartClasses.includes(class_number)
 		}
 	)
 	/**
@@ -183,7 +183,7 @@
 	 */
 	const { result: disc, error: discError } = useQuery(
 		DISCIPLINES_BY_TYPE_QUERY,
-		() => ({ sgSlabel: appStore.performerType })
+		() => ({ SGS_label: appStore.performer_type })
 	)
 	const disciplines = computed(() => disc.value?.disciplinesByType ?? [])
 	const chosenDiscipline = computed({
@@ -202,7 +202,7 @@
 		selectedClasses.value.category = null
 		selectedClasses.value.numberOfSelections = null
 		selectedClasses.value.className = null
-		selectedClasses.value.classNumber = null
+		selectedClasses.value.class_number = null
 		chosenSubdiscipline.value = { id: '', name: '' }
 		chosenGradeLevel.value = { id: '', name: '' }
 		chosenCategory.value = { id: '', name: '' }
@@ -223,7 +223,7 @@
 		SUBDISCIPLINES_BY_TYPE_QUERY,
 		() => ({
 			disciplineId: chosenDiscipline.value.id,
-			sgSlabel: appStore.performerType,
+			SGS_label: appStore.performer_type,
 		}),
 		{ fetchPolicy: 'network-only' }
 	)
@@ -250,7 +250,7 @@
 		selectedClasses.value.category = null
 		selectedClasses.value.numberOfSelections = null
 		selectedClasses.value.className = null
-		selectedClasses.value.classNumber = null
+		selectedClasses.value.class_number = null
 		chosenGradeLevel.value = { id: '', name: '' }
 		chosenCategory.value = { id: '', name: '' }
 		className.value = ''
@@ -288,7 +288,7 @@
 		selectedClasses.value.category = null
 		selectedClasses.value.numberOfSelections = null
 		selectedClasses.value.className = null
-		selectedClasses.value.classNumber = null
+		selectedClasses.value.class_number = null
 		chosenCategory.value = { id: '', name: '' }
 		className.value = ''
 		classSelection.value = null
@@ -325,7 +325,7 @@
 	function changeClass() {
 		selectedClasses.value.numberOfSelections = null
 		selectedClasses.value.className = null
-		selectedClasses.value.classNumber = null
+		selectedClasses.value.class_number = null
 
 		classNumberLoad()
 	}
@@ -397,10 +397,10 @@
 	 * Number of Allowed Works
 	 */
 	const minWorks = computed(() => {
-		return classSearch.value?.classSearch[0].minSelection ?? null
+		return classSearch.value?.classSearch[0].min_selection ?? null
 	})
 	const maxWorks = computed(() => {
-		return classSearch.value?.classSearch[0].maxSelection ?? null
+		return classSearch.value?.classSearch[0].max_selection ?? null
 	})
 	const numberOfAllowedWorks = computed(() => {
 		if (minWorks.value === maxWorks.value) {

@@ -1,5 +1,5 @@
-query Classes($SGSlabel: SGSlabel) {
-	classes(SGSlabel: $SGSlabel) {
+query FestivalClasses($SGS_label: SGS_label) {
+	festivalClasses(SGS_label: $SGS_label) {
 		subdiscipline {
 			id
 			name

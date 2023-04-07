@@ -1,6 +1,6 @@
 <template>
 	<div aria-live="assertive" class="errorMessage">
-		<slot />
+		<slot></slot>
 	</div>
 </template>
 

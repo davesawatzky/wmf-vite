@@ -1,4 +1,4 @@
-<!-- 
+<!--
 BaseButton
 @param type The Type of button.
 
@@ -6,7 +6,7 @@ BaseButton
 
 <template>
   <button v-bind="$attrs" type="button">
-    <slot />
+    <slot></slot>
   </button>
 </template>
 

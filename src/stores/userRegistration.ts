@@ -21,13 +21,13 @@ enum EnumPerformerType {
 interface Registration {
 	id?: string
 	label: string
-	performerType: keyof typeof EnumPerformerType
-	submittedAt?: Date
+	performer_type: keyof typeof EnumPerformerType
+	submitted_at?: Date
 	totalAmt: number
 	payedAmt: number
 	transactionInfo: string
 	confirmation: string
-	createdAt?: Date
+	created_at?: Date
 	__typename?: string
 }
 
@@ -49,7 +49,7 @@ export const useRegistration = defineStore('registrations', {
 		},
 
 		async createRegistration(
-			performerType: Registration['performerType'],
+			performer_type: Registration['performer_type'],
 			label: string
 		) {
 			return new Promise((resolve, reject) => {
@@ -58,7 +58,7 @@ export const useRegistration = defineStore('registrations', {
 					onDone: doneNewReg,
 					onError,
 				} = useMutation(REGISTRATION_CREATE_MUTATION)
-				registrationCreate({ performerType, label })
+				registrationCreate({ performer_type, label })
 				doneNewReg((result) => {
 					let clone = Object.assign(
 						{},
@@ -86,7 +86,7 @@ export const useRegistration = defineStore('registrations', {
 				let clone = Object.assign({}, this.registrations[0])
 				delete clone.id
 				delete clone.__typename
-				delete clone.createdAt
+				delete clone.created_at
 				registrationUpdate({
 					registrationId: this.registrationId,
 					registration: clone,

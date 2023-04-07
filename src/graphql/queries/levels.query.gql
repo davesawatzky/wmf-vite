@@ -1,5 +1,5 @@
-query Levels($subdisciplineId: ID) {
-  levels(subdisciplineID: $subdisciplineId) {
+query Levels($subdisciplineId: Int!, $categoryId: Int!) {
+  levels(categoryID: $categoryId, subdisciplineID: $subdisciplineId) {
     id
     name
     description

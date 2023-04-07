@@ -16,9 +16,9 @@
 				class="bg-white divide-y divide-sky-600 border-b border-sky-500 rounded-bl-lg rounded-br-lg">
 				<tr
 					v-for="registeredClass in classesStore.registeredClasses"
-					:key="registeredClass.classNumber"
+					:key="registeredClass.class_number"
 					class="border-b border-r border-l border-sky-500 print:text-xs">
-					<td class="p-8">{{ registeredClass.classNumber }}</td>
+					<td class="p-8">{{ registeredClass.class_number }}</td>
 					<td class="p-8">{{ registeredClass.subdiscipline }}</td>
 					<td class="p-8">{{ registeredClass.level }}</td>
 					<td class="p-8">{{ registeredClass.category }}</td>

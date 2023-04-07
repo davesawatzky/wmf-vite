@@ -24,14 +24,14 @@
 			<div v-if="!isLogin">
 				<h3 class="loginheading">Sign up</h3>
 				<BaseInput
-					v-model="firstName"
-					name="firstName"
+					v-model="first_name"
+					name="first_name"
 					type="text"
 					label="First Name">
 				</BaseInput>
 				<BaseInput
-					v-model="lastName"
-					name="lastName"
+					v-model="last_name"
+					name="last_name"
 					type="text"
 					label="Last Name">
 				</BaseInput>
@@ -118,8 +118,8 @@
 	const router = useRouter()
 
 	const validationSchema = yup.object({
-		firstName: yup.string().trim().label('First Name'),
-		lastName: yup.string().trim().label('Last Name'),
+		first_name: yup.string().trim().label('First Name'),
+		last_name: yup.string().trim().label('Last Name'),
 		email: yup.string().trim().email().required().label('Email'),
 		password: yup.string().trim().password().required().label('Password'),
 		password2: yup
@@ -132,8 +132,8 @@
 	const { setFieldValue, handleSubmit } = useForm({
 		validationSchema,
 	})
-	const { value: firstName } = useField('firstName')
-	const { value: lastName } = useField('lastName')
+	const { value: first_name } = useField('first_name')
+	const { value: last_name } = useField('last_name')
 	const { value: email } = useField('email')
 	const { value: password } = useField('password')
 	const { value: password2 } = useField('password2')
@@ -169,8 +169,8 @@
 	const signup = handleSubmit((values) => {
 		signupMutation({
 			credentials: {
-				firstName: values.firstName,
-				lastName: values.lastName,
+				first_name: values.first_name,
+				last_name: values.last_name,
 				email: values.email,
 				password: values.password,
 			},
@@ -191,8 +191,8 @@
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			// firstName.value = ''
-			// lastName.value = ''
+			// first_name.value = ''
+			// last_name.value = ''
 			error.value = ''
 			// email.value = ''
 			// password.value = ''

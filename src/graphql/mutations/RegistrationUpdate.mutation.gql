@@ -1,5 +1,5 @@
 mutation RegistrationUpdate(
-	$registrationId: ID!
+	$registrationId: Int!
 	$registration: RegistrationInput!
 ) {
 	registrationUpdate(

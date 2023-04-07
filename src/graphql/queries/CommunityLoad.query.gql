@@ -1,15 +1,15 @@
-query CommunityInfo($registrationId: ID!) {
+query CommunityInfo($registrationId: Int!) {
 	registration(id: $registrationId) {
 		communities {
 			id
 			name
-			groupSize
+			group_size
 			chaperones
 			wheelchairs
-			earliestTime
-			latestTime
+			earliest_time
+			latest_time
 			unavailable
-			conflictPerformers
+			conflict_performers
 		}
 	}
 }

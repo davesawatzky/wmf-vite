@@ -1,8 +1,8 @@
-query RegisteredClasses($registrationId: ID!) {
+query RegisteredClasses($registrationId: Int!) {
 	registration(id: $registrationId) {
 		registeredClasses {
 			category
-			classNumber
+			class_number
 			discipline
 			id
 			level

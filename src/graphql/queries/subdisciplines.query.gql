@@ -1,5 +1,10 @@
-query SubDisciplines($disciplineId: ID) {
-	subdisciplines(disciplineID: $disciplineId) {
+query SubDisciplines($categoryId: Int!, $disciplineId: Int!, $levelId: Int!, $SGS_label: SGS_label!) {
+subdisciplines(
+	categoryID: $categoryId,
+	disciplineID: $disciplineId,
+	levelID: $levelId,
+	performer_type: $SGS_label
+	) {
 		id
 		name
 		description

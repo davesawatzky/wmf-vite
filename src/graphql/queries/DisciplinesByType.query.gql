@@ -1,5 +1,5 @@
-query DisciplinesByType($sgSlabel: SGSlabel!) {
-	disciplinesByType(SGSlabel: $sgSlabel) {
+query DisciplinesByType($SGS_label: SGS_label!) {
+	disciplinesByType(SGS_label: $SGS_label) {
 		id
 		name
 	}

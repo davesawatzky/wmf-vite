@@ -1,5 +1,5 @@
-mutation CommunityUpdate($communityId: ID!, $community: CommunityInput!) {
-	communityUpdate(communityID: $communityId, community: $community) {
+mutation CommunityUpdate($communityId: Int!, $community: CommunityInput!) {
+communityUpdate(communityID: $communityId, communityInput: $community) {
 		community {
 			id
 		}

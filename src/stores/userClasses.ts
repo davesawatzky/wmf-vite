@@ -15,7 +15,7 @@ import SELECTION_UPDATE_MUTATION from '@/graphql/mutations/SelectionUpdate.mutat
 
 export interface RegisteredClass {
 	id?: string
-	classNumber: string
+	class_number: string
 	className?: string
 	discipline: string
 	subdiscipline: string
@@ -54,7 +54,7 @@ export const useClasses = defineStore('registeredClasses', {
 		addClassToStore(registeredClass: RegisteredClass | null) {
 			this.registeredClasses.push(<RegisteredClass>{
 				id: '',
-				classNumber: '',
+				class_number: '',
 				className: '',
 				discipline: '',
 				subdiscipline: '',

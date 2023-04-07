@@ -13,14 +13,14 @@ import TEACHER_DELETE_MUTATION from '@/graphql/mutations/TeacherDelete.mutation.
 interface TeacherInfo {
 	id?: string
 	prefix: string
-	lastName: string
-	firstName: string
+	last_name: string
+	first_name: string
 	apartment?: string
-	streetNumber: string
-	streetName: string
+	street_number: string
+	street_name: string
 	city: string
 	province: string
-	postalCode: string
+	postal_code: string
 	phone: string
 	email: string
 }
@@ -33,21 +33,21 @@ export const useTeacher = defineStore('teacher', {
 		teacherInfo: {
 			id: '',
 			prefix: '',
-			lastName: '',
-			firstName: '',
+			last_name: '',
+			first_name: '',
 			apartment: '',
-			streetNumber: '',
-			streetName: '',
+			street_number: '',
+			street_name: '',
 			city: 'Winnipeg',
 			province: 'MB',
-			postalCode: '',
+			postal_code: '',
 			phone: '',
 			email: '',
 		} as TeacherInfo,
 	}),
 	getters: {
 		fullName(): String {
-			return this.teacherInfo.firstName + ' ' + this.teacherInfo.lastName
+			return this.teacherInfo.first_name + ' ' + this.teacherInfo.last_name
 		},
 	},
 	actions: {

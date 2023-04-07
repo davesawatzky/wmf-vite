@@ -1,5 +1,5 @@
-mutation PerformerUpdate($performerId: ID!, $performer: PerformerInput!) {
-	performerUpdate(performerID: $performerId, performer: $performer) {
+mutation PerformerUpdate($performerId: Int!, $performer: PerformerInput!) {
+	performerUpdate(performerID: $performerId, performerInput: $performer) {
 		performer {
 			id
 		}

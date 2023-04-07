@@ -1,16 +1,16 @@
-query PerformerLoad($registrationId: ID!) {
+query PerformerLoad($registrationId: Int!) {
 	registration(id: $registrationId) {
 		performers {
 			id
-			firstName
-			lastName
+			first_name
+			last_name
 			age
 			apartment
-			streetNumber
-			streetName
+			street_number
+			street_name
 			city
 			province
-			postalCode
+			postal_code
 			phone
 			email
 			instrument

@@ -3,14 +3,14 @@
 		<h1 class="pt-8">Registration Summary</h1>
 
 		<!-- Community Groups-->
-		<div v-if="appStore.performerType === 'COMMUNITY'">
+		<div v-if="appStore.performer_type === 'COMMUNITY'">
 			<h2 class="pt-8 pb-4">Community Group Information</h2>
 
 			<div>
 				Community Group Name: {{ communityStore.communityInfo[0].name }}
 			</div>
 			<div>
-				Community Group Size: {{ communityStore.communityInfo[0].groupSize }}
+				Community Group Size: {{ communityStore.communityInfo[0].group_size }}
 			</div>
 			<div v-if="communityStore.communityInfo[0].chaperones">
 				Number of Chaperones: {{ communityStore.communityInfo[0].chaperones }}
@@ -18,24 +18,24 @@
 			<div v-if="communityStore.communityInfo[0].wheelchairs">
 				Number of Wheelchairs: {{ communityStore.communityInfo[0].wheelchairs }}
 			</div>
-			<div v-if="communityStore.communityInfo[0].conflictPerformers">
+			<div v-if="communityStore.communityInfo[0].conflict_performers">
 				Performers participating in other classes
-				{{ communityStore.communityInfo[0].conflictPerformers }}
+				{{ communityStore.communityInfo[0].conflict_performers }}
 			</div>
 		</div>
 
 		<!-- School Groups -->
-		<div v-if="appStore.performerType === 'SCHOOL'">
+		<div v-if="appStore.performer_type === 'SCHOOL'">
 			<h2 class="pt-8 pb-4">School Information</h2>
 			<div>School Name: {{ schoolStore.schoolInfo.name }}</div>
 			<div>School Division: {{ schoolStore.schoolInfo.division }}</div>
 			<div>Address:</div>
-			{{ schoolStore.schoolInfo.streetNumber }}
-			{{ schoolStore.schoolInfo.streetName }}
+			{{ schoolStore.schoolInfo.street_number }}
+			{{ schoolStore.schoolInfo.street_name }}
 			<div>
 				{{ schoolStore.schoolInfo.city }}, {{ schoolStore.schoolInfo.province }}
 			</div>
-			<div>{{ schoolStore.schoolInfo.postalCode }}</div>
+			<div>{{ schoolStore.schoolInfo.postal_code }}</div>
 			<div>Phone: {{ schoolStore.schoolInfo.phone }}</div>
 			<h3 class="pt-6 pb-2">School Group(s)</h3>
 			<div
@@ -43,18 +43,18 @@
 				:key="group.id">
 				<h4>Group {{ index + 1 }}:</h4>
 				<div>Name: {{ group.name }}</div>
-				<div>Size: {{ group.groupSize }}</div>
+				<div>Size: {{ group.group_size }}</div>
 				<div v-if="group.chaperones">Chaperones: {{ group.chaperones }}</div>
 				<div v-if="group.wheelchairs">Wheelchairs: {{ group.wheelchairs }}</div>
-				<div v-if="group.earliestTime">
-					Earliest Time: {{ group.earliestTime }}
+				<div v-if="group.earliest_time">
+					Earliest Time: {{ group.earliest_time }}
 				</div>
-				<div v-if="group.latestTime">Latest Time: {{ group.latestTime }}</div>
+				<div v-if="group.latest_time">Latest Time: {{ group.latest_time }}</div>
 				<div v-if="group.unavailable">
 					Unavailable Times: {{ group.unavailable }}
 				</div>
-				<div v-if="group.conflictPerformers">
-					Multiple Class Participants: {{ group.conflictPerformers }}
+				<div v-if="group.conflict_performers">
+					Multiple Class Participants: {{ group.conflict_performers }}
 				</div>
 			</div>
 		</div>
@@ -65,9 +65,9 @@
 			v-for="registeredClass in classesStore.registeredClasses"
 			:key="registeredClass.id">
 			<h4 class="py-2">
-				Festival Class Number: {{ registeredClass.classNumber }}
+				Festival Class Number: {{ registeredClass.class_number }}
 			</h4>
-			<h5 v-if="appStore.performerType === 'SCHOOL'">
+			<h5 v-if="appStore.performer_type === 'SCHOOL'">
 				{{ schoolClassGroup(registeredClass.schoolCommunityId!)?.name }}
 			</h5>
 			<div>Festival Class: {{ registeredClass.className }}</div>
@@ -88,7 +88,7 @@
 		</div>
 
 		<!-- Solo and Group Performers -->
-		<div v-if="appStore.performerType === 'GROUP'">
+		<div v-if="appStore.performer_type === 'GROUP'">
 			<h2 class="pt-8 pb-4">Group Information</h2>
 			<div>Name: {{ groupStore.groupInfo.name }}</div>
 			<div>Type of Group: {{ groupStore.groupInfo.groupType }}</div>
@@ -99,7 +99,7 @@
 		</div>
 		<div
 			v-if="
-				appStore.performerType === 'GROUP' || appStore.performerType === 'SOLO'
+				appStore.performer_type === 'GROUP' || appStore.performer_type === 'SOLO'
 			">
 			<h2 class="pt-8 pb-4">Performer(s)</h2>
 			<div
@@ -181,9 +181,9 @@
 	}
 
 	async function saveRegistration() {
-		switch (appStore.performerType) {
+		switch (appStore.performer_type) {
 			case 'SOLO':
-				appStore.performerType = 'SOLO'
+				appStore.performer_type = 'SOLO'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
@@ -192,7 +192,7 @@
 				appStore.dataLoading = false
 				break
 			case 'GROUP':
-				appStore.performerType = 'GROUP'
+				appStore.performer_type = 'GROUP'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await groupStore.updateGroup()
@@ -202,7 +202,7 @@
 				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
-				appStore.performerType = 'SCHOOL'
+				appStore.performer_type = 'SCHOOL'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await schoolStore.updateSchool()
@@ -212,7 +212,7 @@
 				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
-				appStore.performerType = 'COMMUNITY'
+				appStore.performer_type = 'COMMUNITY'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await communityStore.updateCommunity(

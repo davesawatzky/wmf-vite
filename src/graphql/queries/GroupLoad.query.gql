@@ -1,4 +1,4 @@
-query GroupInfo($registrationId: ID!) {
+query GroupInfo($registrationId: Int!) {
 	registration(id: $registrationId) {
 		groups {
 			id

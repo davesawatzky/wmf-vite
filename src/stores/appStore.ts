@@ -8,7 +8,7 @@ enum EnumPerformerType {
 }
 interface AppFlags {
 	editExisting: boolean
-	performerType: keyof typeof EnumPerformerType
+	performer_type: keyof typeof EnumPerformerType
 	registrationExists: boolean
 	performerContactLoaded: boolean
 	groupInfoLoaded: boolean
@@ -25,7 +25,7 @@ export const useAppStore = defineStore('appStore', {
 	state: () =>
 		<AppFlags>{
 			editExisting: false, // edits an existing registration from the db
-			performerType: 'SOLO', // default performertype - just in case.
+			performer_type: 'SOLO', // default performer_type - just in case.
 			registrationExists: false, // registration exists in the db
 			performerContactLoaded: false, // performer contact already exists and is loaded
 			groupInfoLoaded: false,

@@ -81,7 +81,7 @@
 	const currentTab = ref('')
 	let tabs = {} as DynamicComponent
 
-	switch (appStore.performerType) {
+	switch (appStore.performer_type) {
 		case 'SOLO':
 			currentTab.value = 'Contact Info'
 			tabs = {
@@ -117,9 +117,9 @@
 	}
 
 	async function saveRegistration() {
-		switch (appStore.performerType) {
+		switch (appStore.performer_type) {
 			case 'SOLO':
-				appStore.performerType = 'SOLO'
+				appStore.performer_type = 'SOLO'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await performerStore.updatePerformer(0, performerStore.performer[0].id!)
@@ -128,7 +128,7 @@
 				appStore.dataLoading = false
 				break
 			case 'GROUP':
-				appStore.performerType = 'GROUP'
+				appStore.performer_type = 'GROUP'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await groupStore.updateGroup()
@@ -138,7 +138,7 @@
 				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
-				appStore.performerType = 'SCHOOL'
+				appStore.performer_type = 'SCHOOL'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await schoolStore.updateSchool()
@@ -148,7 +148,7 @@
 				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
-				appStore.performerType = 'COMMUNITY'
+				appStore.performer_type = 'COMMUNITY'
 				appStore.dataLoading = true
 				await registrationStore.updateRegistration()
 				await communityStore.updateCommunity(

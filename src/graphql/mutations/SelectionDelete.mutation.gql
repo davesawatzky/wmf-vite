@@ -1,4 +1,4 @@
-mutation SelectionDelete($selectionId: ID!) {
+mutation SelectionDelete($selectionId: Int!) {
 	selectionDelete(selectionID: $selectionId) {
 		selection {
 			id

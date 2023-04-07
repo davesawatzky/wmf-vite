@@ -1,14 +1,14 @@
-query SchoolInfo($registrationId: ID!) {
+query SchoolInfo($registrationId: Int!) {
 	registration(id: $registrationId) {
 		school {
 			id
 			name
 			division
-			streetNumber
-			streetName
+			street_number
+			street_name
 			city
 			province
-			postalCode
+			postal_code
 			phone
 		}
 	}

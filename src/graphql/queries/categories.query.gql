@@ -1,8 +1,8 @@
-query Categories($levelId: ID, $subdisciplineId: ID) {
+query Categories($levelId: Int!, $subdisciplineId: Int!) {
 	categories(levelID: $levelId, subdisciplineID: $subdisciplineId) {
 		id
 		name
 		description
-		requiredComposer
+		required_composer
 	}
 }

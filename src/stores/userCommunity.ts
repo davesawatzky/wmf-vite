@@ -13,13 +13,13 @@ import COMMUNITY_DELETE_MUTATION from '@/graphql/mutations/CommunityDelete.mutat
 interface CommunityInfo {
 	id?: string
 	name: string
-	groupSize: number
+	group_size: number
 	chaperones: number
 	wheelchairs: number
-	earliestTime: string
-	latestTime: string
+	earliest_time: string
+	latest_time: string
 	unavailable: string
-	conflictPerformers: string
+	conflict_performers: string
 	__typename?: string
 }
 
@@ -36,13 +36,13 @@ export const useCommunity = defineStore('community', {
 			this.communityInfo.push({
 				id: '',
 				name: '',
-				groupSize: 10,
+				group_size: 10,
 				chaperones: 0,
 				wheelchairs: 0,
-				earliestTime: '',
-				latestTime: '',
+				earliest_time: '',
+				latest_time: '',
 				unavailable: '',
-				conflictPerformers: '',
+				conflict_performers: '',
 			})
 			if (communityData) {
 				Object.assign(

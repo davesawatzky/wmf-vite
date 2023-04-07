@@ -1,13 +1,13 @@
-query Registrations {
-	registrations {
+query Registrations ($performer_type: SGS_label!, $userId: Int!){
+	registrations(performer_type: $performer_type, userID: $userId) {
 		id
-		createdAt
+		created_at
 		label
-		performerType
-		submittedAt
+		performer_type
+		submitted_at
 		payedAmt
 		totalAmt
 		transactionInfo
-		confirmation
+		submission
 	}
 }

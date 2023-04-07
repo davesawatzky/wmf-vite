@@ -81,10 +81,10 @@
 							class="text-sky-600 text-xl md:ml-4 ml-3"
 							@click="
 								registration.confirmation ||
-								openEditor(registration.performerType)
+								openEditor(registration.performer_type)
 									? loadRegistration(
 											registration.id,
-											registration.performerType,
+											registration.performer_type,
 											index
 									  )
 									: ''
@@ -92,13 +92,13 @@
 							><font-awesome-icon
 								v-if="
 									!registration.confirmation &&
-									openEditor(registration.performerType)
+									openEditor(registration.performer_type)
 								"
 								icon="fa-solid fa-file-pen" />
 							<font-awesome-icon
 								v-else-if="
 									!registration.confirmation &&
-									!openEditor(registration.performerType)
+									!openEditor(registration.performer_type)
 								"
 								icon="fa-solid fa-ban" />
 							<font-awesome-icon v-else icon="fa-solid fa-eye"
@@ -107,11 +107,11 @@
 					<td v-if="sm" class="">{{ registration.id }}</td>
 					<td class="">{{ registration.label }}</td>
 					<td v-if="lg" class="">
-						{{ dateFunction(registration.createdAt) }}
+						{{ dateFunction(registration.created_at) }}
 					</td>
-					<td class="">{{ registration.performerType }}</td>
+					<td class="">{{ registration.performer_type }}</td>
 					<td v-if="md">
-						{{ dateFunction(registration.submittedAt) }}
+						{{ dateFunction(registration.submitted_at) }}
 					</td>
 					<td>${{ registration.totalAmt }}.00</td>
 					<td>{{ registration.confirmation }}</td>
@@ -166,18 +166,18 @@
 		'SCHOOL',
 		'COMMUNITY',
 	}
-	type PerformerType = keyof typeof EnumPerformerType
+	type performer_type = keyof typeof EnumPerformerType
 
 	interface Registration {
 		id: string
 		label: string
-		performerType: keyof typeof EnumPerformerType
-		submittedAt?: Date
+		performer_type: keyof typeof EnumPerformerType
+		submitted_at?: Date
 		totalAmt: number
 		payedAmt: number
 		transactionInfo: string
 		confirmation: string
-		createdAt: Date
+		created_at: Date
 		__typename?: string
 	}
 
@@ -226,27 +226,27 @@
 		registrations.value = clone
 	})
 
-	function openEditor(performerType: string): boolean {
-		return eval(performerType.toLowerCase() + 'Open')
+	function openEditor(performer_type: string): boolean {
+		return eval(performer_type.toLowerCase() + 'Open')
 	}
 
 	/**
 	 * Load and Edit Existing Registration
 	 *
 	 * @param registrationId The ID of the registration form
-	 * @param performerType SOLO, GROUP, SCHOOL, or COMMUNITY
+	 * @param performer_type SOLO, GROUP, SCHOOL, or COMMUNITY
 	 * @param index Array Index of retrieved registrations
 	 */
 	async function loadRegistration(
 		registrationId: string,
-		performerType: PerformerType,
+		performer_type: performer_type,
 		index: number
 	) {
 		registrationStore.registrationId = registrationId
 		registrationStore.addToStore(registrations.value[index])
-		switch (performerType) {
+		switch (performer_type) {
 			case 'SOLO':
-				appStore.performerType = 'SOLO'
+				appStore.performer_type = 'SOLO'
 				appStore.dataLoading = true
 				await performerStore.loadPerformers(registrationId)
 				await teacherStore.loadTeacher(registrationId)
@@ -254,7 +254,7 @@
 				appStore.dataLoading = false
 				break
 			case 'GROUP':
-				appStore.performerType = 'GROUP'
+				appStore.performer_type = 'GROUP'
 				appStore.dataLoading = true
 				await groupStore.loadGroup(registrationId)
 				await teacherStore.loadTeacher(registrationId)
@@ -263,7 +263,7 @@
 				appStore.dataLoading = false
 				break
 			case 'SCHOOL':
-				appStore.performerType = 'SCHOOL'
+				appStore.performer_type = 'SCHOOL'
 				appStore.dataLoading = true
 				await schoolStore.loadSchool(registrationId)
 				await communityStore.loadCommunities(registrationId)
@@ -272,7 +272,7 @@
 				appStore.dataLoading = false
 				break
 			case 'COMMUNITY':
-				appStore.performerType = 'COMMUNITY'
+				appStore.performer_type = 'COMMUNITY'
 				appStore.dataLoading = true
 				await communityStore.loadCommunities(registrationId)
 				await teacherStore.loadTeacher(registrationId)
@@ -289,23 +289,23 @@
 	/**
 	 * Creates a new registration in the registration form.
 	 *
-	 * @param performerType SOLO, GROUP, SCHOOL or COMMUNITY
+	 * @param performer_type SOLO, GROUP, SCHOOL or COMMUNITY
 	 * @param label A given label for the registration form
 	 */
-	async function newRegistration(performerType: PerformerType, label?: string) {
+	async function newRegistration(performer_type: performer_type, label?: string) {
 		if (!label || label.length == 0) label = 'Registration Form'
 
-		await registrationStore.createRegistration(performerType, label)
+		await registrationStore.createRegistration(performer_type, label)
 		registrationId.value = registrationStore.registrationId
 
 		appStore.$patch({
 			editExisting: false,
-			performerType,
+			performer_type,
 			registrationExists: true,
 		})
-		switch (performerType) {
+		switch (performer_type) {
 			case 'SOLO':
-				appStore.performerType = 'SOLO'
+				appStore.performer_type = 'SOLO'
 				appStore.dataLoading = true
 				await performerStore.createPerformer(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
@@ -314,7 +314,7 @@
 
 				break
 			case 'GROUP':
-				appStore.performerType = 'GROUP'
+				appStore.performer_type = 'GROUP'
 				appStore.dataLoading = true
 				await groupStore.createGroup(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)
@@ -324,7 +324,7 @@
 
 				break
 			case 'SCHOOL':
-				appStore.performerType = 'SCHOOL'
+				appStore.performer_type = 'SCHOOL'
 				appStore.dataLoading = true
 				await schoolStore.createSchool(registrationId.value)
 				await communityStore.createCommunity(registrationId.value)
@@ -334,7 +334,7 @@
 
 				break
 			case 'COMMUNITY':
-				appStore.performerType = 'COMMUNITY'
+				appStore.performer_type = 'COMMUNITY'
 				appStore.dataLoading = true
 				await communityStore.createCommunity(registrationId.value)
 				await teacherStore.createTeacher(registrationId.value)

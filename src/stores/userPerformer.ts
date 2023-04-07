@@ -12,14 +12,14 @@ import PERFORMER_LOAD_QUERY from '@/graphql/queries/PerformerLoad.query.gql'
 
 interface PerformerInfo {
 	id?: string
-	lastName: string
-	firstName: string
+	last_name: string
+	first_name: string
 	apartment: string
-	streetNumber: string
-	streetName: string
+	street_number: string
+	street_name: string
 	city: string
 	province: string
-	postalCode: string
+	postal_code: string
 	phone: string
 	email: string
 	age: number
@@ -40,7 +40,7 @@ export const usePerformers = defineStore('performers', {
 		},
 		fullName(state): string[] {
 			let name = state.performer.map((item) => {
-				return item.firstName + ' ' + item.lastName
+				return item.first_name + ' ' + item.last_name
 			})
 			return name
 		},
@@ -49,15 +49,15 @@ export const usePerformers = defineStore('performers', {
 		addToStore(performerContactInfo: PerformerInfo | null) {
 			this.performer.push({
 				id: '',
-				lastName: '',
-				firstName: '',
+				last_name: '',
+				first_name: '',
 				age: 10,
 				apartment: '',
-				streetNumber: '',
-				streetName: '',
+				street_number: '',
+				street_name: '',
 				city: 'Winnipeg',
 				province: 'MB',
-				postalCode: '',
+				postal_code: '',
 				phone: '',
 				email: '',
 				instrument: '',

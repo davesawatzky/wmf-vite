@@ -5,10 +5,12 @@ import {
 	ApolloLink,
 	concat,
 } from '@apollo/client/core'
+import fetch from 'cross-fetch'
 
 const httpLink = new HttpLink({
 	// uri: 'https://wmf-registration-38bfy.ondigitalocean.app/graphql',
-	uri: 'http://localhost:4000/graphql',
+	uri: 'http://localhost:3000/graphql',
+	fetch
 })
 
 const authLink = new ApolloLink((operation, forward) => {

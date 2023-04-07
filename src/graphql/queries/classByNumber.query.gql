@@ -1,17 +1,18 @@
-query ClassByNumber($classNumber: String!) {
-	classByNumber(classNumber: $classNumber) {
+query ClassByNumber($festivalClassNumber: String!) {
+	festivalClassByNumber(festivalClassNumber: $festivalClassNumber) {
+
 		id
-		classNumber
-		maxSelection
-		minSelection
-		requiredSelection
-		SGSlabel
+		class_number
+		max_selection
+		min_selection
+		required_selection
+		SGS_label
 		price
 		category {
 			id
 			name
 			description
-			requiredComposer
+			required_composer
 		}
 		level {
 			id

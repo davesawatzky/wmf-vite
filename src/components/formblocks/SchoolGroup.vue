@@ -10,14 +10,14 @@
 						type="text" />
 
 					<BaseInput
-						v-model="group.earliestTime"
-						name="earliestTime"
+						v-model="group.earliest_time"
+						name="earliest_time"
 						label="Earliest time your group can perform"
 						type="time" />
 
 					<BaseInput
-						v-model="group.latestTime"
-						name="latestTime"
+						v-model="group.latest_time"
+						name="latest_time"
 						label="Latest time your group can perform"
 						type="time" />
 				</div>
@@ -25,8 +25,8 @@
 					class="col-span-12 sm:col-span-4 lg:col-span-4 grid grid-cols-2 gap-x-3 items-end">
 					<div class="col-1 sm:col-span-2">
 						<BaseInput
-							v-model.number="group.groupSize"
-							name="groupSize"
+							v-model.number="group.group_size"
+							name="group_size"
 							label="Number of performers"
 							type="number" />
 					</div>
@@ -68,8 +68,8 @@
 				</p>
 
 				<BaseTextarea
-					v-model="group.conflictPerformers"
-					name="conflictPerformers"
+					v-model="group.conflict_performers"
+					name="conflict_performers"
 					label="Performers participating in other classes."
 					rows="3"></BaseTextarea>
 				<p class="text-sm mb-2">
@@ -104,7 +104,7 @@
 
 	const totalParticipants = computed(() => {
 		return (
-			group.value.groupSize + group.value.chaperones + group.value.wheelchairs
+			group.value.group_size + group.value.chaperones + group.value.wheelchairs
 		)
 	})
 
@@ -114,13 +114,13 @@
 			.trim()
 			.nullable()
 			.required('Enter a name for your group'),
-		earliestTime: yup.string().nullable().required('Enter a time'),
-		latestTime: yup.string().nullable().required('Enter a time'),
-		groupSize: yup.number().required('Enter the numer of performers'),
+		earliest_time: yup.string().nullable().required('Enter a time'),
+		latest_time: yup.string().nullable().required('Enter a time'),
+		group_size: yup.number().required('Enter the numer of performers'),
 		chaperones: yup.number(),
 		wheelchaires: yup.number(),
 		unavailable: yup.string().trim().nullable(),
-		conflictPerformers: yup.string().trim().nullable(),
+		conflict_performers: yup.string().trim().nullable(),
 	})
 
 	useForm({ validationSchema })

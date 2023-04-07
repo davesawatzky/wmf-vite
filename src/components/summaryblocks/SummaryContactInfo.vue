@@ -4,18 +4,18 @@
 		<div v-if="contact.age">Age: {{ contact.age }}</div>
 		<div>Address:</div>
 		<div v-if="contact.apartment">
-			{{ contact.apartment }} - {{ contact?.streetNumber }}
-			{{ contact.streetName }}
+			{{ contact.apartment }} - {{ contact?.street_number }}
+			{{ contact.street_name }}
 		</div>
 		<div v-else>
-			{{ contact.streetNumber }}
-			{{ contact.streetName }}
+			{{ contact.street_number }}
+			{{ contact.street_name }}
 		</div>
 		<div>
 			{{ contact.city }},
 			{{ contact.province }}
 		</div>
-		<div>{{ contact.postalCode }}</div>
+		<div>{{ contact.postal_code }}</div>
 		<div>Phone: {{ contact.phone }}</div>
 		<div>Email: {{ contact.email }}</div>
 		<div v-if="contact.instrument">Instrument: {{ contact?.instrument }}</div>

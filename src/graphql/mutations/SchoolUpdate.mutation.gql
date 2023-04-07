@@ -1,5 +1,5 @@
-mutation SchoolUpdate($schoolId: ID!, $school: SchoolInput!) {
-	schoolUpdate(schoolID: $schoolId, school: $school) {
+mutation SchoolUpdate($schoolId: Int!, $school: SchoolInput!) {
+	schoolUpdate(schoolID: $schoolId, schoolInput: $school) {
 		school {
 			id
 		}

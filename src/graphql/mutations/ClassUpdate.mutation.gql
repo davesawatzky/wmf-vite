@@ -1,11 +1,11 @@
 mutation ClassUpdate(
-	$registeredClassId: ID!
+	$registeredClassId: Int!
 	$registeredClass: RegisteredClassInput!
 ) {
-	registeredClassUpdate(
-		registeredClassID: $registeredClassId
-		registeredClass: $registeredClass
-	) {
+registeredClassUpdate(
+	registeredClassID: $registeredClassId,
+	registeredClassInput: $registeredClass
+	 ) {
 		registeredClass {
 			id
 		}

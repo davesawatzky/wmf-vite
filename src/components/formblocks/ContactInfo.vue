@@ -3,9 +3,9 @@
 		<div class="grid grid-cols-12 gap-x-3 gap-y-1 items-end">
 			<div v-if="!school" class="col-span-12 sm:col-span-5">
 				<BaseInput
-					v-model="contact.firstName"
+					v-model="contact.first_name"
 					required
-					name="firstName"
+					name="first_name"
 					type="text"
 					label="First Name" />
 			</div>
@@ -13,17 +13,17 @@
 				v-if="!school && !schoolteacher && !teacher"
 				class="col-span-12 sm:col-span-4">
 				<BaseInput
-					v-model="contact.lastName"
+					v-model="contact.last_name"
 					required
-					name="lastName"
+					name="last_name"
 					type="text"
 					label="Last Name" />
 			</div>
 			<div v-else-if="!school" class="col-span-12 sm:col-span-7">
 				<BaseInput
-					v-model="contact.lastName"
+					v-model="contact.last_name"
 					required
-					name="lastName"
+					name="last_name"
 					type="text"
 					label="Last Name" />
 			</div>
@@ -50,34 +50,34 @@
 				v-else-if="school && !schoolteacher"
 				class="col-span-12 sm:col-span-4 mt-6 sm:mt-0">
 				<BaseInput
-					v-model="contact.streetNumber"
+					v-model="contact.street_number"
 					required
-					name="streetNumber"
+					name="street_number"
 					type="text"
 					label="Street Number" />
 			</div>
 			<div v-if="!schoolteacher && !school" class="col-span-6 sm:col-span-3">
 				<BaseInput
-					v-model="contact.streetNumber"
+					v-model="contact.street_number"
 					required
-					name="streetNumber"
+					name="street_number"
 					type="text"
 					label="Street Number" />
 			</div>
 
 			<div v-if="school && !schoolteacher" class="col-span-12 sm:col-span-8">
 				<BaseInput
-					v-model="contact.streetName"
+					v-model="contact.street_name"
 					requried
-					name="streetName"
+					name="street_name"
 					type="text"
 					label="Street Name" />
 			</div>
 			<div v-if="!school && !schoolteacher" class="col-span-12 sm:col-span-6">
 				<BaseInput
-					v-model="contact.streetName"
+					v-model="contact.street_name"
 					required
-					name="streetName"
+					name="street_name"
 					type="text"
 					label="Street Name" />
 			</div>
@@ -99,10 +99,10 @@
 			</div>
 			<div v-if="!schoolteacher" class="col-span-12 sm:col-span-3">
 				<BaseInput
-					v-model="contact.postalCode"
+					v-model="contact.postal_code"
 					required
 					mask="A#A #A#"
-					name="postalCode"
+					name="postal_code"
 					type="text"
 					label="Postal Code" />
 			</div>
@@ -195,8 +195,8 @@
 	})
 
 	const validationSchema = yup.object({
-		firstName: yup.string().trim().required('First name is required'),
-		lastName: yup.string().trim().required('Last name is required'),
+		first_name: yup.string().trim().required('First name is required'),
+		last_name: yup.string().trim().required('Last name is required'),
 		age: yup
 			.number()
 			.positive()
@@ -210,19 +210,19 @@
 			.trim()
 			.nullable()
 			.max(5, '5 characters maximum'),
-		streetNumber: yup
+		street_number: yup
 			.string()
 			.trim()
 			.max(5, '5 characters maximum')
 			.required('Enter a valid street number'),
-		streetName: yup.string().trim().required('Enter a valid street name'),
+		street_name: yup.string().trim().required('Enter a valid street name'),
 		city: yup
 			.string()
 			.trim()
 			.max(15, 'Too many characters')
 			.required('Enter a city name'),
 		province: yup.string().length(2),
-		postalCode: yup
+		postal_code: yup
 			.string()
 			.matches(
 				/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,

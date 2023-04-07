@@ -11,11 +11,11 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"lib": ["es6", "dom"],
-		"paths": {
-			"@/*": ["src/*"]
-		}
+		// "paths": {
+		// 	"@/*": ["src/*"]
+		// }
 		// "types": ["vite-plugin-pages/client", "vite-plugin-vue-layouts/client"]
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"include": ["env.d.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 	"exclude": ["node_modules"]
 }

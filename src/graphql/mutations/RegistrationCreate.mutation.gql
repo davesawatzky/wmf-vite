@@ -1,9 +1,9 @@
-mutation CreateRegistration($performerType: SGSlabel!, $label: String) {
-	registrationCreate(performerType: $performerType, label: $label) {
+mutation CreateRegistration($performer_type: SGS_label!, $label: String!) {
+	registrationCreate(performer_type: $performer_type, label: $label) {
 		registration {
 			id
 			label
-			performerType
+			performer_type
 		}
 		userErrors {
 			message

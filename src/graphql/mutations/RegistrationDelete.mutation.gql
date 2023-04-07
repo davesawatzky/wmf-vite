@@ -1,6 +1,6 @@
-mutation RegistrationDelete($registrationDeleteId: ID!) {
-	registrationDelete(id: $registrationDeleteId) {
-		registration {
+mutation RegistrationDelete($registrationId: Int!) {
+registrationDelete(registrationID: $registrationId) {
+	registration {
 			id
 		}
 		userErrors {

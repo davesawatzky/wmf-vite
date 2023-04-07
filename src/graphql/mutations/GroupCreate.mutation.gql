@@ -1,5 +1,5 @@
-mutation GroupCreate($registrationId: ID!, $group: GroupInput!) {
-	groupCreate(registrationID: $registrationId, group: $group) {
+mutation GroupCreate($registrationId:Int!, $group: GroupInput!) {
+	groupCreate(groupInput: $group, registrationID: $registrationId) {
 		group {
 			id
 		}

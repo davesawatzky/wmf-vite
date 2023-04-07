@@ -1,5 +1,5 @@
-mutation GroupUpdate($groupId: ID!, $group: GroupInput!) {
-	groupUpdate(groupID: $groupId, group: $group) {
+mutation GroupUpdate($groupId: Int!, $group: GroupInput!) {
+	groupUpdate(groupID: $groupId, groupInput: $group) {
 		group {
 			id
 		}

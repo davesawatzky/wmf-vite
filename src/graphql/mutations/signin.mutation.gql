@@ -1,8 +1,9 @@
-mutation SignIn($credentials: CredentialsInput!) {
+mutation SignIn($credentials: CredentialsSignin!) {
   signin(credentials: $credentials) {
     userErrors {
       message
-    }
-    token
+    },
+    access_token
+
   }
 }

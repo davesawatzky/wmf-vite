@@ -1,4 +1,4 @@
-mutation CommunityDelete($communityId: ID!) {
+mutation CommunityDelete($communityId: Int!) {
 	communityDelete(communityID: $communityId) {
 		community {
 			id

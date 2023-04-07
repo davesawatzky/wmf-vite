@@ -1,11 +1,11 @@
-query ClassSearch($classSearchArgs: ClassSearchArgs!) {
-	classSearch(classSearchArgs: $classSearchArgs) {
+query FestivalClassSearch($festivalClassSearch: FestivalClassSearchArgs!) {
+	festivalClassSearch(festivalClassSearch: $festivalClassSearch) {
 		id
-		classNumber
-		maxSelection
-		minSelection
-		requiredSelection
-		SGSlabel
+		class_number
+		max_selection
+		min_selection
+		required_selection
+		SGS_label
 		price
 		subdiscipline {
 			name

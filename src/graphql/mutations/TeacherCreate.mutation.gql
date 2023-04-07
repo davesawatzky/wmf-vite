@@ -1,5 +1,5 @@
-mutation TeacherCreate($registrationId: ID!, $teacher: TeacherInput!) {
-	teacherCreate(registrationID: $registrationId, teacher: $teacher) {
+mutation TeacherCreate($registrationId: Int!, $teacher: TeacherInput!) {
+	teacherCreate(registrationID: $registrationId, teacherInput: $teacher) {
 		teacher {
 			id
 		}

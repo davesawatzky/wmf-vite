@@ -68,11 +68,8 @@
 		value: inputValue,
 		errorMessage,
 		handleChange,
-		meta,
 	} = useField(nameRef, undefined, {
 		validateOnValueUpdate: false,
 		initialValue: props.modelValue,
 	})
 </script>
-
-<style scoped></style>

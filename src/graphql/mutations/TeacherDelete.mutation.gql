@@ -1,4 +1,4 @@
-mutation TeacherDelete($teacherId: ID!) {
+mutation TeacherDelete($teacherId: Int!) {
 	teacherDelete(teacherID: $teacherId) {
 		teacher {
 			id

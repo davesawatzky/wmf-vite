@@ -14,11 +14,11 @@ interface SchoolInfo {
 	id?: string
 	name: string
 	division: string
-	streetNumber: string
-	streetName: string
+	street_number: string
+	street_name: string
 	city: string
 	province: string
-	postalCode: string
+	postal_code: string
 	phone: string
 	__typename?: string
 }
@@ -31,11 +31,11 @@ export const useSchool = defineStore('school', {
 			id: '',
 			name: '',
 			division: '',
-			streetNumber: '',
-			streetName: '',
+			street_number: '',
+			street_name: '',
 			city: 'Winnipeg',
 			province: 'MB',
-			postalCode: '',
+			postal_code: '',
 			phone: '',
 		} as SchoolInfo,
 	}),

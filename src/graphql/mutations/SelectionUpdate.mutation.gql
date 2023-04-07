@@ -1,6 +1,6 @@
-mutation SelectionUpdate($selectionId: ID!, $selection: SelectionInput!) {
-	selectionUpdate(selectionID: $selectionId, selection: $selection) {
-		selection {
+mutation SelectionUpdate($selectionId: Int!, $selection: SelectionInput!) {
+	selectionUpdate(selectionID: $selectionId, selectionInput: $selection) {
+  	selection {
 			id
 		}
 		userErrors {

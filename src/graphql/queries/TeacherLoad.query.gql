@@ -1,16 +1,16 @@
-query TeacherLoad($registrationId: ID!) {
+query TeacherLoad($registrationId: Int!) {
 	registration(id: $registrationId) {
 		teacher {
 			id
 			prefix
-			firstName
-			lastName
+			first_name
+			last_name
 			apartment
-			streetNumber
-			streetName
+			street_number
+			street_name
 			city
 			province
-			postalCode
+			postal_code
 			phone
 			email
 		}
