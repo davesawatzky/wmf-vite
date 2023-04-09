@@ -1,10 +1,10 @@
 mutation CommunityDelete($communityId: Int!) {
-	communityDelete(communityID: $communityId) {
-		community {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  communityDelete(communityID: $communityId) {
+    community {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

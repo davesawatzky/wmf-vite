@@ -1,16 +1,16 @@
 mutation ClassUpdate(
-	$registeredClassId: Int!
-	$registeredClass: RegisteredClassInput!
+  $registeredClassId: Int!
+  $registeredClass: RegisteredClassInput!
 ) {
-registeredClassUpdate(
-	registeredClassID: $registeredClassId,
-	registeredClassInput: $registeredClass
-	 ) {
-		registeredClass {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  registeredClassUpdate(
+    registeredClassID: $registeredClassId
+    registeredClassInput: $registeredClass
+  ) {
+    registeredClass {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

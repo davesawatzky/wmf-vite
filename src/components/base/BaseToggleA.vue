@@ -23,21 +23,21 @@
 </template>
 
 <script setup lang="ts">
-  defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    modelValue: {
-      type: Boolean,
-      default: false,
-    },
-  })
-  defineEmits(['update:modelValue'])
+defineProps({
+  label: {
+    type: String,
+    default: '',
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+})
+defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
-  input:checked ~ .dot {
-    transform: translateX(100%);
-  }
+input:checked ~ .dot {
+  transform: translateX(100%);
+}
 </style>

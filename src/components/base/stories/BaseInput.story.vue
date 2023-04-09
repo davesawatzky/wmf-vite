@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import BaseInput from '../BaseInput.vue';
+import BaseInput from '../BaseInput.vue'
 </script>
 
 <template>
-  <Story title="Component/BaseInput" :layout="{type:'grid', width: '300px'}">
+  <Story title="Component/BaseInput" :layout="{ type: 'grid', width: '300px' }">
     <Variant title="Text">
       <BaseInput type="text"></BaseInput>
     </Variant>
@@ -17,7 +17,7 @@
       <BaseInput type="tel" mask="(###) ###-####"></BaseInput>
     </Variant>
     <Variant title="Email">
-      <BaseInput type="email" ></BaseInput>
+      <BaseInput type="email"></BaseInput>
     </Variant>
   </Story>
 </template>

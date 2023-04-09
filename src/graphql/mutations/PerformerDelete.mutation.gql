@@ -1,12 +1,12 @@
 mutation PerformerDelete($performerId: Int!) {
-	performerDelete(performerID: $performerId) {
-		performer {
-			id
-			first_name
-			last_name
-		}
-		userErrors {
-			message
-		}
-	}
+  performerDelete(performerID: $performerId) {
+    performer {
+      id
+      first_name
+      last_name
+    }
+    userErrors {
+      message
+    }
+  }
 }

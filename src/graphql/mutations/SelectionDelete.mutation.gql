@@ -1,10 +1,10 @@
 mutation SelectionDelete($selectionId: Int!) {
-	selectionDelete(selectionID: $selectionId) {
-		selection {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  selectionDelete(selectionID: $selectionId) {
+    selection {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

@@ -1,10 +1,10 @@
 mutation TeacherDelete($teacherId: Int!) {
-	teacherDelete(teacherID: $teacherId) {
-		teacher {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  teacherDelete(teacherID: $teacherId) {
+    teacher {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

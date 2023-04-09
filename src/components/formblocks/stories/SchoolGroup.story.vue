@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import SchoolGroup from '../SchoolGroup.vue';
+import SchoolGroup from '../SchoolGroup.vue'
 </script>
 
 <template>

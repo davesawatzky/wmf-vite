@@ -1,6 +1,6 @@
 query DisciplinesByType($SGS_label: SGS_label!) {
-	disciplinesByType(SGS_label: $SGS_label) {
-		id
-		name
-	}
+  disciplines(SGS_label: $SGS_label) {
+    id
+    name
+  }
 }

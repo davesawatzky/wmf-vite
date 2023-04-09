@@ -1,10 +1,10 @@
 mutation SchoolUpdate($schoolId: Int!, $school: SchoolInput!) {
-	schoolUpdate(schoolID: $schoolId, schoolInput: $school) {
-		school {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  schoolUpdate(schoolID: $schoolId, schoolInput: $school) {
+    school {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

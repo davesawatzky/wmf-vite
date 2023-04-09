@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Selection from '../WorksSelection.vue';
+import Selection from '../WorksSelection.vue'
 </script>
 
 <template>

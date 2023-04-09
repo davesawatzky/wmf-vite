@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Class from '../Class.vue';
+import Class from '../Class.vue'
 </script>
 
 <template>

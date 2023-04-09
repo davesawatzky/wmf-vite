@@ -1,0 +1,20 @@
+query PerformerInfo($registrationId: Int!) {
+  registration(id: $registrationId) {
+    performers {
+      id
+      first_name
+      last_name
+      age
+      apartment
+      street_number
+      street_name
+      city
+      province
+      postal_code
+      phone
+      email
+      instrument
+      level
+    }
+  }
+}

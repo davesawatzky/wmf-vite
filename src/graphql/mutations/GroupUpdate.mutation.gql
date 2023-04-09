@@ -1,10 +1,10 @@
 mutation GroupUpdate($groupId: Int!, $group: GroupInput!) {
-	groupUpdate(groupID: $groupId, groupInput: $group) {
-		group {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  groupUpdate(groupID: $groupId, groupInput: $group) {
+    group {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

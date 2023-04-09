@@ -1,12 +1,16 @@
-mutation SelectionCreate($registeredClassId: Int!, $selection: SelectionInput!) {
-selectionCreate(
-	registeredClassID: $registeredClassId,
-	selectionInput: $selection) {
-		selection {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+mutation SelectionCreate(
+  $registeredClassId: Int!
+  $selection: SelectionInput!
+) {
+  selectionCreate(
+    registeredClassID: $registeredClassId
+    selectionInput: $selection
+  ) {
+    selection {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

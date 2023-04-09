@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import BaseErrorMessage from '../BaseErrorMessage.vue';
+import BaseErrorMessage from '../BaseErrorMessage.vue'
 </script>
 
 <template>

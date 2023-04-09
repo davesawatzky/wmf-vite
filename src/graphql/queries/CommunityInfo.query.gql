@@ -1,0 +1,15 @@
+query CommunityInfo($registrationId: Int!) {
+  registration(id: $registrationId) {
+    communities {
+      id
+      name
+      group_size
+      chaperones
+      wheelchairs
+      earliest_time
+      latest_time
+      unavailable
+      conflict_performers
+    }
+  }
+}

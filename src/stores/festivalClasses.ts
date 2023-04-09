@@ -1,40 +1,53 @@
 import { defineStore } from 'pinia'
-
+import { ref } from 'vue'
 interface Descriptions {
-	subdisciplineDescription: string
-	categoryDescription: string
-	levelDescription: string
-	trophyDescriptions: TrophyDescriptions[]
-	required_selection: string
+  subdisciplineDescription: string
+  categoryDescription: string
+  levelDescription: string
+  trophyDescriptions: TrophyDescriptions[]
+  required_selection: string
 }
 interface TrophyDescriptions {
-	name: string
-	description: string
+  name: string
+  description: string
 }
 
-export const festivalClasses = defineStore('festivalClasses', {
-	state: () => ({
-		descriptions: [
-			{
-				subdisciplineDescription: '',
-				categoryDescription: '',
-				levelDescription: '',
-				trophyDescriptions: [{ name: '', description: '' }],
-				required_selection: '',
-			},
-		] as Descriptions[],
-	}),
-	actions: {
-		async addDescriptions() {
-			this.descriptions.push({} as Descriptions)
-		},
+export const festivalClasses = defineStore(
+  'festivalClasses',
+  () => {
+    const descriptions = ref([
+      {
+        subdisciplineDescription: '',
+        categoryDescription: '',
+        levelDescription: '',
+        trophyDescriptions: [{ name: '', description: '' }],
+        required_selection: '',
+      },
+    ] as Descriptions[])
 
-		async removeDescriptions(index: number) {
-			this.descriptions.splice(index, 1)
-		},
-	},
-})
+    function $reset() {
+      descriptions.value = [
+        {
+          subdisciplineDescription: '',
+          categoryDescription: '',
+          levelDescription: '',
+          trophyDescriptions: [{ name: '', description: '' }],
+          required_selection: '',
+        },
+      ]
+    }
 
-// if (import.meta.hot) {
-// 	import.meta.hot.accept(acceptHMRUpdate(festivalClasses, import.meta.hot))
-// }
+    function addDescriptions() {
+      descriptions.value.push({} as Descriptions)
+    }
+
+    function removeDescriptions(index: number) {
+      descriptions.value.splice(index, 1)
+    }
+
+    return { descriptions, $reset, addDescriptions, removeDescriptions }
+  },
+  {
+    persist: true,
+  }
+)

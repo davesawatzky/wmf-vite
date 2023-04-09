@@ -1,12 +1,12 @@
 mutation CreateRegistration($performer_type: SGS_label!, $label: String!) {
-	registrationCreate(performer_type: $performer_type, label: $label) {
-		registration {
-			id
-			label
-			performer_type
-		}
-		userErrors {
-			message
-		}
-	}
+  registrationCreate(performer_type: $performer_type, label: $label) {
+    registration {
+      id
+      label
+      performer_type
+    }
+    userErrors {
+      message
+    }
+  }
 }

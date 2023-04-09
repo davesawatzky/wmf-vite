@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import BaseTextarea from '../BaseTextarea.vue';
+import BaseTextarea from '../BaseTextarea.vue'
 </script>
 
 <template>

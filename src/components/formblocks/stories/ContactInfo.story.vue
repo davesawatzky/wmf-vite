@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ContactInfo from '../ContactInfo.vue';
+import ContactInfo from '../ContactInfo.vue'
 </script>
 
 <template>

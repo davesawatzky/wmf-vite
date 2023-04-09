@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import BaseRadio from '../BaseRadio.vue';
+import BaseRadio from '../BaseRadio.vue'
 </script>
 
 <template>

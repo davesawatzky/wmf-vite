@@ -1,17 +1,16 @@
 mutation ClassCreate(
-	$registrationId: Int!
-	$registeredClassInput: RegisteredClassInput!
+  $registrationId: Int!
+  $registeredClassInput: RegisteredClassInput!
 ) {
-registeredClassCreate(
-	registeredClassInput: $registeredClassInput,
-	registrationID: $registrationId
-	)
-	{
-		registeredClass {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  registeredClassCreate(
+    registeredClassInput: $registeredClassInput
+    registrationID: $registrationId
+  ) {
+    registeredClass {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

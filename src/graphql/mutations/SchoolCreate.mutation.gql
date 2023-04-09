@@ -1,10 +1,10 @@
 mutation SchoolCreate($registrationId: Int!, $school: SchoolInput!) {
-	SchoolCreate(registrationID: $registrationId, schoolInput: $school) {
-		school {
-			id
-		}
-		userErrors {
-			message
-		}
-	}
+  SchoolCreate(registrationID: $registrationId, schoolInput: $school) {
+    school {
+      id
+    }
+    userErrors {
+      message
+    }
+  }
 }

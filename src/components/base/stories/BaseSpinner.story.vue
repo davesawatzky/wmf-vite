@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import BaseSpinner from '../BaseSpinner.vue';
+import BaseSpinner from '../BaseSpinner.vue'
 </script>
 
 <template>

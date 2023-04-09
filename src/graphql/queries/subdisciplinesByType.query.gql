@@ -1,15 +1,20 @@
-query SubdisciplinesByType($categoryId: Int!, $disciplineId: Int!, $levelId: Int!, $SGS_label: SGS_label!) {
-	subdisciplines(
-		categoryID: $categoryId,
-		disciplineID: $disciplineId,
-		levelID: $levelId,
-		performer_type: $SGS_label
-		) {
-		id
-		name
-		description
-		maxPerformers
-		minPerformers
-		SGS_label
-	}
+query SubdisciplinesByType(
+  $categoryId: Int!
+  $disciplineId: Int!
+  $levelId: Int!
+  $SGS_label: SGS_label!
+) {
+  subdisciplines(
+    categoryID: $categoryId
+    disciplineID: $disciplineId
+    levelID: $levelId
+    performer_type: $SGS_label
+  ) {
+    id
+    name
+    description
+    maxPerformers
+    minPerformers
+    SGS_label
+  }
 }
