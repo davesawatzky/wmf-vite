@@ -11,7 +11,7 @@
         <select
           id="schoolGroupSelect"
           v-model.number="
-            classesStore.registeredClasses[classIndex].schoolCommunityId
+            classesStore.registeredClasses[classIndex].school_groupID
           "
           class="mb-6"
           name="schoolGroup"
@@ -21,7 +21,7 @@
             :key="group.id"
             :value="group.id"
             :selected="
-              classesStore.registeredClasses[classIndex].schoolCommunityId ===
+              classesStore.registeredClasses[classIndex].school_groupID ===
               group.id
             "
           >

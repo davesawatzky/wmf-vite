@@ -3,10 +3,10 @@ query GroupInfo($registrationId: Int!) {
     groups {
       id
       age
-      groupType
+      group_type
       instruments
       name
-      numberOfPerformers
+      number_of_performers
     }
   }
 }

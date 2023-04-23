@@ -14,8 +14,8 @@ import GROUP_DELETE_MUTATION from '@/graphql/mutations/GroupDelete.mutation.gql'
 interface Group {
   id?: number
   name: string
-  groupType: string
-  numberOfPerformers: number
+  group_type: string
+  number_of_performers: number
   age: number
   instruments: string
 }
@@ -28,8 +28,8 @@ export const useGroup = defineStore(
     const groupInfo = ref({
       id: 0,
       name: '',
-      groupType: '', //Vocal, Instrumental
-      numberOfPerformers: 1,
+      group_type: '', //Vocal, Instrumental
+      number_of_performers: 1,
       age: 10,
       instruments: '',
     } as Group)
@@ -38,8 +38,8 @@ export const useGroup = defineStore(
       groupInfo.value = {
         id: 0,
         name: '',
-        groupType: '',
-        numberOfPerformers: 1,
+        group_type: '',
+        number_of_performers: 1,
         age: 10,
         instruments: '',
       }

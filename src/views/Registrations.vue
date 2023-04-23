@@ -149,6 +149,7 @@ import { useTeacher } from '@/stores/userTeacher'
 import { useClasses } from '@/stores/userClasses'
 import { useGroup } from '@/stores/userGroup'
 import { useSchool } from '@/stores/userSchool'
+import { useSchoolGroup } from '@/stores/userSchoolGroup'
 import { useCommunity } from '@/stores/userCommunity'
 import BaseButton from '@/components/base/BaseButton.vue'
 import soloPhoto from '@/assets/images/opera-singer-on-stage.png'
@@ -193,6 +194,7 @@ const performerStore = usePerformers()
 const teacherStore = useTeacher()
 const groupStore = useGroup()
 const schoolStore = useSchool()
+const schoolGroupStore = useSchoolGroup()
 const communityStore = useCommunity()
 const classesStore = useClasses()
 const registrationId = ref(0)
@@ -272,7 +274,7 @@ async function loadRegistration(
       appStore.options.performer_type = 'SCHOOL'
       appStore.options.dataLoading = true
       await schoolStore.loadSchool(registrationId)
-      await communityStore.loadCommunities(registrationId)
+      await schoolGroupStore.loadSchoolGroups(registrationId)
       await teacherStore.loadTeacher(registrationId)
       await classesStore.loadClasses(registrationId)
       appStore.options.dataLoading = false
@@ -303,6 +305,7 @@ async function newRegistration(performer_type: performer_type, label?: string) {
 
   await registrationStore.createRegistration(performer_type, label)
   registrationId.value = registrationStore.registrationId
+  console.log(registrationId.value)
 
   appStore.$patch({
     options: {
@@ -335,7 +338,7 @@ async function newRegistration(performer_type: performer_type, label?: string) {
       appStore.options.performer_type = 'SCHOOL'
       appStore.options.dataLoading = true
       await schoolStore.createSchool(registrationId.value)
-      await communityStore.createCommunity(registrationId.value)
+      await schoolGroupStore.createSchoolGroup(schoolStore.schoolInfo.id!)
       await teacherStore.createTeacher(registrationId.value)
       await classesStore.createClass(registrationId.value)
       appStore.options.dataLoading = false

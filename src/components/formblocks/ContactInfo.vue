@@ -114,8 +114,9 @@
       <div v-if="!schoolteacher" class="col-span-12 sm:col-span-3">
         <BaseInput
           v-model="contact.postal_code"
+          v-maska
           required
-          mask="A#A #A#"
+          data-maska="A#A #A#"
           name="postal_code"
           type="text"
           label="Postal Code"
@@ -124,8 +125,9 @@
       <div class="col-span-12 sm:col-span-5">
         <BaseInput
           v-model="contact.phone"
+          v-maska
           required
-          maska="(###) ###-####"
+          data-maska="(###) ###-####"
           name="phone"
           type="tel"
           label="Phone Number"
@@ -160,9 +162,9 @@
       </div>
       <div v-if="groupperformer" class="col-span-12">
         <BaseTextarea
-          v-model="contact.otherClasses"
+          v-model="contact.other_classes"
           required
-          name="otherClasses"
+          name="other_classes"
           :label="textAreaLabel"
         />
       </div>

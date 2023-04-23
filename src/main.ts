@@ -7,6 +7,7 @@ import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { vMaska } from 'maska'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faFilePen, faEye, faBan } from '@fortawesome/free-solid-svg-icons'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
@@ -21,7 +22,7 @@ const app = createApp({
   render() {
     return h(App)
   },
-})
+}).directive('maska', vMaska)
 
 const pinia = createPinia()
 pinia.use(createPersistedState({ storage: sessionStorage }))

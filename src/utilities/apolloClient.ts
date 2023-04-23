@@ -14,10 +14,10 @@ const httpLink = new HttpLink({
 })
 
 const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('diatonicToken')
+  const token = sessionStorage.getItem('diatonicToken')
   operation.setContext({
     headers: {
-      authorization: token ? `${token}` : null,
+      authorization: token ? `Bearer ${token}` : null,
     },
   })
   return forward(operation)

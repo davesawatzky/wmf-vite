@@ -22,16 +22,16 @@ export interface RegisteredClass {
   subdiscipline: string
   level: string
   category: string
-  numberOfSelections: number
+  number_of_selections: number
   price: number
-  schoolCommunityId?: number
+  school_groupID: number | null
   __typename?: string
   selections?: Selections[]
 }
 export interface Selections {
   id?: number
   title: string
-  largerWork: string
+  larger_work: string
   movement: string
   composer: string
   duration: string
@@ -43,11 +43,11 @@ provideApolloClient(apolloClient)
 export const useClasses = defineStore(
   'registeredClasses',
   () => {
-    const registeredClasses = ref({} as RegisteredClass[])
+    const registeredClasses = ref([] as RegisteredClass[])
     const MOZART_CLASSES = ['7700', '7701', '7702', '7703', '7704']
 
     function $reset() {
-      registeredClasses.value = <RegisteredClass[]>{}
+      registeredClasses.value = <RegisteredClass[]>[]
     }
 
     /**
@@ -63,9 +63,9 @@ export const useClasses = defineStore(
         subdiscipline: '',
         level: '',
         category: '',
-        numberOfSelections: 0,
+        number_of_selections: 0,
         price: 0,
-        schoolCommunityId: 0,
+        school_groupID: null,
         selections: [],
       })
       if (registeredClass) {
@@ -89,7 +89,7 @@ export const useClasses = defineStore(
       registeredClasses.value[classIndex].selections!.push({
         id: 0,
         title: '',
-        largerWork: '',
+        larger_work: '',
         movement: '',
         composer: '',
         duration: '0:00',
@@ -117,7 +117,7 @@ export const useClasses = defineStore(
         delete clone.id
         delete clone.className
         delete clone.selections
-        classCreate({ registrationId, registeredClass: clone })
+        classCreate({ registrationId, registeredClassInput: clone })
         doneClassCreate((result) => {
           let lastIndex = registeredClasses.value.length - 1
           let returnedId = result.data.registeredClassCreate.registeredClass.id
@@ -164,28 +164,28 @@ export const useClasses = defineStore(
       registeredClasses.value.forEach((item) => {
         if (
           item.selections!.length < 1 ||
-          (item.numberOfSelections > 0 &&
-            item.selections!.length != item.numberOfSelections)
+          (item.number_of_selections > 0 &&
+            item.selections!.length != item.number_of_selections)
         ) {
           if (item.selections!.length < 1) {
-            for (let i = 0; i < item.numberOfSelections; i++) {
+            for (let i = 0; i < item.number_of_selections; i++) {
               createSelection(classIndex)
             }
           } else if (
             item.selections!.length > 0 &&
-            item.selections!.length < item.numberOfSelections
+            item.selections!.length < item.number_of_selections
           ) {
             for (
               let i = 1; //item.selections!.length;
-              i < 2; //item.numberOfSelections;
+              i < 2; //item.number_of_selections;
               i++
             ) {
               createSelection(classIndex)
             }
-          } else if (item.selections!.length > item.numberOfSelections) {
+          } else if (item.selections!.length > item.number_of_selections) {
             for (
               let i = item.selections!.length;
-              i > item.numberOfSelections;
+              i > item.number_of_selections;
               i--
             ) {
               deleteSelection(classIndex, i)

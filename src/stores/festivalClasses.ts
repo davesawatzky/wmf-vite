@@ -41,11 +41,11 @@ export const festivalClasses = defineStore(
       descriptions.value.push({} as Descriptions)
     }
 
-    function removeDescriptions(index: number) {
+    function removeDescription(index: number) {
       descriptions.value.splice(index, 1)
     }
 
-    return { descriptions, $reset, addDescriptions, removeDescriptions }
+    return { descriptions, $reset, addDescriptions, removeDescription }
   },
   {
     persist: true,

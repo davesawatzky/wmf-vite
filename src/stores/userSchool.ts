@@ -30,7 +30,7 @@ export const useSchool = defineStore(
   'school',
   () => {
     const schoolInfo = ref({
-      id: 0,
+      id: undefined,
       name: '',
       division: '',
       street_number: '',
@@ -43,7 +43,7 @@ export const useSchool = defineStore(
 
     function $reset() {
       schoolInfo.value = <SchoolInfo>{
-        id: 0,
+        id: undefined,
         name: '',
         division: '',
         street_number: '',
@@ -68,11 +68,13 @@ export const useSchool = defineStore(
         } = useMutation(SCHOOL_CREATE_MUTATION)
         let clone = Object.assign({}, schoolInfo.value)
         delete clone.id
+        console.log('----->clone: ', clone)
         schoolCreate({
           registrationId,
-          school: clone,
+          schoolInput: clone,
         })
         doneSchoolCreate((result) => {
+          console.log('----->Result: ', result)
           schoolInfo.value.id = result.data.schoolCreate.school.id
           resolve(result)
         })

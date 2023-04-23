@@ -20,8 +20,8 @@
       </div>
       <div class="col-span-12 sm:col-span-5">
         <BaseInput
-          v-model="work.largerWork"
-          name="largerWork"
+          v-model="work.larger_work"
+          name="larger_work"
           label="Title of Larger Work (if applicable)"
           type="text"
         />
@@ -37,6 +37,8 @@
       <div class="col-span-6 sm:col-span-3">
         <BaseInput
           v-model="work.duration"
+          v-maska
+          data-maska="##:##"
           name="duration"
           label="Duration"
           type="text"
@@ -79,7 +81,7 @@ const validationSchema = yup.object({
     .trim()
     .nullable()
     .required('Enter the name of the composer'),
-  largerWork: yup.string().trim().nullable(),
+  larger_work: yup.string().trim().nullable(),
   movement: yup.string().trim().nullable(),
   duration: yup
     .string()

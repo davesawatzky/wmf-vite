@@ -38,11 +38,11 @@ export const useRegistration = defineStore(
   'registrations',
   () => {
     const registrationId = ref(0)
-    const registrations = ref({} as Registration[])
+    const registrations = ref([] as Registration[])
 
     function $reset() {
       registrationId.value = 0
-      registrations.value = <Registration[]>{}
+      registrations.value = <Registration[]>[]
     }
 
     function addToStore(data: Registration) {
@@ -65,12 +65,8 @@ export const useRegistration = defineStore(
         } = useMutation(REGISTRATION_CREATE_MUTATION)
         registrationCreate({ performer_type, label })
         doneNewReg((result) => {
-          let clone = Object.assign(
-            {},
-            result.data.registrationCreate.registration
-          )
-          addToStore(clone)
-          registrationId.value = clone.id
+          addToStore(result.data.registrationCreate.registration)
+          registrationId.value = result.data.registrationCreate.registration.id
           resolve(result)
         })
         onError((error) => {

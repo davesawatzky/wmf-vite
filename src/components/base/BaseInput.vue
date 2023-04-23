@@ -5,7 +5,6 @@
   <input
     :id="uuid"
     v-bind="{ ...$attrs }"
-    v-maska="mask"
     :value="inputValue"
     :aria-describedby="errorMessage ? `${uuid}-error` : ''"
     :aria-invalid="errorMessage ? true : false"
@@ -29,11 +28,6 @@ const props = defineProps({
   name: {
     type: String,
     required: true,
-    default: '',
-  },
-  mask: {
-    type: String,
-    required: false,
     default: '',
   },
   modelValue: {

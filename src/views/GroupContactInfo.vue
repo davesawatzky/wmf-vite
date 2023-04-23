@@ -12,15 +12,15 @@
           />
 
           <BaseInput
-            v-model="groupStore.groupInfo.numberOfPerformers"
+            v-model="groupStore.groupInfo.number_of_performers"
             :value="
-              (groupStore.groupInfo.numberOfPerformers =
-                performerStore.numberOfPerformers)
+              (groupStore.groupInfo.number_of_performers =
+                performerStore.number_of_performers)
             "
             disabled
             class="off"
             aria-disabled
-            name="numberOfPerformers"
+            name="number_of_performers"
             label="Number of Performers"
             type="number"
           />
@@ -31,8 +31,8 @@
           <h3>Group Type</h3>
           <div>
             <BaseRadioGroup
-              v-model="groupStore.groupInfo.groupType"
-              name="groupType"
+              v-model="groupStore.groupInfo.group_type"
+              name="group_type"
               :options="typeOptions"
             />
           </div>
@@ -123,7 +123,7 @@ const typeOptions = [
 
 const validationSchema = yup.object({
   groupname: yup.string().trim().required('Enter a group name'),
-  numberOfPerformers: yup
+  number_of_performers: yup
     .number()
     .integer('Only whole numbers')
     .positive('Must be a positive number')
@@ -131,7 +131,7 @@ const validationSchema = yup.object({
     .required('Enter number of performers'),
   instrument: yup.string().trim().nullable().required(),
   level: yup.string().max(20).nullable().required(),
-  otherClasses: yup.string().nullable(),
+  other_classes: yup.string().nullable(),
 })
 
 useForm({ validationSchema })

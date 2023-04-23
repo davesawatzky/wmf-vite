@@ -11,10 +11,10 @@ import BaseInput from '../BaseInput.vue'
       <BaseInput type="number"></BaseInput>
     </Variant>
     <Variant title="Postal Code">
-      <BaseInput type="text" mask="A#A #A#"></BaseInput>
+      <BaseInput v-maska type="text" data-maska="A#A #A#"></BaseInput>
     </Variant>
     <Variant title="Phone">
-      <BaseInput type="tel" mask="(###) ###-####"></BaseInput>
+      <BaseInput v-maska type="tel" data-maska="(###) ###-####"></BaseInput>
     </Variant>
     <Variant title="Email">
       <BaseInput type="email"></BaseInput>

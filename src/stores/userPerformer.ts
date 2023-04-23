@@ -26,7 +26,7 @@ interface PerformerInfo {
   age: number
   instrument: string
   level: string
-  otherClasses: string
+  other_classes: string
 }
 
 provideApolloClient(apolloClient)
@@ -34,9 +34,9 @@ provideApolloClient(apolloClient)
 export const usePerformers = defineStore(
   'performers',
   () => {
-    const performer = ref({} as PerformerInfo[])
+    const performer = ref([] as PerformerInfo[])
 
-    const numberOfPerformers = computed(() => {
+    const number_of_performers = computed(() => {
       return performer.value.length
     })
     const fullName = computed(() => {
@@ -47,7 +47,7 @@ export const usePerformers = defineStore(
     })
 
     function $reset() {
-      performer.value = <PerformerInfo[]>{}
+      performer.value = <PerformerInfo[]>[]
     }
 
     function addToStore(performerContactInfo: PerformerInfo | null) {
@@ -66,7 +66,7 @@ export const usePerformers = defineStore(
         email: '',
         instrument: '',
         level: '',
-        otherClasses: '',
+        other_classes: '',
       })
       if (performerContactInfo) {
         Object.assign(
@@ -179,7 +179,7 @@ export const usePerformers = defineStore(
     return {
       performer,
       $reset,
-      numberOfPerformers,
+      number_of_performers,
       fullName,
       addToStore,
       createPerformer,

@@ -6,15 +6,15 @@ query RegisteredClasses($registrationId: Int!) {
       discipline
       id
       level
-      numberOfSelections
+      number_of_selections
       price
       subdiscipline
-      schoolCommunityId
+      school_groupID
       selections {
         composer
         duration
         id
-        largerWork
+        larger_work
         movement
         title
       }

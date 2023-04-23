@@ -20,8 +20,8 @@
     <div>Email: {{ contact.email }}</div>
     <div v-if="contact.instrument">Instrument: {{ contact?.instrument }}</div>
     <div v-if="contact.level">Grade Level: {{ contact.level }}</div>
-    <div v-if="contact.otherClasses">
-      Participating in other classes: {{ contact.otherClasses }}
+    <div v-if="contact.other_classes">
+      Participating in other classes: {{ contact.other_classes }}
     </div>
   </div>
 </template>

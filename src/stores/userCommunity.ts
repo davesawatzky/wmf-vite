@@ -29,10 +29,10 @@ provideApolloClient(apolloClient)
 export const useCommunity = defineStore(
   'community',
   () => {
-    const communityInfo = ref({} as CommunityInfo[])
+    const communityInfo = ref([] as CommunityInfo[])
 
     function $reset() {
-      communityInfo.value = <CommunityInfo[]>{}
+      communityInfo.value = <CommunityInfo[]>[]
     }
 
     function addToStore(communityData: CommunityInfo | null) {

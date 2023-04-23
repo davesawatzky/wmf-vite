@@ -41,7 +41,7 @@
     </div>
     <div class="col-span-6 md:col-span-2">
       <BaseSelect
-        v-model.number="selectedClasses.numberOfSelections"
+        v-model.number="selectedClasses.number_of_selections"
         :class="selectedClasses.category ? '' : 'off'"
         label="Selections"
         :options="numberOfAllowedWorks"
@@ -104,7 +104,7 @@
       </div>
     </div>
     <div v-if="selectedClasses.category" v-auto-animate class="col-span-12">
-      <div v-if="!selectedClasses.numberOfSelections">
+      <div v-if="!selectedClasses.number_of_selections">
         <h4>Please choose the number of selections above.</h4>
       </div>
       <div v-else>
@@ -208,7 +208,7 @@ function changeSubdisciplineDropdown() {
   selectedClasses.value.subdiscipline = null
   selectedClasses.value.level = null
   selectedClasses.value.category = null
-  selectedClasses.value.numberOfSelections = null
+  selectedClasses.value.number_of_selections = null
   selectedClasses.value.className = null
   selectedClasses.value.class_number = null
   chosenSubdiscipline.value = { id: '', name: '' }
@@ -254,7 +254,7 @@ const chosenSubdiscipline = computed({
 function changeGradeLevelDropdown() {
   selectedClasses.value.level = null
   selectedClasses.value.category = null
-  selectedClasses.value.numberOfSelections = null
+  selectedClasses.value.number_of_selections = null
   selectedClasses.value.className = null
   selectedClasses.value.class_number = null
   chosenGradeLevel.value = { id: '', name: '' }
@@ -292,7 +292,7 @@ const chosenGradeLevel = computed({
 })
 function changeCategoryDropdown() {
   selectedClasses.value.category = null
-  selectedClasses.value.numberOfSelections = null
+  selectedClasses.value.number_of_selections = null
   selectedClasses.value.className = null
   selectedClasses.value.class_number = null
   chosenCategory.value = { id: '', name: '' }
@@ -329,7 +329,7 @@ const chosenCategory = computed({
   set: (newValue) => newValue,
 })
 function changeClass() {
-  selectedClasses.value.numberOfSelections = null
+  selectedClasses.value.number_of_selections = null
   selectedClasses.value.className = null
   selectedClasses.value.class_number = null
 
@@ -424,7 +424,7 @@ const numberOfAllowedWorks = computed(() => {
  * Updating number of selections
  */
 watch(
-  () => selectedClasses.value.numberOfSelections,
+  () => selectedClasses.value.number_of_selections,
   async (newNumber) => {
     let oldNumber =
       classesStore.registeredClasses[props.classIndex].selections!.length

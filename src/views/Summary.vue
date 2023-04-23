@@ -70,10 +70,12 @@
         Festival Class Number: {{ registeredClass.class_number }}
       </h4>
       <h5 v-if="appStore.performer_type === 'SCHOOL'">
-        {{ schoolClassGroup(registeredClass.schoolCommunityId!)?.name }}
+        {{ schoolClassGroup(registeredClass.school_groupID!)?.name }}
       </h5>
       <div>Festival Class: {{ registeredClass.className }}</div>
-      <div>Number of Selections: {{ registeredClass.numberOfSelections }}</div>
+      <div>
+        Number of Selections: {{ registeredClass.number_of_selections }}
+      </div>
       <div
         v-for="(selection, index) in registeredClass.selections"
         :key="selection.id"
@@ -82,8 +84,8 @@
         <h5 class="py-2">Selection {{ index + 1 }}</h5>
         <div>Title: {{ selection.title }}</div>
         <div>Composer: {{ selection.composer }}</div>
-        <div v-if="selection.largerWork">
-          from Work: {{ selection.largerWork }}
+        <div v-if="selection.larger_work">
+          from Work: {{ selection.larger_work }}
         </div>
         <div v-if="selection.movement">Movement: {{ selection.movement }}</div>
         <div>Duration: {{ selection.duration }}</div>
@@ -94,9 +96,9 @@
     <div v-if="appStore.performer_type === 'GROUP'">
       <h2 class="pt-8 pb-4">Group Information</h2>
       <div>Name: {{ groupStore.groupInfo.name }}</div>
-      <div>Type of Group: {{ groupStore.groupInfo.groupType }}</div>
+      <div>Type of Group: {{ groupStore.groupInfo.group_type }}</div>
       <div>
-        Number of Performers: {{ groupStore.groupInfo.numberOfPerformers }}
+        Number of Performers: {{ groupStore.groupInfo.number_of_performers }}
       </div>
       <div>Age of the Group: {{ groupStore.groupInfo.age }}</div>
     </div>
